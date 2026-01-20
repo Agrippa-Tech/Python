@@ -138,10 +138,14 @@ print(f"\nA diferença absoluta entre eles é: \n{dif:>15}")
 '''10) Desenvolva um programa que calcule o valor do IMC (Índice de Massa Corporal).
    O usuário deve informar peso (kg) e altura (m). O programa deve exibir o IMC com duas
    casas decimais.'''
-   
-kg = float(input("Digite quantos quilogramas você pesa: "))
+  
+print("\n", "=" * 15, "EXERCÍCIO 10", "=" * 15)
+ 
+kg = float(input("\nDigite quantos quilogramas você pesa: "))
 al = float(input("Digite quantos metros você mede: "))
 
 imc = kg / (al ** 2) 
 
 print(f"O seu IMC é de: {imc:2.2f}")
+
+'''11) '''
