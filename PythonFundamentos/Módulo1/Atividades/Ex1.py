@@ -1,4 +1,8 @@
-import lmp     
+import lmp  
+import secrets
+import string
+import time
+import os  
 
 lmp.limpar_terminal()
 
@@ -239,12 +243,75 @@ try:
    nms.sort()  #ordena a lista de forma crescente
    
    print(f"\nNúmeros ordenados de forma crescente: ")
-   print(nms)
-   
+   print(nms) 
 
 except ValueError: 
    print("ERRO: Digite números diferentes.")
 
+'''15) Crie um programa que calcule o valor da conta de energia elétrica.
+   O usuário deve informar o consumo em kWh e o programa deve calcular o valor considerando
+   R$ 0,75 por kWh mais uma taxa fixa de R$ 25,00.'''
 
+print("\n", "=" * 15, "EXERCÍCIO 15", "=" * 15)
 
+try:
+   print("\n", " " * 10, "CALCULADORA ENERGIA", " " * 10)
    
+   comp_senh = string.digits #números de 0 a 9
+   tam_senh = 6
+   senh = ''.join(secrets.choice(comp_senh) for _ in range(tam_senh))
+   tent = 4
+   
+   print(f"\nSua senha de acesso é: {senh}")
+   time.sleep(10)
+   os.system('cls' if os.name == 'nt' else 'clear')
+   
+   
+   while tent > 0:
+    teste_senh =(input("Digite sua senha de acesso: "))
+    if teste_senh == senh:
+        break
+    else:
+        tent -= 1
+        if tent > 0:
+            print(f"\nSenha incorreta. Faltam apenas {tent} tentativas.")
+        else:
+            print("\nERRO: Tentativas esgotadas.")
+    if tent == 0:  
+        raise Exception ()
+      
+   
+   ckwh = float(input("\nDigite o consumo elétrico em kWh: "))
+
+   custo_ele = (ckwh * 0.75) + 25
+
+   if ckwh <= 100:
+      nvl = 'Ótimo'
+   elif ckwh <= 200:
+      nvl = 'Bom'
+   elif ckwh <= 350:
+      nvl = 'Ok'
+   elif ckwh <= 500:
+      nvl = 'Ruim'
+   else:
+      nvl = 'Péssimo'
+
+   blt = f"""
+            {'= '* 15} {'CONTA DE ENERGIA'} {'= ' * 15}
+            {'Consumo kWh:':>15} {ckwh:2.2f}
+            {'Tarifa por kWh:':>18} {'R$ 0.75'}
+            {'Tarifa fixa:':>15} {'R$: 25.00'}
+            {'= ' * 39}
+            {'CUSTO TOTAL:':>15} {'R$'}{custo_ele:2.2f}
+            {'CLASSIFICAÇÃO:':>17} {nvl}
+         """
+            
+   print(blt)
+
+except ValueError:
+   print("\nERRO: Digite apenas números.")
+except Exception as e:
+    print()
+    
+'''16) Elabore um programa que converta uma quantidade de horas em semanas, dias e horas.
+   Exemplo: 500 horas = 2 semanas, 6 dias e 20 horas.''' 
