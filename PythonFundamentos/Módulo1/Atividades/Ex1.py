@@ -460,6 +460,68 @@ else:
 '''18) Desenvolva um programa que calcule o troco mínimo em cédulas e moedas para uma compra.
    O usuário informa o valor da compra e o valor pago.'''
    
+print("\n", "=" * 15, "EXERCÍCIO 18", "=" * 15)
+
+dinheiro = (200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.25, 0.10, 0.05, 0.01)
+
+tentativa_valor = 4
+valor_compra = None
+valor_pago = None
+
+while tentativa_valor > 0:
+   try:
+      valor_compra = float(input("\nDigite o valor da compra: "))
+      valor_pago = float(input("Digite o valor pago: "))
+      break
+   except ValueError:
+      tentativa_valor -= 1
+      if tentativa_valor == 1:
+         os.system('cls' if os.name == 'nt' else 'clear')
+         print(f"\nERRO: Digite apenas números ou utilize [.] para separar as casas decimais.")
+         print(f"\nA última tentativa será possível em 30 segundos.")
+         time.sleep(5)
+         for i in range(30, 0, -1):
+            print(f"\r{i} segundos.", end = " ", flush = True)
+            time.sleep(1)
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
+      if tentativa_valor > 0:
+         time.sleep(2)
+         os.system('cls' if os.name == 'nt' else 'clear')
+         print(f"\nERRO: Digite apenas números ou utilize [.] para separar as casas decimais.")
+         print(f"Você tem somente {tentativa_valor} tentativas restantes.")
+         continue
+      else:
+         print(f"\nTENTATIVAS ESGOTADAS")
+      break
+
+if valor_compra is not None and valor_pago is not None:
+   troco = valor_pago - valor_compra
+   
+   if troco < 0:
+      print("\nValor pago é insuficiente!")
+   elif troco == 0:
+      print("\nNão há troco a ser dado.")
+   else: 
+      print(f"\nTroco total: R$ {troco:.2f}")
+      print(f"Cédulas e moedas necessárias: ")
+      print()
+      
+      troco_restante = troco
+      
+      for valor in dinheiro:
+         quantidade = 0
+         
+         if troco_restante >= valor - 0.001:
+            quantidade = int(troco_restante // valor)
+            troco_restante -= quantidade * valor
+            troco_restante = round(troco_restante, 2)
+         
+         if quantidade > 0:
+            if valor >= 1:
+               print(f"{'Cédula(s) de R$':>20} {valor:>5.2f} : {quantidade:>10}")
+            else:
+               print(f"{'Moeda(s) de R$':>20} {valor:>5.2f} : {quantidade:>10}")
 
 
 
