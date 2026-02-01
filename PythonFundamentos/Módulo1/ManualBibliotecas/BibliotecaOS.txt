@@ -1,0 +1,2005 @@
+================================================================================
+                    BIBLIOTECA OS DO PYTHON
+                           NÍVEL INICIANTE
+================================================================================
+
+
+
+================================================================================
+1. INTRODUÇÃO À BIBLIOTECA OS
+================================================================================
+
+1.1 O QUE É A BIBLIOTECA OS?
+--------------------------------------------------------------------------------
+A biblioteca os fornece uma interface portátil para usar funcionalidades 
+dependentes do sistema operacional. Ela permite que você interaja com o 
+sistema de arquivos, processos, variáveis de ambiente e outras funcionalidades 
+do sistema operacional de forma independente de plataforma.
+
+Diferença fundamental:
+- os: operações de sistema de baixo nível e portabilidade
+- pathlib: interface orientada a objetos para caminhos (Python 3.4+)
+- shutil: operações de alto nível em arquivos
+
+Exemplo de uso básico:
+import os
+
+# Obter diretório atual
+diretorio_atual = os.getcwd()
+print(f"Estou em: {diretorio_atual}")
+
+# Listar arquivos
+arquivos = os.listdir('.')
+print(f"Arquivos: {arquivos}")
+
+1.2 POR QUE USAR OS?
+--------------------------------------------------------------------------------
+Benefícios da biblioteca os:
+- Portabilidade entre diferentes sistemas operacionais
+- Acesso direto às funcionalidades do sistema
+- Manipulação de arquivos e diretórios
+- Gerenciamento de processos
+- Acesso a variáveis de ambiente
+- Interface simples e consistente
+
+Casos de uso apropriados:
+✅ Navegação em diretórios
+✅ Criação e remoção de arquivos/pastas
+✅ Verificação de permissões
+✅ Execução de comandos do sistema
+✅ Manipulação de variáveis de ambiente
+✅ Obtenção de informações do sistema
+✅ Automação de tarefas de arquivos
+
+Casos onde outras bibliotecas são melhores:
+⚠️  pathlib: para manipulação moderna de caminhos
+⚠️  shutil: para copiar/mover arquivos
+⚠️  subprocess: para executar processos externos
+⚠️  glob: para encontrar arquivos com padrões
+
+1.3 IMPORTANDO A BIBLIOTECA
+--------------------------------------------------------------------------------
+A biblioteca os faz parte da biblioteca padrão do Python.
+
+Importação básica:
+import os
+
+Importação específica:
+from os import path, getcwd, listdir
+
+Importação com alias:
+import os.path as ospath
+
+Verificando sistema operacional:
+import os
+print(f"Sistema: {os.name}")
+# 'posix' (Linux/Mac) ou 'nt' (Windows)
+
+
+================================================================================
+2. INFORMAÇÕES DO SISTEMA
+================================================================================
+
+2.1 IDENTIFICANDO O SISTEMA OPERACIONAL
+--------------------------------------------------------------------------------
+A biblioteca os permite identificar o sistema operacional em uso.
+
+os.name
+# Retorna o nome do SO: 'posix', 'nt', 'java'
+
+Exemplos:
+import os
+
+# Nome básico do sistema
+sistema = os.name
+print(sistema)
+# Windows: 'nt'
+# Linux/Mac: 'posix'
+
+# Verificando se é Windows
+if os.name == 'nt':
+    print("Estamos no Windows!")
+elif os.name == 'posix':
+    print("Estamos no Linux ou Mac!")
+
+# Informações detalhadas (apenas Unix/Linux)
+if hasattr(os, 'uname'):
+    info = os.uname()
+    print(f"Sistema: {info.sysname}")
+    print(f"Nó: {info.nodename}")
+    print(f"Release: {info.release}")
+    print(f"Versão: {info.version}")
+    print(f"Máquina: {info.machine}")
+
+Usando platform para mais detalhes:
+import platform
+
+print(f"Sistema: {platform.system()}")      # Windows, Linux, Darwin
+print(f"Release: {platform.release()}")     # 10, 5.4.0-42-generic
+print(f"Versão: {platform.version()}")      # Versão detalhada
+print(f"Máquina: {platform.machine()}")     # x86_64, AMD64
+print(f"Processador: {platform.processor()}")
+
+Código multiplataforma:
+def obter_separador_caminho():
+    """Retorna o separador de caminho do SO."""
+    if os.name == 'nt':
+        return '\\'
+    else:
+        return '/'
+
+# Melhor ainda: use os.sep
+separador = os.sep
+print(f"Separador: {separador}")  # '\' no Windows, '/' no Unix
+
+2.2 VARIÁVEIS DE AMBIENTE
+--------------------------------------------------------------------------------
+os.environ
+# Dicionário com todas as variáveis de ambiente
+
+Acessando variáveis:
+import os
+
+# Acessar variável (lança KeyError se não existir)
+usuario = os.environ['USER']  # Linux/Mac
+# ou
+usuario = os.environ['USERNAME']  # Windows
+
+# Acessar com valor padrão (mais seguro)
+usuario = os.environ.get('USER', 'desconhecido')
+home = os.environ.get('HOME', '/home/default')
+
+# Listar todas as variáveis
+for chave, valor in os.environ.items():
+    print(f"{chave} = {valor}")
+
+Modificando variáveis:
+# Definir variável de ambiente
+os.environ['MINHA_VAR'] = 'valor123'
+print(os.environ['MINHA_VAR'])  # 'valor123'
+
+# Remover variável
+if 'MINHA_VAR' in os.environ:
+    del os.environ['MINHA_VAR']
+
+# Usando os.getenv() (retorna None se não existir)
+path = os.getenv('PATH')
+api_key = os.getenv('API_KEY', 'chave_padrao')
+
+Variáveis comuns:
+# Variáveis úteis multiplataforma
+print(f"PATH: {os.getenv('PATH')}")
+print(f"HOME: {os.getenv('HOME')}")           # Unix
+print(f"USERPROFILE: {os.getenv('USERPROFILE')}")  # Windows
+print(f"TEMP: {os.getenv('TEMP')}")           # Diretório temporário
+
+Exemplo prático:
+class ConfigApp:
+    def __init__(self):
+        # Carregar configurações do ambiente
+        self.debug = os.getenv('DEBUG', 'False') == 'True'
+        self.porta = int(os.getenv('PORT', '8000'))
+        self.db_host = os.getenv('DB_HOST', 'localhost')
+        self.api_key = os.getenv('API_KEY')
+        
+        if not self.api_key:
+            raise ValueError("API_KEY não definida!")
+    
+    def mostrar_config(self):
+        print(f"Debug: {self.debug}")
+        print(f"Porta: {self.porta}")
+        print(f"DB Host: {self.db_host}")
+        print(f"API Key: {'*' * len(self.api_key)}")
+
+# Uso
+config = ConfigApp()
+config.mostrar_config()
+
+2.3 INFORMAÇÕES DO PROCESSO
+--------------------------------------------------------------------------------
+Informações sobre o processo atual.
+
+PID do processo:
+import os
+
+# ID do processo atual
+pid = os.getpid()
+print(f"PID do processo: {pid}")
+
+# ID do processo pai
+ppid = os.getppid()
+print(f"PID do pai: {ppid}")
+
+# Usuário atual (Unix)
+if hasattr(os, 'getuid'):
+    uid = os.getuid()
+    print(f"User ID: {uid}")
+    
+    gid = os.getgid()
+    print(f"Group ID: {gid}")
+
+Mudando diretório de trabalho:
+# Obter diretório atual
+atual = os.getcwd()
+print(f"Diretório atual: {atual}")
+
+# Mudar diretório
+os.chdir('/tmp')
+print(f"Novo diretório: {os.getcwd()}")
+
+# Voltar ao diretório anterior
+os.chdir(atual)
+
+# Uso seguro com context manager
+import contextlib
+
+@contextlib.contextmanager
+def mudar_diretorio_temp(caminho):
+    """Muda temporariamente de diretório."""
+    dir_original = os.getcwd()
+    try:
+        os.chdir(caminho)
+        yield
+    finally:
+        os.chdir(dir_original)
+
+# Uso
+with mudar_diretorio_temp('/tmp'):
+    print(f"Dentro: {os.getcwd()}")
+    # Fazer operações em /tmp
+print(f"Fora: {os.getcwd()}")  # Volta ao original
+
+
+================================================================================
+3. MANIPULAÇÃO DE CAMINHOS
+================================================================================
+
+3.1 TRABALHANDO COM CAMINHOS
+--------------------------------------------------------------------------------
+os.path fornece funções para manipular caminhos de arquivos.
+
+Verificações básicas:
+import os
+
+caminho = '/home/usuario/arquivo.txt'
+
+# Verifica se caminho existe
+existe = os.path.exists(caminho)
+print(f"Existe: {existe}")
+
+# Verifica se é arquivo
+eh_arquivo = os.path.isfile(caminho)
+print(f"É arquivo: {eh_arquivo}")
+
+# Verifica se é diretório
+eh_dir = os.path.isdir(caminho)
+print(f"É diretório: {eh_dir}")
+
+# Verifica se é link simbólico
+eh_link = os.path.islink(caminho)
+print(f"É link: {eh_link}")
+
+# Verifica se caminho é absoluto
+eh_absoluto = os.path.isabs(caminho)
+print(f"É absoluto: {eh_absoluto}")
+
+Exemplos práticos:
+def verificar_arquivo(caminho):
+    """Verifica status de um arquivo."""
+    if not os.path.exists(caminho):
+        return "Não existe"
+    elif os.path.isfile(caminho):
+        return "É um arquivo"
+    elif os.path.isdir(caminho):
+        return "É um diretório"
+    elif os.path.islink(caminho):
+        return "É um link simbólico"
+    else:
+        return "Tipo desconhecido"
+
+# Teste
+print(verificar_arquivo('/etc/passwd'))       # "É um arquivo"
+print(verificar_arquivo('/home'))             # "É um diretório"
+print(verificar_arquivo('/arquivo_fake.txt')) # "Não existe"
+
+3.2 CONSTRUINDO CAMINHOS
+--------------------------------------------------------------------------------
+Construindo caminhos de forma portátil.
+
+os.path.join():
+# Junta partes de um caminho
+caminho = os.path.join('pasta', 'subpasta', 'arquivo.txt')
+print(caminho)
+# Windows: pasta\subpasta\arquivo.txt
+# Unix: pasta/subpasta/arquivo.txt
+
+# Usando diretório home
+home = os.path.expanduser('~')
+config = os.path.join(home, '.config', 'app', 'settings.json')
+print(config)
+# /home/usuario/.config/app/settings.json
+
+# Múltiplos níveis
+base = '/var/log'
+app = 'minha_app'
+arquivo = 'erro.log'
+caminho_completo = os.path.join(base, app, arquivo)
+print(caminho_completo)
+# /var/log/minha_app/erro.log
+
+Exemplo prático - estrutura de projeto:
+def criar_estrutura_projeto(nome_projeto):
+    """Cria estrutura de diretórios para projeto."""
+    base = os.path.join(os.getcwd(), nome_projeto)
+    
+    diretorios = [
+        os.path.join(base, 'src'),
+        os.path.join(base, 'tests'),
+        os.path.join(base, 'docs'),
+        os.path.join(base, 'data'),
+        os.path.join(base, 'config'),
+    ]
+    
+    for diretorio in diretorios:
+        print(f"Criando: {diretorio}")
+    
+    return diretorios
+
+# Uso
+criar_estrutura_projeto('meu_app')
+
+3.3 MANIPULANDO PARTES DE CAMINHOS
+--------------------------------------------------------------------------------
+Extraindo componentes de um caminho.
+
+Separando componentes:
+import os
+
+caminho = '/home/usuario/documentos/relatorio.pdf'
+
+# Separar diretório e arquivo
+diretorio, arquivo = os.path.split(caminho)
+print(f"Diretório: {diretorio}")  # /home/usuario/documentos
+print(f"Arquivo: {arquivo}")      # relatorio.pdf
+
+# Separar nome e extensão
+nome, extensao = os.path.splitext(arquivo)
+print(f"Nome: {nome}")        # relatorio
+print(f"Extensão: {extensao}")  # .pdf
+
+# Obter apenas o nome do arquivo
+basename = os.path.basename(caminho)
+print(f"Basename: {basename}")  # relatorio.pdf
+
+# Obter apenas o diretório
+dirname = os.path.dirname(caminho)
+print(f"Dirname: {dirname}")  # /home/usuario/documentos
+
+Exemplo prático:
+def analisar_caminho(caminho):
+    """Analisa e mostra componentes de um caminho."""
+    print(f"\nAnalisando: {caminho}")
+    print(f"Existe: {os.path.exists(caminho)}")
+    print(f"É absoluto: {os.path.isabs(caminho)}")
+    print(f"Diretório: {os.path.dirname(caminho)}")
+    print(f"Nome arquivo: {os.path.basename(caminho)}")
+    
+    nome, ext = os.path.splitext(caminho)
+    print(f"Nome sem extensão: {os.path.basename(nome)}")
+    print(f"Extensão: {ext}")
+
+# Teste
+analisar_caminho('/home/usuario/foto.jpg')
+
+Trabalhando com extensões:
+def filtrar_por_extensao(diretorio, extensao):
+    """Lista arquivos com extensão específica."""
+    arquivos_filtrados = []
+    
+    for arquivo in os.listdir(diretorio):
+        caminho_completo = os.path.join(diretorio, arquivo)
+        
+        if os.path.isfile(caminho_completo):
+            _, ext = os.path.splitext(arquivo)
+            if ext.lower() == extensao.lower():
+                arquivos_filtrados.append(arquivo)
+    
+    return arquivos_filtrados
+
+# Uso
+pdfs = filtrar_por_extensao('/home/usuario/docs', '.pdf')
+print(f"PDFs encontrados: {pdfs}")
+
+3.4 CAMINHOS ABSOLUTOS E RELATIVOS
+--------------------------------------------------------------------------------
+Convertendo entre caminhos absolutos e relativos.
+
+Caminho absoluto:
+import os
+
+# Converter para caminho absoluto
+relativo = 'documentos/arquivo.txt'
+absoluto = os.path.abspath(relativo)
+print(f"Relativo: {relativo}")
+print(f"Absoluto: {absoluto}")
+# /home/usuario/documentos/arquivo.txt
+
+# Caminho real (resolve links simbólicos)
+caminho_real = os.path.realpath(relativo)
+print(f"Caminho real: {caminho_real}")
+
+# Expandir ~ para home
+caminho_home = os.path.expanduser('~/documentos/arquivo.txt')
+print(f"Com home expandido: {caminho_home}")
+# /home/usuario/documentos/arquivo.txt
+
+Caminho relativo:
+# Obter caminho relativo entre dois caminhos
+origem = '/home/usuario/projeto'
+destino = '/home/usuario/documentos/arquivo.txt'
+
+relativo = os.path.relpath(destino, origem)
+print(f"Relativo: {relativo}")
+# ../documentos/arquivo.txt
+
+Exemplo prático:
+def normalizar_caminho(caminho):
+    """Normaliza um caminho (absoluto, expandido, real)."""
+    # Expande ~ e variáveis de ambiente
+    expandido = os.path.expanduser(caminho)
+    expandido = os.path.expandvars(expandido)
+    
+    # Converte para absoluto
+    absoluto = os.path.abspath(expandido)
+    
+    # Normaliza (remove .., //, etc)
+    normalizado = os.path.normpath(absoluto)
+    
+    return normalizado
+
+# Uso
+print(normalizar_caminho('~/docs/../arquivo.txt'))
+print(normalizar_caminho('./pasta//subpasta/./arquivo.txt'))
+
+3.5 INFORMAÇÕES DE ARQUIVOS
+--------------------------------------------------------------------------------
+Obtendo informações sobre arquivos.
+
+Tamanho de arquivo:
+import os
+
+arquivo = 'documento.txt'
+
+# Tamanho em bytes
+if os.path.exists(arquivo):
+    tamanho = os.path.getsize(arquivo)
+    print(f"Tamanho: {tamanho} bytes")
+    
+    # Converter para formato legível
+    if tamanho < 1024:
+        print(f"Tamanho: {tamanho} B")
+    elif tamanho < 1024**2:
+        print(f"Tamanho: {tamanho/1024:.2f} KB")
+    elif tamanho < 1024**3:
+        print(f"Tamanho: {tamanho/(1024**2):.2f} MB")
+    else:
+        print(f"Tamanho: {tamanho/(1024**3):.2f} GB")
+
+Datas de modificação:
+import time
+
+arquivo = 'documento.txt'
+
+if os.path.exists(arquivo):
+    # Tempo de última modificação
+    mtime = os.path.getmtime(arquivo)
+    print(f"Modificado em: {time.ctime(mtime)}")
+    
+    # Tempo de último acesso
+    atime = os.path.getatime(arquivo)
+    print(f"Acessado em: {time.ctime(atime)}")
+    
+    # Tempo de criação (Windows) ou mudança de metadados (Unix)
+    ctime = os.path.getctime(arquivo)
+    print(f"Criado/Mudado em: {time.ctime(ctime)}")
+
+Informações completas com os.stat():
+import os
+import stat
+import time
+
+arquivo = 'documento.txt'
+
+if os.path.exists(arquivo):
+    info = os.stat(arquivo)
+    
+    print(f"Tamanho: {info.st_size} bytes")
+    print(f"Modificado: {time.ctime(info.st_mtime)}")
+    print(f"Acessado: {time.ctime(info.st_atime)}")
+    print(f"Criado: {time.ctime(info.st_ctime)}")
+    print(f"UID: {info.st_uid}")
+    print(f"GID: {info.st_gid}")
+    print(f"Permissões: {oct(info.st_mode)}")
+    
+    # Verificar tipo
+    if stat.S_ISREG(info.st_mode):
+        print("É um arquivo regular")
+    elif stat.S_ISDIR(info.st_mode):
+        print("É um diretório")
+    elif stat.S_ISLNK(info.st_mode):
+        print("É um link simbólico")
+
+Função utilitária:
+def info_arquivo(caminho):
+    """Mostra informações completas de um arquivo."""
+    if not os.path.exists(caminho):
+        print(f"Arquivo não encontrado: {caminho}")
+        return
+    
+    info = os.stat(caminho)
+    
+    # Tipo
+    if os.path.isfile(caminho):
+        tipo = "Arquivo"
+    elif os.path.isdir(caminho):
+        tipo = "Diretório"
+    elif os.path.islink(caminho):
+        tipo = "Link Simbólico"
+    else:
+        tipo = "Outro"
+    
+    # Tamanho legível
+    tamanho = info.st_size
+    if tamanho < 1024:
+        tam_str = f"{tamanho} B"
+    elif tamanho < 1024**2:
+        tam_str = f"{tamanho/1024:.2f} KB"
+    elif tamanho < 1024**3:
+        tam_str = f"{tamanho/(1024**2):.2f} MB"
+    else:
+        tam_str = f"{tamanho/(1024**3):.2f} GB"
+    
+    print(f"\n{'='*50}")
+    print(f"Arquivo: {os.path.basename(caminho)}")
+    print(f"Caminho: {os.path.dirname(caminho)}")
+    print(f"Tipo: {tipo}")
+    print(f"Tamanho: {tam_str}")
+    print(f"Modificado: {time.ctime(info.st_mtime)}")
+    print(f"Permissões: {oct(info.st_mode)}")
+    print(f"{'='*50}")
+
+# Uso
+info_arquivo('documento.txt')
+
+
+================================================================================
+4. OPERAÇÕES COM DIRETÓRIOS
+================================================================================
+
+4.1 LISTANDO CONTEÚDO DE DIRETÓRIOS
+--------------------------------------------------------------------------------
+Diferentes formas de listar arquivos e diretórios.
+
+os.listdir():
+import os
+
+# Listar todos os itens no diretório atual
+itens = os.listdir('.')
+print(f"Itens: {itens}")
+
+# Listar diretório específico
+itens = os.listdir('/home/usuario')
+for item in itens:
+    print(item)
+
+# Com caminho completo
+diretorio = '/var/log'
+for item in os.listdir(diretorio):
+    caminho_completo = os.path.join(diretorio, item)
+    print(caminho_completo)
+
+Separando arquivos de diretórios:
+def listar_separado(diretorio):
+    """Lista arquivos e diretórios separadamente."""
+    arquivos = []
+    diretorios = []
+    
+    for item in os.listdir(diretorio):
+        caminho = os.path.join(diretorio, item)
+        
+        if os.path.isfile(caminho):
+            arquivos.append(item)
+        elif os.path.isdir(caminho):
+            diretorios.append(item)
+    
+    return arquivos, diretorios
+
+# Uso
+arquivos, dirs = listar_separado('/home/usuario')
+print(f"Arquivos: {arquivos}")
+print(f"Diretórios: {dirs}")
+
+os.scandir() - mais eficiente:
+# scandir retorna objetos DirEntry (mais rápido que listdir)
+with os.scandir('.') as entries:
+    for entry in entries:
+        print(f"Nome: {entry.name}")
+        print(f"É arquivo: {entry.is_file()}")
+        print(f"É diretório: {entry.is_dir()}")
+        print(f"Caminho: {entry.path}")
+        print("-" * 40)
+
+Exemplo prático:
+def listar_detalhado(diretorio):
+    """Lista com detalhes usando scandir."""
+    print(f"\nConteúdo de {diretorio}:")
+    print(f"{'Nome':<30} {'Tipo':<10} {'Tamanho':<15}")
+    print("=" * 60)
+    
+    with os.scandir(diretorio) as entries:
+        for entry in entries:
+            if entry.is_file():
+                tipo = "Arquivo"
+                tamanho = entry.stat().st_size
+                tam_str = f"{tamanho:,} bytes"
+            elif entry.is_dir():
+                tipo = "Diretório"
+                tam_str = "-"
+            else:
+                tipo = "Outro"
+                tam_str = "-"
+            
+            print(f"{entry.name:<30} {tipo:<10} {tam_str:<15}")
+
+# Uso
+listar_detalhado('/home/usuario/documentos')
+
+4.2 PERCORRENDO ÁRVORE DE DIRETÓRIOS
+--------------------------------------------------------------------------------
+os.walk() percorre recursivamente uma árvore de diretórios.
+
+Uso básico:
+import os
+
+# Percorrer todos os subdiretórios
+for raiz, diretorios, arquivos in os.walk('/home/usuario'):
+    print(f"\nDiretório: {raiz}")
+    print(f"Subdiretórios: {diretorios}")
+    print(f"Arquivos: {arquivos}")
+
+# Caminho completo dos arquivos
+for raiz, diretorios, arquivos in os.walk('.'):
+    for arquivo in arquivos:
+        caminho_completo = os.path.join(raiz, arquivo)
+        print(caminho_completo)
+
+Contando arquivos:
+def contar_arquivos(diretorio):
+    """Conta total de arquivos em diretório e subdiretórios."""
+    total = 0
+    
+    for raiz, dirs, arquivos in os.walk(diretorio):
+        total += len(arquivos)
+    
+    return total
+
+# Uso
+total = contar_arquivos('/home/usuario/documentos')
+print(f"Total de arquivos: {total}")
+
+Buscando arquivos específicos:
+def buscar_arquivos(diretorio, extensao):
+    """Busca arquivos com extensão específica."""
+    encontrados = []
+    
+    for raiz, dirs, arquivos in os.walk(diretorio):
+        for arquivo in arquivos:
+            if arquivo.endswith(extensao):
+                caminho = os.path.join(raiz, arquivo)
+                encontrados.append(caminho)
+    
+    return encontrados
+
+# Uso
+pdfs = buscar_arquivos('/home/usuario', '.pdf')
+print(f"PDFs encontrados: {len(pdfs)}")
+for pdf in pdfs:
+    print(pdf)
+
+Calculando tamanho total:
+def tamanho_diretorio(diretorio):
+    """Calcula tamanho total de um diretório."""
+    tamanho_total = 0
+    
+    for raiz, dirs, arquivos in os.walk(diretorio):
+        for arquivo in arquivos:
+            caminho = os.path.join(raiz, arquivo)
+            try:
+                tamanho_total += os.path.getsize(caminho)
+            except OSError:
+                # Arquivo pode ter sido deletado ou sem permissão
+                pass
+    
+    return tamanho_total
+
+# Uso
+tamanho = tamanho_diretorio('/home/usuario/documentos')
+print(f"Tamanho total: {tamanho / (1024**2):.2f} MB")
+
+Árvore visual:
+def mostrar_arvore(diretorio, prefixo="", max_nivel=3, nivel_atual=0):
+    """Mostra estrutura de diretórios como árvore."""
+    if nivel_atual > max_nivel:
+        return
+    
+    try:
+        itens = sorted(os.listdir(diretorio))
+    except PermissionError:
+        print(f"{prefixo}[Sem permissão]")
+        return
+    
+    for i, item in enumerate(itens):
+        caminho = os.path.join(diretorio, item)
+        
+        # Determinar se é último item
+        eh_ultimo = (i == len(itens) - 1)
+        
+        # Desenhar linha
+        if eh_ultimo:
+            print(f"{prefixo}└── {item}")
+            novo_prefixo = prefixo + "    "
+        else:
+            print(f"{prefixo}├── {item}")
+            novo_prefixo = prefixo + "│   "
+        
+        # Recursão se for diretório
+        if os.path.isdir(caminho):
+            mostrar_arvore(caminho, novo_prefixo, max_nivel, nivel_atual + 1)
+
+# Uso
+print("Estrutura de diretórios:")
+mostrar_arvore('/home/usuario/projeto', max_nivel=2)
+
+4.3 CRIANDO DIRETÓRIOS
+--------------------------------------------------------------------------------
+Criando novos diretórios.
+
+Criar diretório único:
+import os
+
+# Criar diretório único
+os.mkdir('nova_pasta')
+
+# Criar com caminho completo
+os.mkdir('/tmp/minha_pasta')
+
+# ERRO se o diretório já existir
+try:
+    os.mkdir('pasta_existente')
+except FileExistsError:
+    print("Diretório já existe!")
+
+Criar com verificação:
+def criar_diretorio_seguro(caminho):
+    """Cria diretório apenas se não existir."""
+    if not os.path.exists(caminho):
+        os.mkdir(caminho)
+        print(f"Diretório criado: {caminho}")
+    else:
+        print(f"Diretório já existe: {caminho}")
+
+# Uso
+criar_diretorio_seguro('nova_pasta')
+
+Criar diretórios aninhados:
+# makedirs cria todos os diretórios intermediários
+os.makedirs('pasta/subpasta/subsubpasta')
+
+# Com exist_ok=True não dá erro se já existir
+os.makedirs('pasta/subpasta', exist_ok=True)
+
+Exemplo prático:
+def criar_estrutura_projeto(nome):
+    """Cria estrutura completa de projeto."""
+    estrutura = {
+        'src': ['main.py', 'utils.py'],
+        'tests': ['test_main.py'],
+        'docs': [],
+        'data': ['raw', 'processed'],
+        'config': []
+    }
+    
+    # Criar diretório base
+    os.makedirs(nome, exist_ok=True)
+    
+    # Criar subdiretórios
+    for pasta, arquivos in estrutura.items():
+        caminho_pasta = os.path.join(nome, pasta)
+        os.makedirs(caminho_pasta, exist_ok=True)
+        print(f"✓ Criado: {caminho_pasta}")
+        
+        # Criar arquivos vazios
+        for arquivo in arquivos:
+            if '/' in arquivo:  # É subdiretório
+                caminho_sub = os.path.join(caminho_pasta, arquivo)
+                os.makedirs(caminho_sub, exist_ok=True)
+                print(f"  ✓ Criado: {caminho_sub}")
+            else:  # É arquivo
+                caminho_arquivo = os.path.join(caminho_pasta, arquivo)
+                open(caminho_arquivo, 'a').close()
+                print(f"  ✓ Criado: {caminho_arquivo}")
+
+# Uso
+criar_estrutura_projeto('meu_projeto')
+
+4.4 REMOVENDO DIRETÓRIOS
+--------------------------------------------------------------------------------
+Removendo diretórios e seu conteúdo.
+
+Remover diretório vazio:
+import os
+
+# Remove apenas diretório vazio
+os.rmdir('pasta_vazia')
+
+# ERRO se diretório não estiver vazio
+try:
+    os.rmdir('pasta_com_arquivos')
+except OSError as e:
+    print(f"Erro: {e}")
+
+Remover com verificação:
+def remover_diretorio_vazio(caminho):
+    """Remove diretório apenas se estiver vazio."""
+    if os.path.exists(caminho):
+        if os.path.isdir(caminho):
+            try:
+                os.rmdir(caminho)
+                print(f"Diretório removido: {caminho}")
+            except OSError:
+                print(f"Diretório não está vazio: {caminho}")
+        else:
+            print(f"Não é um diretório: {caminho}")
+    else:
+        print(f"Não existe: {caminho}")
+
+Remover diretórios aninhados vazios:
+# removedirs remove diretórios vazios recursivamente
+os.removedirs('pasta/subpasta/subsubpasta')
+# Remove subsubpasta, depois subpasta, depois pasta
+# Para quando encontra diretório não-vazio
+
+Remover diretório com conteúdo (use shutil):
+import shutil
+
+# Remove diretório e todo seu conteúdo
+shutil.rmtree('pasta_com_conteudo')
+
+# Com tratamento de erro
+def remover_diretorio_completo(caminho):
+    """Remove diretório e todo seu conteúdo."""
+    if os.path.exists(caminho):
+        try:
+            shutil.rmtree(caminho)
+            print(f"Removido: {caminho}")
+        except Exception as e:
+            print(f"Erro ao remover {caminho}: {e}")
+    else:
+        print(f"Não existe: {caminho}")
+
+# Uso
+remover_diretorio_completo('pasta_antiga')
+
+Limpeza segura:
+def limpar_diretorio(caminho):
+    """Remove todos os arquivos mas mantém o diretório."""
+    if not os.path.exists(caminho):
+        print(f"Diretório não existe: {caminho}")
+        return
+    
+    for item in os.listdir(caminho):
+        item_path = os.path.join(caminho, item)
+        
+        try:
+            if os.path.isfile(item_path):
+                os.remove(item_path)
+                print(f"Removido arquivo: {item}")
+            elif os.path.isdir(item_path):
+                shutil.rmtree(item_path)
+                print(f"Removido diretório: {item}")
+        except Exception as e:
+            print(f"Erro ao remover {item}: {e}")
+
+# Uso
+limpar_diretorio('/tmp/cache')
+
+
+================================================================================
+5. OPERAÇÕES COM ARQUIVOS
+================================================================================
+
+5.1 CRIANDO E REMOVENDO ARQUIVOS
+--------------------------------------------------------------------------------
+Operações básicas com arquivos.
+
+Criar arquivo vazio:
+import os
+
+# Criar arquivo vazio
+open('novo_arquivo.txt', 'a').close()
+
+# Ou usando touch (Python 3.3+)
+from pathlib import Path
+Path('novo_arquivo.txt').touch()
+
+# Verificar se arquivo foi criado
+if os.path.exists('novo_arquivo.txt'):
+    print("Arquivo criado!")
+
+Remover arquivo:
+# Remover arquivo único
+os.remove('arquivo.txt')
+
+# Ou usando unlink
+os.unlink('arquivo.txt')
+
+# Com verificação
+if os.path.exists('arquivo.txt'):
+    os.remove('arquivo.txt')
+    print("Arquivo removido!")
+else:
+    print("Arquivo não existe!")
+
+Remoção segura:
+def remover_arquivo_seguro(caminho):
+    """Remove arquivo com tratamento de erros."""
+    if not os.path.exists(caminho):
+        print(f"Arquivo não existe: {caminho}")
+        return False
+    
+    if not os.path.isfile(caminho):
+        print(f"Não é um arquivo: {caminho}")
+        return False
+    
+    try:
+        os.remove(caminho)
+        print(f"Arquivo removido: {caminho}")
+        return True
+    except PermissionError:
+        print(f"Sem permissão para remover: {caminho}")
+        return False
+    except Exception as e:
+        print(f"Erro ao remover {caminho}: {e}")
+        return False
+
+# Uso
+remover_arquivo_seguro('arquivo_antigo.txt')
+
+5.2 RENOMEANDO E MOVENDO ARQUIVOS
+--------------------------------------------------------------------------------
+Renomear e mover arquivos usando os.rename().
+
+Renomear arquivo:
+import os
+
+# Renomear arquivo
+os.rename('arquivo_antigo.txt', 'arquivo_novo.txt')
+
+# Renomear diretório
+os.rename('pasta_antiga', 'pasta_nova')
+
+# Com verificação
+if os.path.exists('arquivo.txt'):
+    os.rename('arquivo.txt', 'novo_nome.txt')
+    print("Arquivo renomeado!")
+
+Mover arquivo:
+# Mover arquivo para outro diretório
+os.rename('arquivo.txt', '/outra/pasta/arquivo.txt')
+
+# Mover e renomear
+os.rename('arquivo.txt', '/outra/pasta/novo_nome.txt')
+
+Renomeação segura:
+def renomear_seguro(origem, destino):
+    """Renomeia arquivo com validações."""
+    # Verificar se origem existe
+    if not os.path.exists(origem):
+        print(f"Origem não existe: {origem}")
+        return False
+    
+    # Verificar se destino já existe
+    if os.path.exists(destino):
+        print(f"Destino já existe: {destino}")
+        return False
+    
+    try:
+        os.rename(origem, destino)
+        print(f"Renomeado: {origem} → {destino}")
+        return True
+    except Exception as e:
+        print(f"Erro ao renomear: {e}")
+        return False
+
+# Uso
+renomear_seguro('antigo.txt', 'novo.txt')
+
+Renomeação em lote:
+def renomear_lote(diretorio, prefixo_antigo, prefixo_novo):
+    """Renomeia arquivos em lote."""
+    contador = 0
+    
+    for arquivo in os.listdir(diretorio):
+        if arquivo.startswith(prefixo_antigo):
+            caminho_antigo = os.path.join(diretorio, arquivo)
+            
+            # Substituir prefixo
+            novo_nome = arquivo.replace(prefixo_antigo, prefixo_novo, 1)
+            caminho_novo = os.path.join(diretorio, novo_nome)
+            
+            try:
+                os.rename(caminho_antigo, caminho_novo)
+                print(f"✓ {arquivo} → {novo_nome}")
+                contador += 1
+            except Exception as e:
+                print(f"✗ Erro em {arquivo}: {e}")
+    
+    print(f"\n{contador} arquivos renomeados")
+
+# Uso
+renomear_lote('/home/docs', 'doc_', 'documento_')
+
+Adicionar sufixo a arquivos:
+def adicionar_sufixo(diretorio, extensao, sufixo):
+    """Adiciona sufixo antes da extensão."""
+    for arquivo in os.listdir(diretorio):
+        if arquivo.endswith(extensao):
+            caminho_antigo = os.path.join(diretorio, arquivo)
+            
+            # Separar nome e extensão
+            nome, ext = os.path.splitext(arquivo)
+            novo_nome = f"{nome}{sufixo}{ext}"
+            caminho_novo = os.path.join(diretorio, novo_nome)
+            
+            os.rename(caminho_antigo, caminho_novo)
+            print(f"{arquivo} → {novo_nome}")
+
+# Uso: foto.jpg → foto_backup.jpg
+adicionar_sufixo('/home/fotos', '.jpg', '_backup')
+
+5.3 COPIANDO ARQUIVOS
+--------------------------------------------------------------------------------
+Use shutil para copiar arquivos (os não tem função nativa).
+
+Copiar arquivo:
+import shutil
+
+# Copiar arquivo
+shutil.copy('origem.txt', 'destino.txt')
+
+# Copiar para diretório (mantém nome)
+shutil.copy('arquivo.txt', '/outro/diretorio/')
+
+# Copiar preservando metadados
+shutil.copy2('origem.txt', 'destino.txt')
+
+Cópia segura:
+def copiar_arquivo_seguro(origem, destino):
+    """Copia arquivo com validações."""
+    if not os.path.exists(origem):
+        print(f"Origem não existe: {origem}")
+        return False
+    
+    if not os.path.isfile(origem):
+        print(f"Origem não é arquivo: {origem}")
+        return False
+    
+    try:
+        shutil.copy2(origem, destino)
+        print(f"Copiado: {origem} → {destino}")
+        return True
+    except Exception as e:
+        print(f"Erro ao copiar: {e}")
+        return False
+
+# Uso
+copiar_arquivo_seguro('documento.txt', '/backup/documento.txt')
+
+Backup de arquivos:
+import datetime
+
+def criar_backup(arquivo):
+    """Cria backup com timestamp."""
+    if not os.path.exists(arquivo):
+        print(f"Arquivo não existe: {arquivo}")
+        return None
+    
+    # Criar nome do backup
+    nome, ext = os.path.splitext(arquivo)
+    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    arquivo_backup = f"{nome}_backup_{timestamp}{ext}"
+    
+    # Copiar
+    shutil.copy2(arquivo, arquivo_backup)
+    print(f"Backup criado: {arquivo_backup}")
+    
+    return arquivo_backup
+
+# Uso
+criar_backup('config.json')
+# Cria: config_backup_20240115_143022.json
+
+
+================================================================================
+6. PERMISSÕES E PROPRIEDADES
+================================================================================
+
+6.1 VERIFICANDO PERMISSÕES
+--------------------------------------------------------------------------------
+Verificar permissões de acesso a arquivos.
+
+os.access():
+import os
+
+arquivo = 'documento.txt'
+
+# Verificar se existe
+existe = os.access(arquivo, os.F_OK)
+print(f"Existe: {existe}")
+
+# Verificar leitura
+pode_ler = os.access(arquivo, os.R_OK)
+print(f"Pode ler: {pode_ler}")
+
+# Verificar escrita
+pode_escrever = os.access(arquivo, os.W_OK)
+print(f"Pode escrever: {pode_escrever}")
+
+# Verificar execução
+pode_executar = os.access(arquivo, os.X_OK)
+print(f"Pode executar: {pode_executar}")
+
+Combinando permissões:
+# Verificar leitura E escrita
+pode_ler_escrever = os.access(arquivo, os.R_OK | os.W_OK)
+print(f"Pode ler e escrever: {pode_ler_escrever}")
+
+Função utilitária:
+def verificar_permissoes(caminho):
+    """Mostra todas as permissões de um arquivo."""
+    if not os.path.exists(caminho):
+        print(f"Não existe: {caminho}")
+        return
+    
+    print(f"\nPermissões de: {caminho}")
+    print(f"Leitura: {'✓' if os.access(caminho, os.R_OK) else '✗'}")
+    print(f"Escrita: {'✓' if os.access(caminho, os.W_OK) else '✗'}")
+    print(f"Execução: {'✓' if os.access(caminho, os.X_OK) else '✗'}")
+
+# Uso
+verificar_permissoes('/etc/passwd')
+
+6.2 MODIFICANDO PERMISSÕES (UNIX/LINUX)
+--------------------------------------------------------------------------------
+Alterar permissões de arquivos (apenas Unix/Linux).
+
+os.chmod():
+import os
+import stat
+
+# Dar permissão de execução ao dono
+os.chmod('script.sh', 0o755)
+
+# Usando constantes simbólicas
+os.chmod('arquivo.txt', stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+# Equivale a: rw-r--r-- (644)
+
+Constantes de permissão:
+# Permissões do dono (user)
+stat.S_IRUSR  # Leitura
+stat.S_IWUSR  # Escrita
+stat.S_IXUSR  # Execução
+
+# Permissões do grupo (group)
+stat.S_IRGRP  # Leitura
+stat.S_IWGRP  # Escrita
+stat.S_IXGRP  # Execução
+
+# Permissões de outros (others)
+stat.S_IROTH  # Leitura
+stat.S_IWOTH  # Escrita
+stat.S_IXOTH  # Execução
+
+Exemplos práticos:
+# Tornar arquivo executável (755)
+def tornar_executavel(caminho):
+    """Torna arquivo executável."""
+    os.chmod(caminho, 0o755)
+    print(f"Arquivo executável: {caminho}")
+
+# Apenas leitura (444)
+def tornar_somente_leitura(caminho):
+    """Torna arquivo somente leitura."""
+    os.chmod(caminho, 0o444)
+    print(f"Arquivo somente leitura: {caminho}")
+
+# Permissões completas para dono (700)
+def permissao_dono_apenas(caminho):
+    """Permissão total apenas para dono."""
+    os.chmod(caminho, 0o700)
+    print(f"Permissão apenas para dono: {caminho}")
+
+Modificar permissões existentes:
+# Adicionar permissão de execução
+info = os.stat('arquivo.sh')
+os.chmod('arquivo.sh', info.st_mode | stat.S_IXUSR)
+
+# Remover permissão de escrita
+info = os.stat('arquivo.txt')
+os.chmod('arquivo.txt', info.st_mode & ~stat.S_IWUSR)
+
+6.3 PROPRIEDADE DE ARQUIVOS (UNIX/LINUX)
+--------------------------------------------------------------------------------
+Alterar dono e grupo de arquivos (requer privilégios).
+
+os.chown():
+# Mudar dono e grupo (requer root)
+os.chown('arquivo.txt', uid=1000, gid=1000)
+
+# Manter grupo atual
+os.chown('arquivo.txt', uid=1000, gid=-1)
+
+# Manter dono atual
+os.chown('arquivo.txt', uid=-1, gid=1000)
+
+Obter UID/GID:
+import pwd
+import grp
+
+# UID do usuário
+uid = pwd.getpwnam('usuario').pw_uid
+
+# GID do grupo
+gid = grp.getgrnam('grupo').gr_gid
+
+# Aplicar
+os.chown('arquivo.txt', uid, gid)
+
+Exemplo prático:
+def mudar_dono_recursivo(diretorio, usuario, grupo):
+    """Muda dono recursivamente (requer root)."""
+    import pwd
+    import grp
+    
+    uid = pwd.getpwnam(usuario).pw_uid
+    gid = grp.getgrnam(grupo).gr_gid
+    
+    for raiz, dirs, arquivos in os.walk(diretorio):
+        # Mudar dono do diretório
+        os.chown(raiz, uid, gid)
+        
+        # Mudar dono dos arquivos
+        for arquivo in arquivos:
+            caminho = os.path.join(raiz, arquivo)
+            os.chown(caminho, uid, gid)
+    
+    print(f"Dono alterado: {usuario}:{grupo}")
+
+# Uso (requer sudo)
+# mudar_dono_recursivo('/var/www/site', 'www-data', 'www-data')
+
+
+================================================================================
+7. EXECUTANDO COMANDOS DO SISTEMA
+================================================================================
+
+7.1 USANDO OS.SYSTEM()
+--------------------------------------------------------------------------------
+Executar comandos do sistema (método antigo, evite usar).
+
+Uso básico:
+import os
+
+# Executar comando simples
+os.system('ls -la')
+
+# Retorna código de saída (0 = sucesso)
+codigo = os.system('mkdir nova_pasta')
+print(f"Código de saída: {codigo}")
+
+# Comando Windows
+if os.name == 'nt':
+    os.system('dir')
+else:
+    os.system('ls')
+
+Problemas com os.system():
+# ❌ Não captura saída
+os.system('echo "teste"')  # Imprime na tela, não retorna
+
+# ❌ Vulnerável a shell injection
+comando = f"ls {entrada_usuario}"  # PERIGOSO!
+os.system(comando)
+
+# ❌ Difícil de tratar erros
+os.system('comando_inexistente')  # Apenas imprime erro
+
+7.2 USANDO SUBPROCESS (RECOMENDADO)
+--------------------------------------------------------------------------------
+Use subprocess ao invés de os.system().
+
+subprocess.run():
+import subprocess
+
+# Executar comando
+resultado = subprocess.run(['ls', '-la'], capture_output=True, text=True)
+
+# Acessar saída
+print(resultado.stdout)
+print(resultado.stderr)
+print(f"Código de saída: {resultado.returncode}")
+
+# Verificar se teve sucesso
+if resultado.returncode == 0:
+    print("Comando executado com sucesso!")
+
+Capturando saída:
+# Listar arquivos e processar
+resultado = subprocess.run(['ls', '-1'], capture_output=True, text=True)
+arquivos = resultado.stdout.strip().split('\n')
+
+for arquivo in arquivos:
+    print(f"Arquivo: {arquivo}")
+
+Tratamento de erros:
+try:
+    # check=True lança exceção se comando falhar
+    subprocess.run(['comando_inexistente'], check=True)
+except subprocess.CalledProcessError as e:
+    print(f"Erro ao executar comando: {e}")
+    print(f"Código: {e.returncode}")
+
+Exemplo prático:
+def executar_comando_seguro(comando):
+    """Executa comando com tratamento de erro."""
+    try:
+        resultado = subprocess.run(
+            comando,
+            capture_output=True,
+            text=True,
+            timeout=30,  # Timeout de 30 segundos
+            check=True
+        )
+        return True, resultado.stdout
+    except subprocess.TimeoutExpired:
+        return False, "Timeout: comando demorou muito"
+    except subprocess.CalledProcessError as e:
+        return False, f"Erro: {e.stderr}"
+    except Exception as e:
+        return False, f"Erro inesperado: {e}"
+
+# Uso
+sucesso, saida = executar_comando_seguro(['ls', '-la'])
+if sucesso:
+    print(saida)
+else:
+    print(f"Falhou: {saida}")
+
+7.3 COMANDOS COMUNS
+--------------------------------------------------------------------------------
+Exemplos de comandos úteis.
+
+Verificar espaço em disco:
+import subprocess
+
+def espaco_disco():
+    """Mostra espaço em disco."""
+    if os.name == 'nt':
+        # Windows
+        subprocess.run(['wmic', 'logicaldisk', 'get', 'size,freespace'])
+    else:
+        # Unix/Linux
+        subprocess.run(['df', '-h'])
+
+# Uso
+espaco_disco()
+
+Processos em execução:
+def listar_processos():
+    """Lista processos do sistema."""
+    if os.name == 'nt':
+        subprocess.run(['tasklist'])
+    else:
+        subprocess.run(['ps', 'aux'])
+
+# Uso
+listar_processos()
+
+Informações de rede:
+def info_rede():
+    """Mostra informações de rede."""
+    if os.name == 'nt':
+        subprocess.run(['ipconfig'])
+    else:
+        subprocess.run(['ifconfig'])
+
+# Uso
+info_rede()
+
+
+================================================================================
+8. TRABALHANDO COM LINKS
+================================================================================
+
+8.1 LINKS SIMBÓLICOS
+--------------------------------------------------------------------------------
+Criar e trabalhar com links simbólicos (Unix/Linux).
+
+Criar link simbólico:
+import os
+
+# Criar link simbólico
+os.symlink('/caminho/original', '/caminho/link')
+
+# Exemplo prático
+os.symlink('/home/usuario/projeto', '/tmp/projeto_link')
+
+# Verificar se é link
+if os.path.islink('/tmp/projeto_link'):
+    print("É um link simbólico!")
+
+Ler destino do link:
+# Obter caminho para onde o link aponta
+destino = os.readlink('/tmp/projeto_link')
+print(f"Link aponta para: {destino}")
+
+Exemplo prático:
+def criar_link_seguro(origem, link):
+    """Cria link simbólico com validações."""
+    # Verificar se origem existe
+    if not os.path.exists(origem):
+        print(f"Origem não existe: {origem}")
+        return False
+    
+    # Verificar se link já existe
+    if os.path.exists(link):
+        print(f"Link já existe: {link}")
+        return False
+    
+    try:
+        os.symlink(origem, link)
+        print(f"Link criado: {link} → {origem}")
+        return True
+    except Exception as e:
+        print(f"Erro ao criar link: {e}")
+        return False
+
+# Uso
+criar_link_seguro('/etc/hosts', '/tmp/hosts_link')
+
+8.2 HARD LINKS (UNIX/LINUX)
+--------------------------------------------------------------------------------
+Criar hard links.
+
+Criar hard link:
+# Hard link (mesmo inode)
+os.link('/arquivo/original', '/arquivo/link')
+
+# Diferença de symlink:
+# - Hard link: cópia do inode (arquivo real)
+# - Symlink: ponteiro para arquivo
+
+Verificar links:
+# Contar número de hard links
+info = os.stat('/arquivo')
+num_links = info.st_nlink
+print(f"Número de links: {num_links}")
+
+
+================================================================================
+9. EXEMPLOS PRÁTICOS COMPLETOS
+================================================================================
+
+9.1 ORGANIZADOR DE ARQUIVOS
+--------------------------------------------------------------------------------
+Organiza arquivos por extensão.
+
+import os
+import shutil
+
+def organizar_por_extensao(diretorio):
+    """Organiza arquivos em pastas por extensão."""
+    # Dicionário de categorias
+    categorias = {
+        'Imagens': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'],
+        'Documentos': ['.pdf', '.doc', '.docx', '.txt', '.odt'],
+        'Videos': ['.mp4', '.avi', '.mkv', '.mov', '.wmv'],
+        'Audio': ['.mp3', '.wav', '.flac', '.aac', '.ogg'],
+        'Compactados': ['.zip', '.rar', '.7z', '.tar', '.gz'],
+        'Codigo': ['.py', '.js', '.html', '.css', '.java', '.cpp']
+    }
+    
+    # Criar pastas de categorias
+    for categoria in categorias.keys():
+        pasta_categoria = os.path.join(diretorio, categoria)
+        os.makedirs(pasta_categoria, exist_ok=True)
+    
+    # Organizar arquivos
+    for arquivo in os.listdir(diretorio):
+        caminho_arquivo = os.path.join(diretorio, arquivo)
+        
+        # Pular se for diretório
+        if os.path.isdir(caminho_arquivo):
+            continue
+        
+        # Obter extensão
+        _, extensao = os.path.splitext(arquivo)
+        extensao = extensao.lower()
+        
+        # Encontrar categoria
+        movido = False
+        for categoria, extensoes in categorias.items():
+            if extensao in extensoes:
+                destino = os.path.join(diretorio, categoria, arquivo)
+                shutil.move(caminho_arquivo, destino)
+                print(f"✓ {arquivo} → {categoria}/")
+                movido = True
+                break
+        
+        # Mover para "Outros" se não encontrou categoria
+        if not movido:
+            outros = os.path.join(diretorio, 'Outros')
+            os.makedirs(outros, exist_ok=True)
+            destino = os.path.join(outros, arquivo)
+            shutil.move(caminho_arquivo, destino)
+            print(f"✓ {arquivo} → Outros/")
+
+# Uso
+organizar_por_extensao('/home/usuario/Downloads')
+
+9.2 LIMPADOR DE ARQUIVOS TEMPORÁRIOS
+--------------------------------------------------------------------------------
+Remove arquivos antigos de um diretório.
+
+import os
+import time
+
+def limpar_arquivos_antigos(diretorio, dias=30):
+    """Remove arquivos mais antigos que X dias."""
+    agora = time.time()
+    limite = dias * 24 * 60 * 60  # Converter dias para segundos
+    
+    removidos = 0
+    tamanho_liberado = 0
+    
+    for arquivo in os.listdir(diretorio):
+        caminho = os.path.join(diretorio, arquivo)
+        
+        # Pular diretórios
+        if os.path.isdir(caminho):
+            continue
+        
+        # Verificar idade do arquivo
+        idade = agora - os.path.getmtime(caminho)
+        
+        if idade > limite:
+            # Obter tamanho antes de remover
+            tamanho = os.path.getsize(caminho)
+            
+            try:
+                os.remove(caminho)
+                removidos += 1
+                tamanho_liberado += tamanho
+                print(f"✓ Removido: {arquivo}")
+            except Exception as e:
+                print(f"✗ Erro ao remover {arquivo}: {e}")
+    
+    # Mostrar resumo
+    print(f"\n{removidos} arquivos removidos")
+    print(f"Espaço liberado: {tamanho_liberado / (1024**2):.2f} MB")
+
+# Uso
+limpar_arquivos_antigos('/tmp', dias=7)
+
+9.3 BACKUP AUTOMÁTICO
+--------------------------------------------------------------------------------
+Sistema de backup automático.
+
+import os
+import shutil
+import datetime
+
+class BackupSystem:
+    def __init__(self, origem, destino):
+        self.origem = origem
+        self.destino = destino
+        self.log = []
+    
+    def fazer_backup(self):
+        """Realiza backup completo."""
+        # Criar nome do backup com timestamp
+        timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+        backup_nome = f"backup_{timestamp}"
+        backup_path = os.path.join(self.destino, backup_nome)
+        
+        print(f"Iniciando backup: {self.origem} → {backup_path}")
+        
+        try:
+            # Copiar diretório completo
+            shutil.copytree(self.origem, backup_path)
+            
+            # Registrar sucesso
+            self.log.append({
+                'timestamp': datetime.datetime.now(),
+                'status': 'sucesso',
+                'path': backup_path
+            })
+            
+            print(f"✓ Backup concluído: {backup_path}")
+            return True
+            
+        except Exception as e:
+            # Registrar erro
+            self.log.append({
+                'timestamp': datetime.datetime.now(),
+                'status': 'erro',
+                'mensagem': str(e)
+            })
+            
+            print(f"✗ Erro no backup: {e}")
+            return False
+    
+    def listar_backups(self):
+        """Lista todos os backups existentes."""
+        if not os.path.exists(self.destino):
+            print("Diretório de destino não existe")
+            return []
+        
+        backups = []
+        for item in os.listdir(self.destino):
+            caminho = os.path.join(self.destino, item)
+            if os.path.isdir(caminho) and item.startswith('backup_'):
+                info = os.stat(caminho)
+                backups.append({
+                    'nome': item,
+                    'caminho': caminho,
+                    'data': datetime.datetime.fromtimestamp(info.st_mtime),
+                    'tamanho': self._calcular_tamanho(caminho)
+                })
+        
+        return sorted(backups, key=lambda x: x['data'], reverse=True)
+    
+    def _calcular_tamanho(self, caminho):
+        """Calcula tamanho total de um diretório."""
+        tamanho = 0
+        for raiz, dirs, arquivos in os.walk(caminho):
+            for arquivo in arquivos:
+                caminho_arquivo = os.path.join(raiz, arquivo)
+                try:
+                    tamanho += os.path.getsize(caminho_arquivo)
+                except:
+                    pass
+        return tamanho
+    
+    def limpar_backups_antigos(self, manter=5):
+        """Mantém apenas os N backups mais recentes."""
+        backups = self.listar_backups()
+        
+        if len(backups) <= manter:
+            print(f"Apenas {len(backups)} backups. Nada a remover.")
+            return
+        
+        # Remover backups antigos
+        for backup in backups[manter:]:
+            try:
+                shutil.rmtree(backup['caminho'])
+                print(f"✓ Removido backup antigo: {backup['nome']}")
+            except Exception as e:
+                print(f"✗ Erro ao remover {backup['nome']}: {e}")
+
+# Uso
+backup = BackupSystem(
+    origem='/home/usuario/projeto',
+    destino='/backup/projeto'
+)
+
+# Fazer backup
+backup.fazer_backup()
+
+# Listar backups
+backups = backup.listar_backups()
+for b in backups:
+    print(f"{b['nome']} - {b['data']} - {b['tamanho']/(1024**2):.2f} MB")
+
+# Manter apenas 5 backups mais recentes
+backup.limpar_backups_antigos(manter=5)
+
+9.4 MONITOR DE DIRETÓRIO
+--------------------------------------------------------------------------------
+Monitora mudanças em um diretório.
+
+import os
+import time
+
+class DirectoryMonitor:
+    def __init__(self, diretorio):
+        self.diretorio = diretorio
+        self.snapshot = self._criar_snapshot()
+    
+    def _criar_snapshot(self):
+        """Cria snapshot do estado atual do diretório."""
+        snapshot = {}
+        
+        for arquivo in os.listdir(self.diretorio):
+            caminho = os.path.join(self.diretorio, arquivo)
+            
+            if os.path.isfile(caminho):
+                snapshot[arquivo] = {
+                    'tamanho': os.path.getsize(caminho),
+                    'modificado': os.path.getmtime(caminho)
+                }
+        
+        return snapshot
+    
+    def verificar_mudancas(self):
+        """Verifica mudanças desde último snapshot."""
+        snapshot_atual = self._criar_snapshot()
+        
+        mudancas = {
+            'novos': [],
+            'removidos': [],
+            'modificados': []
+        }
+        
+        # Verificar arquivos novos ou modificados
+        for arquivo, info in snapshot_atual.items():
+            if arquivo not in self.snapshot:
+                mudancas['novos'].append(arquivo)
+            elif info['modificado'] != self.snapshot[arquivo]['modificado']:
+                mudancas['modificados'].append(arquivo)
+        
+        # Verificar arquivos removidos
+        for arquivo in self.snapshot:
+            if arquivo not in snapshot_atual:
+                mudancas['removidos'].append(arquivo)
+        
+        # Atualizar snapshot
+        self.snapshot = snapshot_atual
+        
+        return mudancas
+    
+    def monitorar(self, intervalo=5):
+        """Monitora continuamente."""
+        print(f"Monitorando: {self.diretorio}")
+        print("Pressione Ctrl+C para parar\n")
+        
+        try:
+            while True:
+                mudancas = self.verificar_mudancas()
+                
+                # Reportar mudanças
+                if mudancas['novos']:
+                    print(f"➕ Novos: {', '.join(mudancas['novos'])}")
+                
+                if mudancas['removidos']:
+                    print(f"➖ Removidos: {', '.join(mudancas['removidos'])}")
+                
+                if mudancas['modificados']:
+                    print(f"✏️  Modificados: {', '.join(mudancas['modificados'])}")
+                
+                time.sleep(intervalo)
+                
+        except KeyboardInterrupt:
+            print("\n\nMonitoramento encerrado.")
+
+# Uso
+monitor = DirectoryMonitor('/home/usuario/documentos')
+monitor.monitorar(intervalo=2)
+
+9.5 ANALISADOR DE ESPAÇO EM DISCO
+--------------------------------------------------------------------------------
+Analisa uso de espaço em disco.
+
+import os
+
+class DiskAnalyzer:
+    def __init__(self, diretorio):
+        self.diretorio = diretorio
+    
+    def analisar(self):
+        """Analisa uso de disco."""
+        tamanho_total = 0
+        contagens = {
+            'arquivos': 0,
+            'diretorios': 0
+        }
+        
+        extensoes = {}
+        
+        for raiz, dirs, arquivos in os.walk(self.diretorio):
+            contagens['diretorios'] += len(dirs)
+            
+            for arquivo in arquivos:
+                caminho = os.path.join(raiz, arquivo)
+                
+                try:
+                    tamanho = os.path.getsize(caminho)
+                    tamanho_total += tamanho
+                    contagens['arquivos'] += 1
+                    
+                    # Contar por extensão
+                    _, ext = os.path.splitext(arquivo)
+                    ext = ext.lower()
+                    
+                    if ext not in extensoes:
+                        extensoes[ext] = {'count': 0, 'size': 0}
+                    
+                    extensoes[ext]['count'] += 1
+                    extensoes[ext]['size'] += tamanho
+                    
+                except:
+                    pass
+        
+        return {
+            'tamanho_total': tamanho_total,
+            'contagens': contagens,
+            'extensoes': extensoes
+        }
+    
+    def mostrar_relatorio(self):
+        """Mostra relatório detalhado."""
+        resultado = self.analisar()
+        
+        print(f"\n{'='*60}")
+        print(f"Análise de: {self.diretorio}")
+        print(f"{'='*60}\n")
+        
+        # Totais
+        print("TOTAIS:")
+        print(f"  Arquivos: {resultado['contagens']['arquivos']:,}")
+        print(f"  Diretórios: {resultado['contagens']['diretorios']:,}")
+        
+        tamanho = resultado['tamanho_total']
+        print(f"  Tamanho total: {tamanho/(1024**3):.2f} GB")
+        
+        # Top extensões
+        print("\nTOP 10 EXTENSÕES:")
+        extensoes_ordenadas = sorted(
+            resultado['extensoes'].items(),
+            key=lambda x: x[1]['size'],
+            reverse=True
+        )
+        
+        for ext, info in extensoes_ordenadas[:10]:
+            nome_ext = ext if ext else '(sem extensão)'
+            tamanho_mb = info['size'] / (1024**2)
+            print(f"  {nome_ext:<15} {info['count']:>6} arquivos  {tamanho_mb:>10.2f} MB")
+
+# Uso
+analyzer = DiskAnalyzer('/home/usuario')
+analyzer.mostrar_relatorio()
+
+
+================================================================================
+RESUMO RÁPIDO
+================================================================================
+
+INFORMAÇÕES DO SISTEMA:
+os.name                    # Nome do SO ('nt', 'posix')
+os.getcwd()                # Diretório atual
+os.chdir(path)             # Mudar diretório
+os.environ                 # Variáveis de ambiente
+os.getenv(var)             # Obter variável de ambiente
+os.getpid()                # PID do processo
+os.getppid()               # PID do processo pai
+
+CAMINHOS:
+os.path.exists(path)       # Verifica se existe
+os.path.isfile(path)       # Verifica se é arquivo
+os.path.isdir(path)        # Verifica se é diretório
+os.path.islink(path)       # Verifica se é link
+os.path.join(a, b)         # Junta caminhos
+os.path.split(path)        # Separa diretório e arquivo
+os.path.splitext(path)     # Separa nome e extensão
+os.path.basename(path)     # Nome do arquivo
+os.path.dirname(path)      # Diretório
+os.path.abspath(path)      # Caminho absoluto
+os.path.getsize(path)      # Tamanho do arquivo
+os.path.getmtime(path)     # Tempo de modificação
+
+DIRETÓRIOS:
+os.listdir(path)           # Lista conteúdo
+os.scandir(path)           # Lista (mais eficiente)
+os.walk(path)              # Percorre recursivamente
+os.mkdir(path)             # Cria diretório
+os.makedirs(path)          # Cria diretórios aninhados
+os.rmdir(path)             # Remove diretório vazio
+os.removedirs(path)        # Remove diretórios vazios recursivamente
+
+ARQUIVOS:
+os.remove(path)            # Remove arquivo
+os.unlink(path)            # Remove arquivo (alias)
+os.rename(old, new)        # Renomeia/move arquivo
+
+PERMISSÕES:
+os.access(path, mode)      # Verifica permissão
+os.chmod(path, mode)       # Muda permissões (Unix)
+os.chown(path, uid, gid)   # Muda dono (Unix)
+
+LINKS:
+os.symlink(src, dst)       # Cria link simbólico
+os.link(src, dst)          # Cria hard link
+os.readlink(path)          # Lê destino do link
+
+SEPARADORES:
+os.sep                     # Separador de caminho ('/' ou '\')
+os.pathsep                 # Separador de PATH (':' ou ';')
+os.linesep                 # Separador de linha ('\n' ou '\r\n')
+
+BOAS PRÁTICAS:
+✅ Use os.path.join() para construir caminhos
+✅ Use os.path.exists() antes de operações
+✅ Use subprocess ao invés de os.system()
+✅ Use pathlib para código moderno
+✅ Trate exceções OSError
+✅ Use shutil para copiar arquivos
+✅ Verifique permissões com os.access()
+✅ Use caminhos absolutos quando possível
+
+❌ Não concatene caminhos com strings
+❌ Não use os.system() (use subprocess)
+❌ Não assuma separador de caminho
+❌ Não ignore exceções
+❌ Não hardcode caminhos absolutos
+❌ Não modifique variáveis de ambiente sem necessidade
+
+
+================================================================================
+DOCUMENTAÇÃO OFICIAL DO PYTHON - OS
+================================================================================
+
+================================================================================
+PRINCIPAL - BIBLIOTECA OS
+================================================================================
+https://docs.python.org/3/library/os.html
+Documentação oficial da biblioteca os
+
+https://docs.python.org/3/library/os.path.html
+Módulo os.path - manipulação de caminhos
+
+================================================================================
+BIBLIOTECAS RELACIONADAS
+================================================================================
+https://docs.python.org/3/library/pathlib.html
+Pathlib - manipulação orientada a objetos de caminhos
+
+https://docs.python.org/3/library/shutil.html
+Shutil - operações de alto nível em arquivos
+
+https://docs.python.org/3/library/subprocess.html
+Subprocess - execução de processos
+
+https://docs.python.org/3/library/glob.html
+Glob - busca de arquivos com padrões
+
+https://docs.python.org/3/library/tempfile.html
+Tempfile - arquivos temporários
+
+https://docs.python.org/3/library/stat.html
+Stat - constantes e funções para permissões
+
+================================================================================
+TUTORIAIS E GUIAS
+================================================================================
+https://realpython.com/working-with-files-in-python/
+Real Python - Trabalhando com arquivos
+
+https://realpython.com/python-pathlib/
+Real Python - Guia do pathlib
+
+https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files
+Tutorial oficial - Leitura e escrita de arquivos
+
+================================================================================
+						AGRIPPA
+================================================================================

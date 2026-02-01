@@ -1,10 +1,9 @@
-import limpar_terminal  
 import secrets
 import string
 import time
 import os  
 
-limpar_terminal.limpar_terminal()
+os.system('cls' if os.name == 'nt' else 'clear')
 
 '''1) Desenvolva um programa que calcule a média aritmética de 
    quatro números inteiros fornecidos pelo usuário.'''
@@ -462,7 +461,7 @@ else:
    
 print("\n", "=" * 15, "EXERCÍCIO 18", "=" * 15)
 
-dinheiro = (200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.25, 0.10, 0.05, 0.01)
+dinheiro = (200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.25, 0.10, 0.05)
 
 tentativa_valor = 4
 valor_compra = None
@@ -523,6 +522,100 @@ if valor_compra is not None and valor_pago is not None:
             else:
                print(f"{'Moeda(s) de R$':>20} {valor:>5.2f} : {quantidade:>10}")
 
+'''19) Crie um programa que leia dois números e mostre qual é o maior e qual é o menor,
+   ou se são iguais.'''
 
+print("\n", "=" * 15, "EXERCÍCIO 19", "=" * 15)
 
+print("\n", "=" * 15, "EXERCÍCIO 19", "=" * 15)
 
+try:
+    while True:
+        tentativa_num = 4
+        while tentativa_num > 0:
+            try:
+                numero1 = float(input("\nDigite o primeiro número: "))
+                numero2 = float(input("Digite o segundo número: "))
+            except Exception:
+                tentativa_num -= 1
+                if tentativa_num == 1:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\nA última tentativa será possível em 30 segundos.")
+                    time.sleep(5)
+                    for i in range (30, 0, -1):
+                        print(f"\r {i} segundos", end = " ", flush = True)
+                        time.sleep(1)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    continue
+                if tentativa_num > 0:
+                    time.sleep(2)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\nERRO: Digite apenas números.")
+                    print(f"\nVocê tem somente {tentativa_num} tentativas restantes.")
+                    continue
+                else:
+                    print()
+                raise Exception
+            
+            if numero1 > numero2:
+                print(f"\nO primeiro número, {numero1}, é o maior do conjunto inserido.")
+            elif numero2 > numero1:
+                print(f"\nO segundo número, {numero2}, é o maior do conjunto inserido.")
+            elif numero1 == numero2:
+                print(f"\nAmbos os números, {numero1} e {numero2}, são iguais.")
+            else:
+                raise ValueError
+
+            tentativa_menu = 4
+            while tentativa_menu > 0:
+                try:
+                    print()
+                    print(" " * 5, "Para sair do programa aperte:")
+                    print(" " * 10,  "[1] Para encerrar")
+                    print(" " * 10, "[2] Para continuar")
+                    print()
+                            
+                    saida = int(input())
+                    
+                    if saida == 1:
+                        print("\nSaindo...")
+                        time.sleep(2)
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        for i in range (5, 0, -1):
+                            print(f"\rO programa será encerrado em {i} segundos.", end = " ", flush = True)
+                            time.sleep(1)
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        exit()
+                    elif saida == 2:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        break
+                    else:
+                        raise ValueError
+                except ValueError:
+                    tentativa_menu -= 1
+                    if tentativa_menu == 1:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print("\nA última tentativa será possível em 30 segundos.")
+                        time.sleep(5)
+                        for i in range (30, 0, -1):
+                            print(f"\r{i} segundos.", end = " ", flush = True)
+                            time.sleep(1)
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        continue
+                    if tentativa_menu > 0:
+                        time.sleep(2)
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print("\nDigite apenas [1] ou [2]")
+                        print(f"\nVocê tem somente {tentativa_menu} tentativas restantes.")
+                        continue
+                    else:
+                        raise ValueError 
+                        
+                
+            
+                    
+
+except Exception as e:
+        print("\nERRO: Tentativas esgotadas.")
+  
+'''20) '''   
