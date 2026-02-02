@@ -1,7 +1,8 @@
 import secrets
 import string
 import time
-import os  
+import os 
+from datetime import date
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -527,8 +528,6 @@ if valor_compra is not None and valor_pago is not None:
 
 print("\n", "=" * 15, "EXERCÍCIO 19", "=" * 15)
 
-print("\n", "=" * 15, "EXERCÍCIO 19", "=" * 15)
-
 try:
     while True:
         tentativa_num = 4
@@ -618,4 +617,30 @@ try:
 except Exception as e:
         print("\nERRO: Tentativas esgotadas.")
   
-'''20) '''   
+'''20) Faça um programa que calcule a idade de uma pessoa em anos, meses e dias. O usuário deve informar sua data de nascimento,
+   e o programa converte para o total de anos, meses e dias.'''
+   
+print("\n", "=" * 15, "EXERCÍCIO 20", "=" * 15)
+
+dia_nascimento = int(input("\nDigite o dia de seu nascimento: "))
+mes_nascimento = int(input("Digite o mês do seu nascimento: "))
+ano_nascimento = int(input("Digite o ano do seu nascimento: "))
+
+data_nascimento = date(ano_nascimento, mes_nascimento, dia_nascimento)
+data_atual = date.today()
+
+anos_user = data_atual.year - data_nascimento.year
+meses_user = anos_user * 12 + (data_atual.month - data_nascimento.month)
+dias_user = (data_atual - data_nascimento).days
+
+if (data_atual.month, data_atual.day) < (data_nascimento.month, data_nascimento.day):
+    anos_user -= 1
+    meses_user -= 1
+   
+
+
+print(f"\nVocê viveu o total de {anos_user} anos, {meses_user} meses e {dias_user} dias.")
+   
+   
+   
+   

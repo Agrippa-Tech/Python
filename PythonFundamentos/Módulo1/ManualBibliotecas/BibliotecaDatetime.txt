@@ -1,0 +1,2393 @@
+================================================================================
+                  BIBLIOTECAS DATE E DATETIME DO PYTHON
+                           NÍVEL INICIANTE
+================================================================================
+
+
+
+================================================================================
+1. INTRODUÇÃO ÀS BIBLIOTECAS DATE E DATETIME
+================================================================================
+
+1.1 O QUE SÃO AS BIBLIOTECAS DATE E DATETIME?
+--------------------------------------------------------------------------------
+As bibliotecas date e datetime fazem parte do módulo datetime do Python, 
+introduzidas na versão 2.3. Elas fornecem classes para manipular datas, 
+horas e intervalos de tempo de forma simples e eficiente.
+
+Principais classes do módulo datetime:
+- date: Representa apenas datas (ano, mês, dia)
+- time: Representa apenas horas (hora, minuto, segundo, microssegundo)
+- datetime: Combina data e hora
+- timedelta: Representa diferenças entre datas/horas
+- tzinfo: Classe base para informações de fuso horário
+
+Exemplo básico:
+# Importando o módulo
+from datetime import date, datetime, time, timedelta
+
+# Data
+hoje = date.today()
+print(hoje)  # 2026-02-02
+
+# Data e hora
+agora = datetime.now()
+print(agora)  # 2026-02-02 14:30:45.123456
+
+# Hora
+hora_atual = time(14, 30, 0)
+print(hora_atual)  # 14:30:00
+
+1.2 POR QUE USAR DATE E DATETIME?
+--------------------------------------------------------------------------------
+Benefícios das bibliotecas date e datetime:
+- Manipulação fácil de datas e horas
+- Operações aritméticas com datas
+- Formatação e parsing de strings
+- Suporte a fusos horários
+- Validação automática de datas
+- Parte da biblioteca padrão (não precisa instalar)
+
+Casos de uso apropriados:
+✅ Registrar timestamps de eventos
+✅ Calcular diferenças entre datas
+✅ Agendar tarefas
+✅ Validar datas de formulários
+✅ Trabalhar com períodos de tempo
+✅ Gerar relatórios com datas
+✅ Sistemas de reservas e agendamentos
+✅ Análise temporal de dados
+
+Limitações:
+⚠️  Não lida com calendários complexos (use calendar)
+⚠️  Fusos horários requerem pytz ou zoneinfo
+⚠️  Não faz parsing avançado (use dateutil)
+⚠️  Precisão limitada a microssegundos
+
+1.3 IMPORTANDO O MÓDULO DATETIME
+--------------------------------------------------------------------------------
+O módulo datetime faz parte da biblioteca padrão do Python.
+
+Importação completa:
+import datetime
+
+# Acessando as classes
+hoje = datetime.date.today()
+agora = datetime.datetime.now()
+
+Importação específica (recomendado):
+from datetime import date, datetime, time, timedelta
+
+# Uso direto
+hoje = date.today()
+agora = datetime.now()
+
+Importação com alias:
+from datetime import datetime as dt
+from datetime import timedelta as td
+
+agora = dt.now()
+amanha = agora + td(days=1)
+
+Verificando disponibilidade:
+import sys
+import datetime
+
+print(f"Python {sys.version}")
+print(f"datetime disponível: {hasattr(datetime, 'date')}")
+
+
+================================================================================
+2. TRABALHANDO COM A CLASSE DATE
+================================================================================
+
+2.1 CRIANDO OBJETOS DATE
+--------------------------------------------------------------------------------
+A classe date representa uma data (ano, mês, dia) no calendário gregoriano.
+
+date(year, month, day)
+# Cria um objeto date com ano, mês e dia especificados
+
+Criação básica:
+from datetime import date
+
+# Criar data específica
+data1 = date(2026, 2, 2)
+print(data1)  # 2026-02-02
+
+# Data de hoje
+hoje = date.today()
+print(hoje)  # 2026-02-02
+
+# Validação automática
+try:
+    data_invalida = date(2026, 13, 1)  # Mês inválido
+except ValueError as e:
+    print(f"Erro: {e}")  # month must be in 1..12
+
+# Outro exemplo de validação
+try:
+    data_invalida = date(2026, 2, 30)  # Dia inválido
+except ValueError as e:
+    print(f"Erro: {e}")  # day is out of range for month
+
+Limites de date:
+# Data mínima
+print(date.min)  # 0001-01-01
+
+# Data máxima
+print(date.max)  # 9999-12-31
+
+# Resolução (menor diferença)
+print(date.resolution)  # 1 day, 0:00:00
+
+Criando data a partir de timestamp:
+import time
+
+# Timestamp atual
+timestamp = time.time()
+print(timestamp)  # 1738511445.123
+
+# Converter para date
+data = date.fromtimestamp(timestamp)
+print(data)  # 2026-02-02
+
+Criando data a partir de ordinal:
+# Ordinal = número de dias desde 01/01/0001
+ordinal = 738000
+data = date.fromordinal(ordinal)
+print(data)  # 2021-01-22
+
+2.2 ACESSANDO COMPONENTES DE DATE
+--------------------------------------------------------------------------------
+Objetos date têm atributos para acessar ano, mês e dia.
+
+Acessando componentes:
+from datetime import date
+
+data = date(2026, 2, 2)
+
+# Atributos individuais
+print(data.year)   # 2026
+print(data.month)  # 2
+print(data.day)    # 2
+
+# Dia da semana (0=segunda, 6=domingo)
+print(data.weekday())     # 0 (segunda-feira)
+
+# Dia da semana (1=segunda, 7=domingo)
+print(data.isoweekday())  # 1 (segunda-feira)
+
+# Número do dia no ano (1-366)
+print(data.timetuple().tm_yday)  # 33
+
+Informações da semana ISO:
+# Retorna tupla (ano_iso, semana, dia_semana)
+iso = data.isocalendar()
+print(iso)  # (2026, 6, 1)
+print(f"Ano ISO: {iso[0]}")
+print(f"Semana: {iso[1]}")
+print(f"Dia: {iso[2]}")
+
+# Em Python 3.9+, isocalendar() retorna namedtuple
+print(iso.year)   # 2026
+print(iso.week)   # 6
+print(iso.weekday)  # 1
+
+Convertendo para outros formatos:
+# Para string ISO
+print(data.isoformat())  # '2026-02-02'
+
+# Para string formatada
+print(data.strftime('%d/%m/%Y'))  # '02/02/2026'
+
+# Para timestamp
+timestamp = data.toordinal()
+print(timestamp)  # 738918
+
+# Para tupla time.struct_time
+tupla = data.timetuple()
+print(tupla)
+# time.struct_time(tm_year=2026, tm_mon=2, tm_mday=2, ...)
+
+2.3 OPERAÇÕES COM DATES
+--------------------------------------------------------------------------------
+Objetos date suportam operações aritméticas e comparações.
+
+Comparando datas:
+from datetime import date
+
+data1 = date(2026, 2, 2)
+data2 = date(2026, 12, 25)
+data3 = date(2026, 2, 2)
+
+# Comparações
+print(data1 == data3)  # True
+print(data1 != data2)  # True
+print(data1 < data2)   # True
+print(data1 <= data3)  # True
+print(data2 > data1)   # True
+print(data2 >= data1)  # True
+
+# Encontrar maior/menor data
+datas = [date(2026, 1, 1), date(2026, 6, 15), date(2026, 12, 31)]
+print(min(datas))  # 2026-01-01
+print(max(datas))  # 2026-12-31
+
+Aritmética com datas:
+from datetime import date, timedelta
+
+hoje = date(2026, 2, 2)
+
+# Adicionar dias
+amanha = hoje + timedelta(days=1)
+print(amanha)  # 2026-02-03
+
+# Subtrair dias
+ontem = hoje - timedelta(days=1)
+print(ontem)  # 2026-02-01
+
+# Adicionar semanas
+proxima_semana = hoje + timedelta(weeks=1)
+print(proxima_semana)  # 2026-02-09
+
+# Adicionar meses (usar relativedelta do dateutil)
+# Para meses, precisamos fazer manualmente:
+def adicionar_meses(data_inicial, meses):
+    mes = data_inicial.month + meses
+    ano = data_inicial.year
+    
+    while mes > 12:
+        mes -= 12
+        ano += 1
+    
+    while mes < 1:
+        mes += 12
+        ano -= 1
+    
+    # Ajustar dia se necessário
+    import calendar
+    max_dia = calendar.monthrange(ano, mes)[1]
+    dia = min(data_inicial.day, max_dia)
+    
+    return date(ano, mes, dia)
+
+data_futura = adicionar_meses(hoje, 3)
+print(data_futura)  # 2026-05-02
+
+Diferença entre datas:
+data1 = date(2026, 2, 2)
+data2 = date(2026, 12, 25)
+
+# Subtração retorna timedelta
+diferenca = data2 - data1
+print(diferenca)       # 326 days, 0:00:00
+print(diferenca.days)  # 326
+
+# Calculando idade
+nascimento = date(1990, 5, 15)
+hoje = date.today()
+idade_dias = (hoje - nascimento).days
+idade_anos = idade_dias // 365.25
+print(f"Idade: {idade_anos:.0f} anos")
+
+2.4 FORMATANDO E PARSING DATES
+--------------------------------------------------------------------------------
+Convertendo entre strings e objetos date.
+
+Formatando dates (date → string):
+from datetime import date
+
+data = date(2026, 2, 2)
+
+# Formato ISO (YYYY-MM-DD)
+print(data.isoformat())  # '2026-02-02'
+
+# strftime - Formato personalizado
+print(data.strftime('%d/%m/%Y'))           # '02/02/2026'
+print(data.strftime('%d de %B de %Y'))     # '02 de February de 2026'
+print(data.strftime('%A, %d/%m/%Y'))       # 'Monday, 02/02/2026'
+print(data.strftime('%d-%m-%y'))           # '02-02-26'
+print(data.strftime('%Y%m%d'))             # '20260202'
+
+# Códigos de formato comuns:
+# %Y - Ano com 4 dígitos (2026)
+# %y - Ano com 2 dígitos (26)
+# %m - Mês com 2 dígitos (02)
+# %d - Dia com 2 dígitos (02)
+# %B - Nome do mês completo (February)
+# %b - Nome do mês abreviado (Feb)
+# %A - Nome do dia completo (Monday)
+# %a - Nome do dia abreviado (Mon)
+# %j - Dia do ano (033)
+# %U - Número da semana (05)
+
+Formatação localizada (português):
+import locale
+
+# Definir localização para português
+try:
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+except:
+    print("Locale pt_BR não disponível")
+
+data = date(2026, 2, 2)
+print(data.strftime('%d de %B de %Y'))  # '02 de fevereiro de 2026'
+print(data.strftime('%A, %d/%m/%Y'))    # 'segunda-feira, 02/02/2026'
+
+Parsing dates (string → date):
+from datetime import datetime
+
+# strptime - Converter string para date
+string_data = '02/02/2026'
+data = datetime.strptime(string_data, '%d/%m/%Y').date()
+print(data)  # 2026-02-02
+
+# Diferentes formatos
+data1 = datetime.strptime('2026-02-02', '%Y-%m-%d').date()
+data2 = datetime.strptime('02-02-2026', '%d-%m-%Y').date()
+data3 = datetime.strptime('02/Feb/2026', '%d/%b/%Y').date()
+data4 = datetime.strptime('February 2, 2026', '%B %d, %Y').date()
+
+print(data1, data2, data3, data4)
+
+# Função auxiliar para parsing
+def parse_data(string, formato='%d/%m/%Y'):
+    """Converte string para date com tratamento de erro."""
+    try:
+        return datetime.strptime(string, formato).date()
+    except ValueError as e:
+        print(f"Erro ao fazer parsing: {e}")
+        return None
+
+data = parse_data('02/02/2026')
+print(data)  # 2026-02-02
+
+
+================================================================================
+3. TRABALHANDO COM A CLASSE TIME
+================================================================================
+
+3.1 CRIANDO OBJETOS TIME
+--------------------------------------------------------------------------------
+A classe time representa um horário do dia, independente de qualquer data.
+
+time(hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+# Cria um objeto time
+
+Criação básica:
+from datetime import time
+
+# Criar horário específico
+hora1 = time(14, 30)
+print(hora1)  # 14:30:00
+
+# Com segundos
+hora2 = time(14, 30, 45)
+print(hora2)  # 14:30:45
+
+# Com microssegundos
+hora3 = time(14, 30, 45, 123456)
+print(hora3)  # 14:30:45.123456
+
+# Horário mínimo (meia-noite)
+hora_min = time()
+print(hora_min)  # 00:00:00
+
+# Validação automática
+try:
+    hora_invalida = time(25, 0)  # Hora inválida
+except ValueError as e:
+    print(f"Erro: {e}")  # hour must be in 0..23
+
+try:
+    hora_invalida = time(14, 60)  # Minuto inválido
+except ValueError as e:
+    print(f"Erro: {e}")  # minute must be in 0..59
+
+Limites de time:
+# Hora mínima
+print(time.min)  # 00:00:00
+
+# Hora máxima
+print(time.max)  # 23:59:59.999999
+
+# Resolução (menor diferença)
+print(time.resolution)  # 0:00:00.000001 (1 microssegundo)
+
+3.2 ACESSANDO COMPONENTES DE TIME
+--------------------------------------------------------------------------------
+Objetos time têm atributos para acessar hora, minuto, segundo e microssegundo.
+
+Acessando componentes:
+from datetime import time
+
+hora = time(14, 30, 45, 123456)
+
+# Atributos individuais
+print(hora.hour)         # 14
+print(hora.minute)       # 30
+print(hora.second)       # 45
+print(hora.microsecond)  # 123456
+print(hora.tzinfo)       # None (sem fuso horário)
+
+# Verificar se tem fuso horário
+print(hora.tzinfo is None)  # True
+
+Convertendo para outros formatos:
+# Para string ISO
+print(hora.isoformat())  # '14:30:45.123456'
+
+# Para string formatada
+print(hora.strftime('%H:%M'))           # '14:30'
+print(hora.strftime('%H:%M:%S'))        # '14:30:45'
+print(hora.strftime('%I:%M %p'))        # '02:30 PM'
+print(hora.strftime('%H:%M:%S.%f'))     # '14:30:45.123456'
+
+# Códigos de formato comuns para time:
+# %H - Hora (24h) com 2 dígitos (14)
+# %I - Hora (12h) com 2 dígitos (02)
+# %M - Minuto com 2 dígitos (30)
+# %S - Segundo com 2 dígitos (45)
+# %f - Microssegundo (123456)
+# %p - AM/PM
+
+3.3 OPERAÇÕES COM TIME
+--------------------------------------------------------------------------------
+Objetos time suportam comparações mas não operações aritméticas diretas.
+
+Comparando horários:
+from datetime import time
+
+hora1 = time(14, 30)
+hora2 = time(18, 45)
+hora3 = time(14, 30)
+
+# Comparações
+print(hora1 == hora3)  # True
+print(hora1 != hora2)  # True
+print(hora1 < hora2)   # True
+print(hora1 <= hora3)  # True
+print(hora2 > hora1)   # True
+print(hora2 >= hora1)  # True
+
+# Encontrar maior/menor horário
+horarios = [time(9, 0), time(14, 30), time(18, 45)]
+print(min(horarios))  # 09:00:00
+print(max(horarios))  # 18:45:00
+
+Substituir componentes:
+hora = time(14, 30, 45)
+
+# replace() - criar novo time com componentes modificados
+nova_hora = hora.replace(hour=16)
+print(nova_hora)  # 16:30:45
+
+nova_hora = hora.replace(minute=0, second=0)
+print(nova_hora)  # 14:00:00
+
+Nota sobre aritmética:
+# time NÃO suporta adição/subtração direta
+# Para fazer aritmética com horários, use datetime
+
+from datetime import datetime, timedelta
+
+# Criar datetime com horário
+dt = datetime.combine(date.today(), time(14, 30))
+print(dt)  # 2026-02-02 14:30:00
+
+# Adicionar 2 horas
+dt_novo = dt + timedelta(hours=2)
+print(dt_novo.time())  # 16:30:00
+
+3.4 FORMATANDO E PARSING TIME
+--------------------------------------------------------------------------------
+Convertendo entre strings e objetos time.
+
+Formatando time (time → string):
+from datetime import time
+
+hora = time(14, 30, 45, 123456)
+
+# Formato ISO
+print(hora.isoformat())  # '14:30:45.123456'
+
+# strftime - Formato personalizado
+print(hora.strftime('%H:%M'))              # '14:30'
+print(hora.strftime('%H:%M:%S'))           # '14:30:45'
+print(hora.strftime('%I:%M:%S %p'))        # '02:30:45 PM'
+print(hora.strftime('%H:%M:%S.%f'))        # '14:30:45.123456'
+print(hora.strftime('%Hh%Mmin%Ss'))        # '14h30min45s'
+
+Parsing time (string → time):
+from datetime import datetime
+
+# strptime - Converter string para time
+string_hora = '14:30:45'
+hora = datetime.strptime(string_hora, '%H:%M:%S').time()
+print(hora)  # 14:30:45
+
+# Diferentes formatos
+hora1 = datetime.strptime('14:30', '%H:%M').time()
+hora2 = datetime.strptime('02:30 PM', '%I:%M %p').time()
+hora3 = datetime.strptime('14:30:45.123456', '%H:%M:%S.%f').time()
+
+print(hora1, hora2, hora3)
+
+# Função auxiliar para parsing
+def parse_hora(string, formato='%H:%M:%S'):
+    """Converte string para time com tratamento de erro."""
+    try:
+        return datetime.strptime(string, formato).time()
+    except ValueError as e:
+        print(f"Erro ao fazer parsing: {e}")
+        return None
+
+hora = parse_hora('14:30:45')
+print(hora)  # 14:30:45
+
+
+================================================================================
+4. TRABALHANDO COM A CLASSE DATETIME
+================================================================================
+
+4.1 CRIANDO OBJETOS DATETIME
+--------------------------------------------------------------------------------
+A classe datetime combina date e time em um único objeto.
+
+datetime(year, month, day, hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+# Cria um objeto datetime
+
+Criação básica:
+from datetime import datetime
+
+# Criar datetime específico
+dt1 = datetime(2026, 2, 2, 14, 30)
+print(dt1)  # 2026-02-02 14:30:00
+
+# Com segundos e microssegundos
+dt2 = datetime(2026, 2, 2, 14, 30, 45, 123456)
+print(dt2)  # 2026-02-02 14:30:45.123456
+
+# Data e hora atuais
+agora = datetime.now()
+print(agora)  # 2026-02-02 14:30:45.123456
+
+# Data e hora atuais em UTC
+utc_agora = datetime.utcnow()
+print(utc_agora)  # 2026-02-02 17:30:45.123456
+
+# Apenas data atual (horário zerado)
+hoje = datetime.today()
+print(hoje)  # 2026-02-02 14:30:45.123456
+
+Limites de datetime:
+# Datetime mínimo
+print(datetime.min)  # 0001-01-01 00:00:00
+
+# Datetime máximo
+print(datetime.max)  # 9999-12-31 23:59:59.999999
+
+# Resolução (menor diferença)
+print(datetime.resolution)  # 0:00:00.000001 (1 microssegundo)
+
+Criando datetime a partir de outros formatos:
+# A partir de timestamp
+import time
+timestamp = time.time()
+dt = datetime.fromtimestamp(timestamp)
+print(dt)  # 2026-02-02 14:30:45.123456
+
+# A partir de date e time
+from datetime import date, time
+d = date(2026, 2, 2)
+t = time(14, 30, 45)
+dt = datetime.combine(d, t)
+print(dt)  # 2026-02-02 14:30:45
+
+# A partir de string ISO
+dt = datetime.fromisoformat('2026-02-02T14:30:45')
+print(dt)  # 2026-02-02 14:30:45
+
+4.2 ACESSANDO COMPONENTES DE DATETIME
+--------------------------------------------------------------------------------
+Objetos datetime têm atributos para acessar data, hora e seus componentes.
+
+Acessando componentes:
+from datetime import datetime
+
+dt = datetime(2026, 2, 2, 14, 30, 45, 123456)
+
+# Componentes de data
+print(dt.year)   # 2026
+print(dt.month)  # 2
+print(dt.day)    # 2
+
+# Componentes de hora
+print(dt.hour)         # 14
+print(dt.minute)       # 30
+print(dt.second)       # 45
+print(dt.microsecond)  # 123456
+
+# Fuso horário
+print(dt.tzinfo)  # None
+
+# Extrair apenas a data
+print(dt.date())  # 2026-02-02
+
+# Extrair apenas a hora
+print(dt.time())  # 14:30:45.123456
+
+Informações adicionais:
+# Dia da semana (0=segunda, 6=domingo)
+print(dt.weekday())     # 0
+
+# Dia da semana (1=segunda, 7=domingo)
+print(dt.isoweekday())  # 1
+
+# Informações ISO
+iso = dt.isocalendar()
+print(iso)  # (2026, 6, 1)
+
+# Número do dia no ano
+print(dt.timetuple().tm_yday)  # 33
+
+Convertendo para outros formatos:
+# Para string ISO
+print(dt.isoformat())  # '2026-02-02T14:30:45.123456'
+
+# Para timestamp
+timestamp = dt.timestamp()
+print(timestamp)  # 1738511445.123456
+
+# Para tupla time.struct_time
+tupla = dt.timetuple()
+print(tupla)
+
+# Para ordinal (apenas a parte da data)
+ordinal = dt.toordinal()
+print(ordinal)  # 738918
+
+4.3 OPERAÇÕES COM DATETIME
+--------------------------------------------------------------------------------
+Objetos datetime suportam operações aritméticas e comparações.
+
+Comparando datetimes:
+from datetime import datetime
+
+dt1 = datetime(2026, 2, 2, 14, 30)
+dt2 = datetime(2026, 12, 25, 18, 45)
+dt3 = datetime(2026, 2, 2, 14, 30)
+
+# Comparações
+print(dt1 == dt3)  # True
+print(dt1 != dt2)  # True
+print(dt1 < dt2)   # True
+print(dt1 <= dt3)  # True
+print(dt2 > dt1)   # True
+print(dt2 >= dt1)  # True
+
+# Encontrar maior/menor datetime
+datetimes = [
+    datetime(2026, 1, 1, 0, 0),
+    datetime(2026, 6, 15, 12, 0),
+    datetime(2026, 12, 31, 23, 59)
+]
+print(min(datetimes))  # 2026-01-01 00:00:00
+print(max(datetimes))  # 2026-12-31 23:59:59
+
+Aritmética com datetime:
+from datetime import datetime, timedelta
+
+agora = datetime(2026, 2, 2, 14, 30, 45)
+
+# Adicionar tempo
+futuro = agora + timedelta(days=7)
+print(futuro)  # 2026-02-09 14:30:45
+
+futuro = agora + timedelta(hours=2, minutes=30)
+print(futuro)  # 2026-02-02 17:00:45
+
+futuro = agora + timedelta(weeks=2, days=3)
+print(futuro)  # 2026-02-19 14:30:45
+
+# Subtrair tempo
+passado = agora - timedelta(days=30)
+print(passado)  # 2026-01-03 14:30:45
+
+# Operações complexas
+delta = timedelta(days=7, hours=3, minutes=30, seconds=45)
+futuro = agora + delta
+print(futuro)  # 2026-02-09 18:01:30
+
+Diferença entre datetimes:
+dt1 = datetime(2026, 2, 2, 14, 30)
+dt2 = datetime(2026, 12, 25, 18, 45)
+
+# Subtração retorna timedelta
+diferenca = dt2 - dt1
+print(diferenca)  # 326 days, 4:15:00
+
+# Componentes da diferença
+print(diferenca.days)          # 326
+print(diferenca.seconds)       # 15300 (4h15min em segundos)
+print(diferenca.total_seconds())  # 28179900.0
+
+# Calculando duração
+inicio = datetime(2026, 2, 2, 9, 0)
+fim = datetime(2026, 2, 2, 17, 30)
+duracao = fim - inicio
+print(f"Duração: {duracao}")  # 8:30:00
+
+# Convertendo para horas
+horas = duracao.total_seconds() / 3600
+print(f"Horas: {horas}")  # 8.5
+
+Substituir componentes:
+dt = datetime(2026, 2, 2, 14, 30, 45)
+
+# replace() - criar novo datetime com componentes modificados
+novo_dt = dt.replace(year=2027)
+print(novo_dt)  # 2027-02-02 14:30:45
+
+novo_dt = dt.replace(hour=16, minute=0, second=0)
+print(novo_dt)  # 2026-02-02 16:00:00
+
+# Zerar o horário (manter apenas a data)
+dt_inicio_dia = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+print(dt_inicio_dia)  # 2026-02-02 00:00:00
+
+4.4 FORMATANDO E PARSING DATETIME
+--------------------------------------------------------------------------------
+Convertendo entre strings e objetos datetime.
+
+Formatando datetime (datetime → string):
+from datetime import datetime
+
+dt = datetime(2026, 2, 2, 14, 30, 45, 123456)
+
+# Formato ISO
+print(dt.isoformat())  # '2026-02-02T14:30:45.123456'
+
+# strftime - Formato personalizado
+print(dt.strftime('%d/%m/%Y %H:%M:%S'))
+# '02/02/2026 14:30:45'
+
+print(dt.strftime('%d de %B de %Y às %H:%M'))
+# '02 de February de 2026 às 14:30'
+
+print(dt.strftime('%A, %d/%m/%Y - %H:%M:%S'))
+# 'Monday, 02/02/2026 - 14:30:45'
+
+print(dt.strftime('%Y-%m-%d %H:%M:%S.%f'))
+# '2026-02-02 14:30:45.123456'
+
+print(dt.strftime('%d/%m/%y %I:%M %p'))
+# '02/02/26 02:30 PM'
+
+# Formatos comuns
+print(dt.strftime('%c'))  # Formato local padrão
+print(dt.strftime('%x'))  # Data local
+print(dt.strftime('%X'))  # Hora local
+
+# Formato de banco de dados
+print(dt.strftime('%Y-%m-%d %H:%M:%S'))
+# '2026-02-02 14:30:45'
+
+Parsing datetime (string → datetime):
+from datetime import datetime
+
+# strptime - Converter string para datetime
+string_dt = '02/02/2026 14:30:45'
+dt = datetime.strptime(string_dt, '%d/%m/%Y %H:%M:%S')
+print(dt)  # 2026-02-02 14:30:45
+
+# Diferentes formatos
+dt1 = datetime.strptime('2026-02-02 14:30', '%Y-%m-%d %H:%M')
+dt2 = datetime.strptime('02-02-2026 02:30 PM', '%d-%m-%Y %I:%M %p')
+dt3 = datetime.strptime('02/Feb/2026 14:30:45', '%d/%b/%Y %H:%M:%S')
+
+print(dt1, dt2, dt3)
+
+# Parsing de ISO format
+dt = datetime.fromisoformat('2026-02-02T14:30:45')
+print(dt)  # 2026-02-02 14:30:45
+
+# Função auxiliar para parsing
+def parse_datetime(string, formato='%d/%m/%Y %H:%M:%S'):
+    """Converte string para datetime com tratamento de erro."""
+    try:
+        return datetime.strptime(string, formato)
+    except ValueError as e:
+        print(f"Erro ao fazer parsing: {e}")
+        return None
+
+dt = parse_datetime('02/02/2026 14:30:45')
+print(dt)  # 2026-02-02 14:30:45
+
+Parsing flexível:
+def parse_datetime_flexivel(string):
+    """Tenta vários formatos para fazer parsing."""
+    formatos = [
+        '%Y-%m-%d %H:%M:%S',
+        '%d/%m/%Y %H:%M:%S',
+        '%d-%m-%Y %H:%M:%S',
+        '%Y-%m-%d',
+        '%d/%m/%Y',
+    ]
+    
+    for formato in formatos:
+        try:
+            return datetime.strptime(string, formato)
+        except ValueError:
+            continue
+    
+    raise ValueError(f"Formato não reconhecido: {string}")
+
+# Teste
+dt1 = parse_datetime_flexivel('2026-02-02 14:30:45')
+dt2 = parse_datetime_flexivel('02/02/2026')
+print(dt1, dt2)
+
+
+================================================================================
+5. TRABALHANDO COM TIMEDELTA
+================================================================================
+
+5.1 CRIANDO OBJETOS TIMEDELTA
+--------------------------------------------------------------------------------
+A classe timedelta representa uma diferença entre duas datas ou horas.
+
+timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+# Cria um objeto timedelta
+
+Criação básica:
+from datetime import timedelta
+
+# Diferentes unidades
+delta1 = timedelta(days=7)
+print(delta1)  # 7 days, 0:00:00
+
+delta2 = timedelta(hours=2, minutes=30)
+print(delta2)  # 2:30:00
+
+delta3 = timedelta(weeks=2, days=3)
+print(delta3)  # 17 days, 0:00:00
+
+delta4 = timedelta(hours=25)
+print(delta4)  # 1 day, 1:00:00
+
+# Combinando múltiplas unidades
+delta5 = timedelta(days=1, hours=2, minutes=30, seconds=45)
+print(delta5)  # 1 day, 2:30:45
+
+# Com microssegundos
+delta6 = timedelta(seconds=1, microseconds=500000)
+print(delta6)  # 0:00:01.500000
+
+Timedelta negativo:
+# Representa tempo no passado
+delta = timedelta(days=-7)
+print(delta)  # -7 days, 0:00:00
+
+delta = timedelta(hours=-2)
+print(delta)  # -1 day, 22:00:00 (normalizado)
+
+Limites de timedelta:
+# Timedelta mínimo
+print(timedelta.min)  # -999999999 days, 0:00:00
+
+# Timedelta máximo
+print(timedelta.max)  # 999999999 days, 23:59:59.999999
+
+# Resolução (menor diferença)
+print(timedelta.resolution)  # 0:00:00.000001
+
+5.2 ACESSANDO COMPONENTES DE TIMEDELTA
+--------------------------------------------------------------------------------
+Objetos timedelta armazenam apenas dias, segundos e microssegundos.
+
+Acessando componentes:
+from datetime import timedelta
+
+# Timedelta complexo
+delta = timedelta(days=7, hours=2, minutes=30, seconds=45, microseconds=123456)
+print(delta)  # 7 days, 2:30:45.123456
+
+# Atributos normalizados
+print(delta.days)          # 7
+print(delta.seconds)       # 9045 (2h30min45s em segundos)
+print(delta.microseconds)  # 123456
+
+# Total em segundos
+print(delta.total_seconds())  # 613845.123456
+
+Nota importante sobre normalização:
+# timedelta normaliza automaticamente
+delta = timedelta(hours=25, minutes=90)
+print(delta)  # 1 day, 2:30:00
+
+print(delta.days)     # 1
+print(delta.seconds)  # 9000 (2h30min em segundos)
+
+# Não há atributos .hours, .minutes
+# Para obtê-los, faça o cálculo:
+total_seconds = delta.seconds
+hours = total_seconds // 3600
+minutes = (total_seconds % 3600) // 60
+seconds = total_seconds % 60
+
+print(f"{hours}h {minutes}min {seconds}s")  # 2h 30min 0s
+
+Função auxiliar para componentes:
+def componentes_timedelta(td):
+    """Retorna componentes de timedelta."""
+    total_seconds = int(td.total_seconds())
+    
+    dias = total_seconds // 86400
+    horas = (total_seconds % 86400) // 3600
+    minutos = (total_seconds % 3600) // 60
+    segundos = total_seconds % 60
+    
+    return {
+        'dias': dias,
+        'horas': horas,
+        'minutos': minutos,
+        'segundos': segundos,
+        'total_segundos': total_seconds
+    }
+
+delta = timedelta(days=2, hours=3, minutes=30)
+comp = componentes_timedelta(delta)
+print(comp)
+# {'dias': 2, 'horas': 3, 'minutos': 30, 'segundos': 0, 'total_segundos': 183000}
+
+5.3 OPERAÇÕES COM TIMEDELTA
+--------------------------------------------------------------------------------
+Objetos timedelta suportam operações aritméticas.
+
+Aritmética entre timedeltas:
+from datetime import timedelta
+
+td1 = timedelta(days=7)
+td2 = timedelta(hours=12)
+
+# Adição
+td_soma = td1 + td2
+print(td_soma)  # 7 days, 12:00:00
+
+# Subtração
+td_diff = td1 - td2
+print(td_diff)  # 6 days, 12:00:00
+
+# Multiplicação por número
+td_mult = td1 * 2
+print(td_mult)  # 14 days, 0:00:00
+
+# Divisão por número
+td_div = td1 / 2
+print(td_div)  # 3 days, 12:00:00
+
+# Divisão inteira
+td_divint = td1 // 2
+print(td_divint)  # 3 days, 0:00:00
+
+# Divisão entre timedeltas (retorna float)
+razao = td1 / td2
+print(razao)  # 14.0 (7 dias / 12 horas)
+
+# Módulo
+td_mod = td1 % timedelta(days=3)
+print(td_mod)  # 1 day, 0:00:00
+
+# Valor absoluto
+td_neg = timedelta(days=-5)
+td_abs = abs(td_neg)
+print(td_abs)  # 5 days, 0:00:00
+
+Comparando timedeltas:
+td1 = timedelta(days=7)
+td2 = timedelta(hours=168)  # 7 dias em horas
+td3 = timedelta(days=14)
+
+print(td1 == td2)  # True
+print(td1 != td3)  # True
+print(td1 < td3)   # True
+print(td1 <= td2)  # True
+print(td3 > td1)   # True
+print(td3 >= td1)  # True
+
+# Encontrar maior/menor
+deltas = [timedelta(days=1), timedelta(hours=48), timedelta(weeks=1)]
+print(min(deltas))  # 1 day, 0:00:00
+print(max(deltas))  # 7 days, 0:00:00
+
+5.4 CASOS DE USO COM TIMEDELTA
+--------------------------------------------------------------------------------
+Exemplos práticos de uso de timedelta.
+
+Cálculo de prazos:
+from datetime import datetime, timedelta
+
+# Prazo de entrega: 7 dias úteis
+def calcular_prazo(data_inicio, dias_uteis):
+    """Calcula data de entrega considerando dias úteis."""
+    data_atual = data_inicio
+    dias_adicionados = 0
+    
+    while dias_adicionados < dias_uteis:
+        data_atual += timedelta(days=1)
+        # Pular finais de semana (5=sábado, 6=domingo)
+        if data_atual.weekday() < 5:
+            dias_adicionados += 1
+    
+    return data_atual
+
+hoje = datetime.now()
+prazo = calcular_prazo(hoje, 7)
+print(f"Prazo de entrega: {prazo.strftime('%d/%m/%Y')}")
+
+Tempo decorrido:
+inicio = datetime(2026, 2, 2, 9, 0)
+fim = datetime.now()
+
+decorrido = fim - inicio
+print(f"Tempo decorrido: {decorrido}")
+
+# Formatação amigável
+def formatar_duracao(td):
+    """Formata timedelta de forma amigável."""
+    total_seconds = int(td.total_seconds())
+    
+    if total_seconds < 60:
+        return f"{total_seconds} segundos"
+    elif total_seconds < 3600:
+        minutos = total_seconds // 60
+        return f"{minutos} minutos"
+    elif total_seconds < 86400:
+        horas = total_seconds // 3600
+        minutos = (total_seconds % 3600) // 60
+        return f"{horas}h {minutos}min"
+    else:
+        dias = total_seconds // 86400
+        horas = (total_seconds % 86400) // 3600
+        return f"{dias} dias, {horas}h"
+
+print(formatar_duracao(decorrido))
+
+Agendamento de tarefas:
+# Executar tarefa a cada 5 minutos
+ultima_execucao = datetime.now()
+intervalo = timedelta(minutes=5)
+
+while True:
+    agora = datetime.now()
+    
+    if agora - ultima_execucao >= intervalo:
+        print(f"Executando tarefa às {agora.strftime('%H:%M:%S')}")
+        ultima_execucao = agora
+        
+        # Sua tarefa aqui
+        # break  # Remover para loop infinito
+
+Idade e aniversário:
+from datetime import date, timedelta
+
+def calcular_idade(data_nascimento):
+    """Calcula idade em anos."""
+    hoje = date.today()
+    idade = hoje.year - data_nascimento.year
+    
+    # Ajustar se ainda não fez aniversário este ano
+    if (hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day):
+        idade -= 1
+    
+    return idade
+
+def proximo_aniversario(data_nascimento):
+    """Calcula dias até o próximo aniversário."""
+    hoje = date.today()
+    proximo = date(hoje.year, data_nascimento.month, data_nascimento.day)
+    
+    # Se já passou este ano, considerar ano seguinte
+    if proximo < hoje:
+        proximo = date(hoje.year + 1, data_nascimento.month, data_nascimento.day)
+    
+    dias = (proximo - hoje).days
+    return dias, proximo
+
+nascimento = date(1990, 5, 15)
+idade = calcular_idade(nascimento)
+dias, data = proximo_aniversario(nascimento)
+
+print(f"Idade: {idade} anos")
+print(f"Próximo aniversário em {dias} dias ({data.strftime('%d/%m/%Y')})")
+
+
+================================================================================
+6. TRABALHANDO COM FUSOS HORÁRIOS
+================================================================================
+
+6.1 INTRODUÇÃO A FUSOS HORÁRIOS
+--------------------------------------------------------------------------------
+Fusos horários permitem trabalhar com datas/horas em diferentes regiões.
+
+Conceitos importantes:
+- Naive datetime: sem informação de fuso horário (tzinfo=None)
+- Aware datetime: com informação de fuso horário (tzinfo!=None)
+- UTC: Tempo Universal Coordenado (padrão global)
+- Offset: diferença em relação ao UTC
+
+Verificando se datetime é naive ou aware:
+from datetime import datetime
+
+# Naive (sem fuso horário)
+dt_naive = datetime.now()
+print(dt_naive.tzinfo)  # None
+print(dt_naive.tzinfo is None)  # True
+
+# Aware (com fuso horário) - usando timezone
+from datetime import timezone
+dt_aware = datetime.now(timezone.utc)
+print(dt_aware.tzinfo)  # UTC
+print(dt_aware.tzinfo is None)  # False
+
+Problemas com datetimes naive:
+# Comparar datetimes de fusos diferentes (erro comum)
+dt1 = datetime.now()  # Hora local naive
+dt2 = datetime.now(timezone.utc)  # UTC aware
+
+try:
+    resultado = dt1 < dt2
+except TypeError as e:
+    print(f"Erro: {e}")
+    # can't compare offset-naive and offset-aware datetimes
+
+6.2 USANDO TIMEZONE E UTC
+--------------------------------------------------------------------------------
+A classe timezone (Python 3.2+) permite criar fusos horários simples.
+
+Trabalhando com UTC:
+from datetime import datetime, timezone
+
+# Datetime atual em UTC
+utc_agora = datetime.now(timezone.utc)
+print(utc_agora)
+# 2026-02-02 17:30:45.123456+00:00
+
+# Converter timestamp para UTC
+timestamp = 1738511445
+dt_utc = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+print(dt_utc)
+
+# Criar datetime específico em UTC
+dt = datetime(2026, 2, 2, 14, 30, tzinfo=timezone.utc)
+print(dt)  # 2026-02-02 14:30:00+00:00
+
+Criando fusos horários com offset:
+from datetime import timezone, timedelta
+
+# UTC-3 (horário de Brasília)
+tz_brasilia = timezone(timedelta(hours=-3))
+dt_brasilia = datetime.now(tz_brasilia)
+print(dt_brasilia)
+# 2026-02-02 14:30:45.123456-03:00
+
+# UTC+5:30 (Índia)
+tz_india = timezone(timedelta(hours=5, minutes=30))
+dt_india = datetime.now(tz_india)
+print(dt_india)
+
+# Criar timezone com nome
+tz_custom = timezone(timedelta(hours=-5), name="EST")
+dt = datetime(2026, 2, 2, 14, 30, tzinfo=tz_custom)
+print(dt)  # 2026-02-02 14:30:00-05:00
+
+Convertendo entre fusos:
+# UTC para outro fuso
+dt_utc = datetime.now(timezone.utc)
+print(f"UTC: {dt_utc}")
+
+# Converter para Brasília (UTC-3)
+tz_brasilia = timezone(timedelta(hours=-3))
+dt_brasilia = dt_utc.astimezone(tz_brasilia)
+print(f"Brasília: {dt_brasilia}")
+
+# Converter para Tokyo (UTC+9)
+tz_tokyo = timezone(timedelta(hours=9))
+dt_tokyo = dt_utc.astimezone(tz_tokyo)
+print(f"Tokyo: {dt_tokyo}")
+
+6.3 USANDO ZONEINFO (PYTHON 3.9+)
+--------------------------------------------------------------------------------
+zoneinfo usa o banco de dados IANA para fusos horários precisos.
+
+Importando zoneinfo:
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    # Para Python < 3.9, instalar: pip install backports.zoneinfo
+    from backports.zoneinfo import ZoneInfo
+
+Usando ZoneInfo:
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# Criar datetime em fuso específico
+dt_brasilia = datetime(2026, 2, 2, 14, 30, tzinfo=ZoneInfo("America/Sao_Paulo"))
+print(dt_brasilia)
+# 2026-02-02 14:30:00-03:00
+
+dt_ny = datetime.now(ZoneInfo("America/New_York"))
+print(dt_ny)
+
+dt_tokyo = datetime.now(ZoneInfo("Asia/Tokyo"))
+print(dt_tokyo)
+
+# Lista de fusos disponíveis
+from zoneinfo import available_timezones
+print(len(available_timezones()))  # ~600 fusos
+print(list(available_timezones())[:10])
+
+Conversão entre fusos com ZoneInfo:
+# Brasília para outros fusos
+dt_br = datetime(2026, 2, 2, 14, 30, tzinfo=ZoneInfo("America/Sao_Paulo"))
+print(f"Brasília: {dt_br}")
+
+# Converter para Nova York
+dt_ny = dt_br.astimezone(ZoneInfo("America/New_York"))
+print(f"Nova York: {dt_ny}")
+
+# Converter para Tokyo
+dt_tokyo = dt_br.astimezone(ZoneInfo("Asia/Tokyo"))
+print(f"Tokyo: {dt_tokyo}")
+
+# Converter para UTC
+dt_utc = dt_br.astimezone(ZoneInfo("UTC"))
+print(f"UTC: {dt_utc}")
+
+Horário de verão automático:
+# ZoneInfo lida automaticamente com DST (Daylight Saving Time)
+tz_ny = ZoneInfo("America/New_York")
+
+# Inverno (EST, UTC-5)
+dt_inverno = datetime(2026, 1, 15, 12, 0, tzinfo=tz_ny)
+print(dt_inverno)  # ...UTC-5
+
+# Verão (EDT, UTC-4)
+dt_verao = datetime(2026, 7, 15, 12, 0, tzinfo=tz_ny)
+print(dt_verao)  # ...UTC-4
+
+6.4 USANDO PYTZ (ALTERNATIVA)
+--------------------------------------------------------------------------------
+pytz é uma biblioteca popular para fusos horários (pré Python 3.9).
+
+Instalação:
+# pip install pytz
+
+Uso básico:
+import pytz
+from datetime import datetime
+
+# Criar datetime em fuso específico
+tz_brasilia = pytz.timezone('America/Sao_Paulo')
+dt_brasilia = tz_brasilia.localize(datetime(2026, 2, 2, 14, 30))
+print(dt_brasilia)
+
+# Datetime atual em fuso específico
+dt_ny = datetime.now(pytz.timezone('America/New_York'))
+print(dt_ny)
+
+# Lista de fusos disponíveis
+print(len(pytz.all_timezones))  # ~500 fusos
+print(pytz.all_timezones[:10])
+
+Conversão entre fusos com pytz:
+# Brasília para outros fusos
+tz_br = pytz.timezone('America/Sao_Paulo')
+dt_br = tz_br.localize(datetime(2026, 2, 2, 14, 30))
+
+# Converter para Nova York
+tz_ny = pytz.timezone('America/New_York')
+dt_ny = dt_br.astimezone(tz_ny)
+print(f"Nova York: {dt_ny}")
+
+# Converter para UTC
+dt_utc = dt_br.astimezone(pytz.UTC)
+print(f"UTC: {dt_utc}")
+
+Importante sobre pytz:
+# ❌ NÃO use tzinfo diretamente no construtor
+dt = datetime(2026, 2, 2, 14, 30, tzinfo=pytz.timezone('America/Sao_Paulo'))
+# Pode dar resultado incorreto!
+
+# ✅ USE localize() ou astimezone()
+tz = pytz.timezone('America/Sao_Paulo')
+dt = tz.localize(datetime(2026, 2, 2, 14, 30))
+# Correto!
+
+6.5 BOAS PRÁTICAS COM FUSOS HORÁRIOS
+--------------------------------------------------------------------------------
+Recomendações para trabalhar com fusos horários.
+
+Armazenamento:
+# ✅ Sempre armazene em UTC
+from datetime import datetime, timezone
+
+# Receber datetime local do usuário
+dt_local = datetime(2026, 2, 2, 14, 30)  # Assume fuso do usuário
+
+# Converter para UTC antes de armazenar
+tz_brasilia = timezone(timedelta(hours=-3))
+dt_aware = dt_local.replace(tzinfo=tz_brasilia)
+dt_utc = dt_aware.astimezone(timezone.utc)
+
+# Armazenar dt_utc no banco de dados
+print(f"Armazenar: {dt_utc.isoformat()}")
+
+# Recuperar e converter para fuso local do usuário
+dt_recuperado = dt_utc  # Do banco de dados
+dt_local_usuario = dt_recuperado.astimezone(tz_brasilia)
+print(f"Exibir: {dt_local_usuario}")
+
+Comparações:
+# ✅ Sempre compare datetimes aware ou sempre naive
+from datetime import datetime, timezone
+
+dt1 = datetime.now(timezone.utc)
+dt2 = datetime.now(timezone.utc)
+
+# Comparação segura (ambos aware)
+print(dt1 < dt2)  # OK
+
+# ❌ EVITE comparar naive com aware
+dt_naive = datetime.now()
+try:
+    print(dt_naive < dt1)  # TypeError!
+except TypeError as e:
+    print(f"Erro: {e}")
+
+Conversão de naive para aware:
+# Tornar datetime naive em aware
+dt_naive = datetime(2026, 2, 2, 14, 30)
+
+# Opção 1: replace (assumir fuso específico)
+tz = timezone(timedelta(hours=-3))
+dt_aware = dt_naive.replace(tzinfo=tz)
+print(dt_aware)
+
+# Opção 2: assumir UTC
+dt_aware = dt_naive.replace(tzinfo=timezone.utc)
+print(dt_aware)
+
+# Opção 3: usar localize (com pytz/zoneinfo)
+from zoneinfo import ZoneInfo
+tz = ZoneInfo("America/Sao_Paulo")
+dt_aware = dt_naive.replace(tzinfo=tz)
+print(dt_aware)
+
+Formatação com fuso:
+from datetime import datetime, timezone
+
+dt = datetime.now(timezone.utc)
+
+# Incluir fuso na string
+print(dt.isoformat())
+# 2026-02-02T17:30:45.123456+00:00
+
+print(dt.strftime('%Y-%m-%d %H:%M:%S %Z'))
+# 2026-02-02 17:30:45 UTC
+
+print(dt.strftime('%Y-%m-%d %H:%M:%S %z'))
+# 2026-02-02 17:30:45 +0000
+
+
+================================================================================
+7. CASOS DE USO PRÁTICOS
+================================================================================
+
+7.1 VALIDAÇÃO DE DATAS
+--------------------------------------------------------------------------------
+Validando datas de entrada do usuário.
+
+Validar formato de data:
+from datetime import datetime
+
+def validar_data(string, formato='%d/%m/%Y'):
+    """Valida se string é uma data válida."""
+    try:
+        data = datetime.strptime(string, formato)
+        return True, data.date()
+    except ValueError as e:
+        return False, str(e)
+
+# Teste
+valido, resultado = validar_data('02/02/2026')
+if valido:
+    print(f"Data válida: {resultado}")
+else:
+    print(f"Data inválida: {resultado}")
+
+valido, resultado = validar_data('32/02/2026')
+if valido:
+    print(f"Data válida: {resultado}")
+else:
+    print(f"Data inválida: {resultado}")
+
+Validar intervalo de datas:
+from datetime import datetime, date
+
+def validar_intervalo(data_inicio, data_fim):
+    """Valida se intervalo de datas é válido."""
+    if data_inicio > data_fim:
+        return False, "Data inicial deve ser anterior à data final"
+    
+    # Validar se datas não estão muito no passado
+    hoje = date.today()
+    if data_inicio < date(2000, 1, 1):
+        return False, "Data inicial muito antiga"
+    
+    # Validar se datas não estão muito no futuro
+    if data_fim > date(hoje.year + 10, 12, 31):
+        return False, "Data final muito distante"
+    
+    return True, "Intervalo válido"
+
+inicio = date(2026, 2, 2)
+fim = date(2026, 12, 31)
+valido, mensagem = validar_intervalo(inicio, fim)
+print(mensagem)
+
+Validar idade mínima:
+from datetime import date
+
+def validar_idade_minima(data_nascimento, idade_minima=18):
+    """Valida se pessoa tem idade mínima."""
+    hoje = date.today()
+    idade = hoje.year - data_nascimento.year
+    
+    # Ajustar se ainda não fez aniversário este ano
+    if (hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day):
+        idade -= 1
+    
+    if idade < idade_minima:
+        return False, f"Idade mínima: {idade_minima} anos (você tem {idade})"
+    
+    return True, f"Idade válida: {idade} anos"
+
+nascimento = date(2010, 5, 15)
+valido, mensagem = validar_idade_minima(nascimento)
+print(mensagem)
+
+7.2 CÁLCULOS COM DATAS
+--------------------------------------------------------------------------------
+Operações comuns com datas.
+
+Calcular dias úteis:
+from datetime import date, timedelta
+
+def contar_dias_uteis(data_inicio, data_fim):
+    """Conta dias úteis entre duas datas."""
+    dias_uteis = 0
+    data_atual = data_inicio
+    
+    while data_atual <= data_fim:
+        # Segunda a sexta (0-4)
+        if data_atual.weekday() < 5:
+            dias_uteis += 1
+        data_atual += timedelta(days=1)
+    
+    return dias_uteis
+
+inicio = date(2026, 2, 2)  # Segunda
+fim = date(2026, 2, 13)    # Sexta (2 semanas)
+dias = contar_dias_uteis(inicio, fim)
+print(f"Dias úteis: {dias}")  # 10
+
+Calcular primeiro/último dia do mês:
+from datetime import date
+import calendar
+
+def primeiro_dia_mes(data):
+    """Retorna primeiro dia do mês."""
+    return date(data.year, data.month, 1)
+
+def ultimo_dia_mes(data):
+    """Retorna último dia do mês."""
+    ultimo_dia = calendar.monthrange(data.year, data.month)[1]
+    return date(data.year, data.month, ultimo_dia)
+
+hoje = date(2026, 2, 15)
+print(f"Primeiro dia: {primeiro_dia_mes(hoje)}")  # 2026-02-01
+print(f"Último dia: {ultimo_dia_mes(hoje)}")      # 2026-02-28
+
+Calcular trimestres:
+def calcular_trimestre(data):
+    """Retorna trimestre (1-4) da data."""
+    return (data.month - 1) // 3 + 1
+
+def inicio_trimestre(data):
+    """Retorna primeiro dia do trimestre."""
+    trimestre = calcular_trimestre(data)
+    mes = (trimestre - 1) * 3 + 1
+    return date(data.year, mes, 1)
+
+def fim_trimestre(data):
+    """Retorna último dia do trimestre."""
+    trimestre = calcular_trimestre(data)
+    mes = trimestre * 3
+    ultimo_dia = calendar.monthrange(data.year, mes)[1]
+    return date(data.year, mes, ultimo_dia)
+
+hoje = date(2026, 5, 15)
+print(f"Trimestre: {calcular_trimestre(hoje)}")  # 2
+print(f"Início: {inicio_trimestre(hoje)}")       # 2026-04-01
+print(f"Fim: {fim_trimestre(hoje)}")             # 2026-06-30
+
+7.3 TRABALHANDO COM TIMESTAMPS
+--------------------------------------------------------------------------------
+Convertendo entre datetime e timestamps Unix.
+
+Datetime para timestamp:
+from datetime import datetime, timezone
+
+# Timestamp atual
+agora = datetime.now()
+timestamp = agora.timestamp()
+print(f"Timestamp: {timestamp}")  # 1738511445.123456
+
+# Timestamp UTC
+agora_utc = datetime.now(timezone.utc)
+timestamp_utc = agora_utc.timestamp()
+print(f"Timestamp UTC: {timestamp_utc}")
+
+# Timestamp de data específica
+dt = datetime(2026, 2, 2, 14, 30, 45)
+timestamp = dt.timestamp()
+print(f"Timestamp: {timestamp}")
+
+Timestamp para datetime:
+timestamp = 1738511445.123456
+
+# Para datetime local
+dt_local = datetime.fromtimestamp(timestamp)
+print(f"Local: {dt_local}")
+
+# Para datetime UTC
+dt_utc = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+print(f"UTC: {dt_utc}")
+
+Timestamp em milissegundos:
+# Converter para milissegundos (comum em JavaScript)
+timestamp_ms = int(datetime.now().timestamp() * 1000)
+print(f"Timestamp (ms): {timestamp_ms}")
+
+# Converter de milissegundos
+timestamp_ms = 1738511445123
+dt = datetime.fromtimestamp(timestamp_ms / 1000)
+print(f"Datetime: {dt}")
+
+7.4 AGENDAMENTO E LEMBRETES
+--------------------------------------------------------------------------------
+Implementando sistemas de agendamento.
+
+Sistema de lembretes:
+from datetime import datetime, timedelta
+
+class SistemaLembretes:
+    def __init__(self):
+        self.lembretes = []
+    
+    def adicionar_lembrete(self, mensagem, quando):
+        """Adiciona lembrete para data/hora específica."""
+        lembrete = {
+            'mensagem': mensagem,
+            'quando': quando,
+            'criado': datetime.now(),
+            'ativo': True
+        }
+        self.lembretes.append(lembrete)
+        print(f"Lembrete adicionado para {quando.strftime('%d/%m/%Y %H:%M')}")
+    
+    def adicionar_lembrete_em(self, mensagem, **kwargs):
+        """Adiciona lembrete em X tempo (days, hours, minutes)."""
+        quando = datetime.now() + timedelta(**kwargs)
+        self.adicionar_lembrete(mensagem, quando)
+    
+    def verificar_lembretes(self):
+        """Verifica e retorna lembretes pendentes."""
+        agora = datetime.now()
+        pendentes = []
+        
+        for lembrete in self.lembretes:
+            if lembrete['ativo'] and lembrete['quando'] <= agora:
+                pendentes.append(lembrete)
+                lembrete['ativo'] = False
+        
+        return pendentes
+    
+    def listar_lembretes(self):
+        """Lista todos os lembretes ativos."""
+        ativos = [l for l in self.lembretes if l['ativo']]
+        ativos.sort(key=lambda x: x['quando'])
+        
+        for lembrete in ativos:
+            tempo_restante = lembrete['quando'] - datetime.now()
+            print(f"{lembrete['mensagem']} - em {tempo_restante}")
+
+# Uso
+sistema = SistemaLembretes()
+
+# Adicionar lembretes
+sistema.adicionar_lembrete("Reunião importante", datetime(2026, 2, 2, 15, 0))
+sistema.adicionar_lembrete_em("Tomar remédio", hours=2)
+sistema.adicionar_lembrete_em("Ligar para João", days=1, hours=3)
+
+# Listar
+sistema.listar_lembretes()
+
+# Verificar pendentes
+# pendentes = sistema.verificar_lembretes()
+# for lembrete in pendentes:
+#     print(f"LEMBRETE: {lembrete['mensagem']}")
+
+Sistema de agendamento recorrente:
+class Agendamento:
+    def __init__(self, descricao, hora_inicial, intervalo):
+        """
+        Args:
+            descricao: Descrição do agendamento
+            hora_inicial: datetime da primeira execução
+            intervalo: timedelta do intervalo de repetição
+        """
+        self.descricao = descricao
+        self.proxima_execucao = hora_inicial
+        self.intervalo = intervalo
+        self.historico = []
+    
+    def deve_executar(self):
+        """Verifica se deve executar agora."""
+        return datetime.now() >= self.proxima_execucao
+    
+    def executar(self):
+        """Marca como executado e agenda próxima execução."""
+        if self.deve_executar():
+            self.historico.append(datetime.now())
+            self.proxima_execucao += self.intervalo
+            return True
+        return False
+    
+    def proxima_execucao_em(self):
+        """Retorna tempo até próxima execução."""
+        return self.proxima_execucao - datetime.now()
+
+# Uso
+# Executar a cada 5 minutos
+ag1 = Agendamento(
+    "Verificar emails",
+    datetime.now() + timedelta(minutes=5),
+    timedelta(minutes=5)
+)
+
+# Executar diariamente às 9h
+amanha_9h = datetime.now().replace(hour=9, minute=0, second=0) + timedelta(days=1)
+ag2 = Agendamento(
+    "Backup diário",
+    amanha_9h,
+    timedelta(days=1)
+)
+
+print(f"Próximo email em: {ag1.proxima_execucao_em()}")
+print(f"Próximo backup em: {ag2.proxima_execucao_em()}")
+
+7.5 ANÁLISE TEMPORAL
+--------------------------------------------------------------------------------
+Analisando padrões temporais em dados.
+
+Agrupar dados por período:
+from datetime import datetime, timedelta
+from collections import defaultdict
+
+def agrupar_por_dia(eventos):
+    """Agrupa eventos por dia."""
+    grupos = defaultdict(list)
+    
+    for evento in eventos:
+        dia = evento['quando'].date()
+        grupos[dia].append(evento)
+    
+    return dict(grupos)
+
+def agrupar_por_mes(eventos):
+    """Agrupa eventos por mês."""
+    grupos = defaultdict(list)
+    
+    for evento in eventos:
+        mes = (evento['quando'].year, evento['quando'].month)
+        grupos[mes].append(evento)
+    
+    return dict(grupos)
+
+def agrupar_por_hora(eventos):
+    """Agrupa eventos por hora do dia."""
+    grupos = defaultdict(list)
+    
+    for evento in eventos:
+        hora = evento['quando'].hour
+        grupos[hora].append(evento)
+    
+    return dict(grupos)
+
+# Exemplo de uso
+eventos = [
+    {'nome': 'Venda 1', 'quando': datetime(2026, 2, 2, 10, 30), 'valor': 100},
+    {'nome': 'Venda 2', 'quando': datetime(2026, 2, 2, 14, 15), 'valor': 150},
+    {'nome': 'Venda 3', 'quando': datetime(2026, 2, 3, 9, 45), 'valor': 200},
+    {'nome': 'Venda 4', 'quando': datetime(2026, 2, 3, 16, 20), 'valor': 120},
+]
+
+# Agrupar por dia
+por_dia = agrupar_por_dia(eventos)
+for dia, eventos_dia in por_dia.items():
+    total = sum(e['valor'] for e in eventos_dia)
+    print(f"{dia}: {len(eventos_dia)} vendas, R$ {total}")
+
+Calcular estatísticas temporais:
+def calcular_estatisticas_temporais(eventos):
+    """Calcula estatísticas sobre eventos."""
+    if not eventos:
+        return None
+    
+    datas = [e['quando'] for e in eventos]
+    
+    # Encontrar primeira e última ocorrência
+    primeira = min(datas)
+    ultima = max(datas)
+    
+    # Período total
+    periodo = ultima - primeira
+    
+    # Média de eventos por dia
+    dias = periodo.days + 1
+    eventos_por_dia = len(eventos) / dias if dias > 0 else 0
+    
+    # Intervalo médio entre eventos
+    if len(datas) > 1:
+        datas_ordenadas = sorted(datas)
+        intervalos = [
+            (datas_ordenadas[i+1] - datas_ordenadas[i]).total_seconds()
+            for i in range(len(datas_ordenadas) - 1)
+        ]
+        intervalo_medio = sum(intervalos) / len(intervalos)
+    else:
+        intervalo_medio = 0
+    
+    return {
+        'primeira_ocorrencia': primeira,
+        'ultima_ocorrencia': ultima,
+        'periodo_total': periodo,
+        'total_eventos': len(eventos),
+        'eventos_por_dia': eventos_por_dia,
+        'intervalo_medio_segundos': intervalo_medio
+    }
+
+stats = calcular_estatisticas_temporais(eventos)
+print(f"Total de eventos: {stats['total_eventos']}")
+print(f"Período: {stats['periodo_total'].days} dias")
+print(f"Eventos por dia: {stats['eventos_por_dia']:.2f}")
+
+
+================================================================================
+8. PADRÕES E BOAS PRÁTICAS
+================================================================================
+
+8.1 CONVENÇÕES DE NOMENCLATURA
+--------------------------------------------------------------------------------
+Padrões para nomear variáveis de data/hora.
+
+Nomenclatura recomendada:
+# ✅ Nomes descritivos
+data_nascimento = date(1990, 5, 15)
+data_criacao = datetime.now()
+data_atualizacao = datetime.now()
+prazo_entrega = date(2026, 12, 31)
+
+horario_inicio = time(9, 0)
+horario_fim = time(18, 0)
+
+duracao = timedelta(hours=8)
+intervalo = timedelta(minutes=30)
+
+# ✅ Sufixos claros
+usuario_criado_em = datetime.now()
+pedido_processado_em = datetime.now()
+evento_agendado_para = datetime(2026, 3, 15, 14, 0)
+
+# ❌ Evitar nomes genéricos
+dt = datetime.now()  # Muito vago
+d = date.today()     # Muito curto
+t = time(10, 0)      # Muito curto
+
+Sufixos comuns:
+# Para timestamps
+_em: criado_em, atualizado_em, deletado_em
+_at: created_at, updated_at (inglês)
+
+# Para datas futuras
+_para: agendado_para, entrega_para
+_ate: valido_ate, disponivel_ate
+
+# Para períodos
+_inicio / _fim: periodo_inicio, periodo_fim
+_de / _ate: disponivel_de, disponivel_ate
+
+8.2 VALIDAÇÃO E TRATAMENTO DE ERROS
+--------------------------------------------------------------------------------
+Sempre validar e tratar erros ao trabalhar com datas.
+
+Tratamento robusto:
+from datetime import datetime
+
+def parse_data_seguro(string_data, formato='%d/%m/%Y'):
+    """
+    Parse seguro de data com tratamento de erro.
+    
+    Returns:
+        tuple: (sucesso: bool, resultado: date ou str)
+    """
+    try:
+        data = datetime.strptime(string_data, formato).date()
+        return True, data
+    except ValueError as e:
+        return False, f"Formato inválido: {e}"
+    except Exception as e:
+        return False, f"Erro inesperado: {e}"
+
+# Uso
+sucesso, resultado = parse_data_seguro('02/02/2026')
+if sucesso:
+    print(f"Data: {resultado}")
+else:
+    print(f"Erro: {resultado}")
+
+Validação de entrada:
+def validar_data_entrada(string_data):
+    """Valida entrada de data do usuário."""
+    # Tentar múltiplos formatos
+    formatos = [
+        '%d/%m/%Y',
+        '%Y-%m-%d',
+        '%d-%m-%Y',
+        '%d/%m/%y'
+    ]
+    
+    for formato in formatos:
+        try:
+            data = datetime.strptime(string_data, formato).date()
+            
+            # Validações adicionais
+            hoje = date.today()
+            
+            # Não aceitar datas muito antigas
+            if data.year < 1900:
+                return False, "Data muito antiga"
+            
+            # Não aceitar datas muito futuras
+            if data > date(hoje.year + 100, 12, 31):
+                return False, "Data muito futura"
+            
+            return True, data
+            
+        except ValueError:
+            continue
+    
+    return False, "Formato de data não reconhecido"
+
+8.3 SERIALIZAÇÃO E ARMAZENAMENTO
+--------------------------------------------------------------------------------
+Melhores práticas para salvar e recuperar datas.
+
+Armazenamento em banco de dados:
+from datetime import datetime, timezone
+
+# ✅ Sempre armazenar em UTC
+def preparar_para_bd(dt):
+    """Prepara datetime para armazenamento."""
+    # Converter para UTC se não for
+    if dt.tzinfo is None:
+        # Assumir fuso local e converter para UTC
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+    
+    # Retornar como string ISO ou timestamp
+    return dt.isoformat()
+
+# ✅ Recuperar do banco e converter para fuso local
+def recuperar_do_bd(iso_string, tz_usuario):
+    """Recupera datetime do banco e converte para fuso do usuário."""
+    dt_utc = datetime.fromisoformat(iso_string)
+    dt_local = dt_utc.astimezone(tz_usuario)
+    return dt_local
+
+Serialização JSON:
+import json
+from datetime import datetime, date
+
+class DateTimeEncoder(json.JSONEncoder):
+    """Encoder JSON personalizado para datetime."""
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        elif isinstance(obj, date):
+            return obj.isoformat()
+        return super().default(obj)
+
+# Serializar
+dados = {
+    'nome': 'João',
+    'criado_em': datetime.now(),
+    'data_nascimento': date(1990, 5, 15)
+}
+
+json_string = json.dumps(dados, cls=DateTimeEncoder)
+print(json_string)
+
+# Deserializar
+def json_datetime_hook(dct):
+    """Hook para converter strings ISO em datetime."""
+    for key, value in dct.items():
+        if isinstance(value, str):
+            try:
+                # Tentar converter para datetime
+                dct[key] = datetime.fromisoformat(value)
+            except:
+                try:
+                    # Tentar converter para date
+                    dct[key] = date.fromisoformat(value)
+                except:
+                    pass
+    return dct
+
+dados_recuperados = json.loads(json_string, object_hook=json_datetime_hook)
+print(dados_recuperados)
+
+8.4 TESTES COM DATAS
+--------------------------------------------------------------------------------
+Estratégias para testar código que usa datas.
+
+Mock de datetime.now():
+from datetime import datetime
+from unittest.mock import patch
+
+def funcao_que_usa_now():
+    """Função que depende de datetime.now()."""
+    agora = datetime.now()
+    return agora.year
+
+# Testar com data específica
+with patch('datetime.datetime') as mock_dt:
+    # Definir valor fixo para now()
+    mock_dt.now.return_value = datetime(2026, 2, 2, 14, 30)
+    
+    resultado = funcao_que_usa_now()
+    print(resultado)  # 2026
+
+Classe auxiliar para testes:
+class DataMockavel:
+    """Classe para facilitar testes com datas."""
+    _now = None
+    _today = None
+    
+    @classmethod
+    def set_now(cls, dt):
+        """Define data/hora atual para testes."""
+        cls._now = dt
+        cls._today = dt.date()
+    
+    @classmethod
+    def reset(cls):
+        """Reseta para valores reais."""
+        cls._now = None
+        cls._today = None
+    
+    @classmethod
+    def now(cls):
+        """Retorna now() real ou mockado."""
+        if cls._now is not None:
+            return cls._now
+        return datetime.now()
+    
+    @classmethod
+    def today(cls):
+        """Retorna today() real ou mockado."""
+        if cls._today is not None:
+            return cls._today
+        return date.today()
+
+# Uso em testes
+DataMockavel.set_now(datetime(2026, 2, 2, 14, 30))
+print(DataMockavel.now())  # 2026-02-02 14:30:00
+
+DataMockavel.reset()
+print(DataMockavel.now())  # Data/hora real
+
+
+================================================================================
+9. DICAS AVANÇADAS
+================================================================================
+
+9.1 PERFORMANCE
+--------------------------------------------------------------------------------
+Dicas para melhorar performance ao trabalhar com datas.
+
+Cache de cálculos:
+from datetime import datetime, date
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def eh_dia_util(data):
+    """Verifica se é dia útil (com cache)."""
+    # Segunda a sexta (0-4)
+    return data.weekday() < 5
+
+# Uso
+for i in range(100):
+    data = date(2026, 2, i % 28 + 1)
+    eh_util = eh_dia_util(data)  # Usa cache nas repetições
+
+Evitar conversões desnecessárias:
+# ❌ Conversões repetidas
+for i in range(1000):
+    data_str = datetime.now().strftime('%Y-%m-%d')
+    # Processa data_str...
+
+# ✅ Converter uma vez
+data_str = datetime.now().strftime('%Y-%m-%d')
+for i in range(1000):
+    # Usa data_str...
+
+# ❌ Parsing repetido
+datas_str = ['2026-02-02', '2026-02-03', ...]
+for _ in range(10):
+    for data_str in datas_str:
+        data = datetime.strptime(data_str, '%Y-%m-%d')
+
+# ✅ Parse uma vez
+datas = [datetime.strptime(s, '%Y-%m-%d') for s in datas_str]
+for _ in range(10):
+    for data in datas:
+        # Usa data...
+
+9.2 DEBUGGING E LOGS
+--------------------------------------------------------------------------------
+Dicas para debugging de código com datas.
+
+Logging de datas:
+import logging
+from datetime import datetime
+
+# Configurar logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+logger = logging.getLogger(__name__)
+
+# Usar em código
+def processar_pedido(pedido_id):
+    inicio = datetime.now()
+    logger.info(f"Iniciando processamento do pedido {pedido_id}")
+    
+    # Processamento...
+    
+    fim = datetime.now()
+    duracao = (fim - inicio).total_seconds()
+    logger.info(f"Pedido {pedido_id} processado em {duracao:.2f}s")
+
+Função auxiliar para debug:
+def debug_datetime(dt, nome="datetime"):
+    """Imprime informações detalhadas sobre datetime."""
+    print(f"\n=== DEBUG: {nome} ===")
+    print(f"Valor: {dt}")
+    print(f"ISO: {dt.isoformat()}")
+    
+    if isinstance(dt, datetime):
+        print(f"Data: {dt.date()}")
+        print(f"Hora: {dt.time()}")
+        print(f"Timestamp: {dt.timestamp()}")
+        print(f"Timezone: {dt.tzinfo}")
+        print(f"Dia da semana: {dt.weekday()} ({dt.strftime('%A')})")
+    
+    if hasattr(dt, 'year'):
+        print(f"Ano: {dt.year}, Mês: {dt.month}, Dia: {dt.day}")
+    
+    print("=" * 40)
+
+# Uso
+debug_datetime(datetime.now(), "Agora")
+
+9.3 RECURSOS ADICIONAIS
+--------------------------------------------------------------------------------
+Bibliotecas úteis para trabalhar com datas.
+
+dateutil:
+# pip install python-dateutil
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
+
+# Parsing flexível
+dt = parser.parse("February 2, 2026 at 2:30 PM")
+print(dt)
+
+# Adicionar meses de forma correta
+hoje = date.today()
+daqui_3_meses = hoje + relativedelta(months=3)
+print(daqui_3_meses)
+
+arrow:
+# pip install arrow
+import arrow
+
+# Interface mais amigável
+agora = arrow.now()
+print(agora.format('DD/MM/YYYY HH:mm:ss'))
+
+# Humanização
+print(agora.humanize())  # "just now"
+
+# Manipulação fácil
+amanha = agora.shift(days=1)
+print(amanha)
+
+pendulum:
+# pip install pendulum
+import pendulum
+
+# Fuso horário fácil
+dt = pendulum.now('America/Sao_Paulo')
+print(dt)
+
+# Diferenças amigáveis
+dt1 = pendulum.now()
+dt2 = dt1.add(days=2, hours=3)
+diff = dt2.diff_for_humans(dt1)
+print(diff)  # "2 days from now"
+
+
+================================================================================
+RESUMO RÁPIDO
+================================================================================
+
+CLASSES PRINCIPAIS:
+
+# date - apenas data
+from datetime import date
+hoje = date.today()                # Data atual
+data = date(2026, 2, 2)           # Data específica
+
+# time - apenas hora
+from datetime import time
+hora = time(14, 30, 45)           # Hora específica
+
+# datetime - data e hora
+from datetime import datetime
+agora = datetime.now()             # Data e hora atuais
+dt = datetime(2026, 2, 2, 14, 30) # Data e hora específicas
+
+# timedelta - diferença de tempo
+from datetime import timedelta
+delta = timedelta(days=7, hours=2) # 7 dias e 2 horas
+
+OPERAÇÕES COMUNS:
+
+# Criar datas
+hoje = date.today()
+agora = datetime.now()
+
+# Formatar (datetime → string)
+hoje.strftime('%d/%m/%Y')          # '02/02/2026'
+agora.strftime('%d/%m/%Y %H:%M')   # '02/02/2026 14:30'
+
+# Parse (string → datetime)
+datetime.strptime('02/02/2026', '%d/%m/%Y')
+
+# Aritmética
+amanha = hoje + timedelta(days=1)
+ontem = hoje - timedelta(days=1)
+
+# Diferença
+diferenca = data2 - data1          # Retorna timedelta
+
+# Comparações
+data1 < data2
+data1 == data2
+
+# Componentes
+dt.year, dt.month, dt.day
+dt.hour, dt.minute, dt.second
+
+# Conversões
+dt.date()          # Extrai date
+dt.time()          # Extrai time
+dt.timestamp()     # Para timestamp Unix
+dt.isoformat()     # Para string ISO
+
+CÓDIGOS DE FORMATO (strftime/strptime):
+
+%Y - Ano 4 dígitos (2026)
+%y - Ano 2 dígitos (26)
+%m - Mês 2 dígitos (02)
+%d - Dia 2 dígitos (02)
+%H - Hora 24h (14)
+%I - Hora 12h (02)
+%M - Minuto (30)
+%S - Segundo (45)
+%f - Microssegundo (123456)
+%p - AM/PM
+%B - Nome do mês (February)
+%b - Mês abreviado (Feb)
+%A - Nome do dia (Monday)
+%a - Dia abreviado (Mon)
+
+FUSOS HORÁRIOS:
+
+# timezone (Python 3.2+)
+from datetime import timezone
+utc_agora = datetime.now(timezone.utc)
+
+# zoneinfo (Python 3.9+)
+from zoneinfo import ZoneInfo
+dt_br = datetime.now(ZoneInfo("America/Sao_Paulo"))
+
+# Converter entre fusos
+dt_utc = dt_local.astimezone(timezone.utc)
+
+BOAS PRÁTICAS:
+
+✅ Use date para datas sem hora
+✅ Use datetime para timestamps completos
+✅ Use timedelta para diferenças de tempo
+✅ Armazene sempre em UTC
+✅ Converta para fuso local na exibição
+✅ Use ISO format para serialização
+✅ Valide entrada do usuário
+✅ Trate exceções de parsing
+✅ Use aware datetimes (com tzinfo)
+✅ Use strftime/strptime para conversões
+
+❌ Não compare naive com aware datetimes
+❌ Não use date quando precisa de hora
+❌ Não armazene em fuso local
+❌ Não confie em formato ambíguo (01/02 = jan 2 ou fev 1?)
+❌ Não ignore fusos horários
+❌ Não use strings para cálculos
+❌ Não assuma formato de data padrão
+
+CASOS DE USO COMUNS:
+
+1. Idade:
+   idade = (date.today() - nascimento).days // 365
+
+2. Dias úteis:
+   if data.weekday() < 5: # Segunda a sexta
+
+3. Início do dia:
+   inicio = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
+4. Fim do mês:
+   import calendar
+   ultimo = calendar.monthrange(ano, mes)[1]
+
+5. Validação:
+   try:
+       data = datetime.strptime(string, formato)
+   except ValueError:
+       # Data inválida
+
+6. Timestamp:
+   timestamp = datetime.now().timestamp()
+   dt = datetime.fromtimestamp(timestamp)
+
+
+================================================================================
+DOCUMENTAÇÃO OFICIAL DO PYTHON - DATETIME
+================================================================================
+
+================================================================================
+PRINCIPAL - MÓDULO DATETIME
+================================================================================
+https://docs.python.org/3/library/datetime.html
+Documentação oficial completa do módulo datetime
+
+================================================================================
+CLASSES DO DATETIME
+================================================================================
+https://docs.python.org/3/library/datetime.html#date-objects
+date - Trabalhando com datas
+
+https://docs.python.org/3/library/datetime.html#time-objects
+time - Trabalhando com horas
+
+https://docs.python.org/3/library/datetime.html#datetime-objects
+datetime - Trabalhando com data e hora
+
+https://docs.python.org/3/library/datetime.html#timedelta-objects
+timedelta - Trabalhando com diferenças de tempo
+
+https://docs.python.org/3/library/datetime.html#tzinfo-objects
+tzinfo - Informações de fuso horário
+
+https://docs.python.org/3/library/datetime.html#timezone-objects
+timezone - Fusos horários simples
+
+================================================================================
+FUSOS HORÁRIOS
+================================================================================
+https://docs.python.org/3/library/zoneinfo.html
+zoneinfo - Suporte a fuso horário IANA (Python 3.9+)
+
+https://pypi.org/project/pytz/
+pytz - Biblioteca de fusos horários
+
+https://www.iana.org/time-zones
+IANA Time Zone Database
+
+================================================================================
+MÓDULOS RELACIONADOS
+================================================================================
+https://docs.python.org/3/library/time.html
+time - Funções de tempo
+
+https://docs.python.org/3/library/calendar.html
+calendar - Funções de calendário
+
+================================================================================
+BIBLIOTECAS EXTERNAS POPULARES
+================================================================================
+https://dateutil.readthedocs.io/
+python-dateutil - Extensões poderosas para datetime
+
+https://arrow.readthedocs.io/
+arrow - Manipulação de data/hora amigável
+
+https://pendulum.eustace.io/
+pendulum - Biblioteca moderna de datetime
+
+================================================================================
+FORMATOS E PADRÕES
+================================================================================
+https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+Códigos de formato strftime/strptime
+
+https://en.wikipedia.org/wiki/ISO_8601
+ISO 8601 - Padrão internacional de data/hora
+
+https://www.rfc-editor.org/rfc/rfc3339
+RFC 3339 - Formato de data/hora para internet
+
+================================================================================
+						AGRIPPA
+================================================================================
