@@ -1,0 +1,1951 @@
+================================================================================
+                    BIBLIOTECA CALENDAR DO PYTHON
+                           NÍVEL INICIANTE
+================================================================================
+
+
+
+================================================================================
+1. INTRODUÇÃO À BIBLIOTECA CALENDAR
+================================================================================
+
+1.1 O QUE É A BIBLIOTECA CALENDAR?
+--------------------------------------------------------------------------------
+A biblioteca calendar faz parte da biblioteca padrão do Python, introduzida na
+versão 2.0. Ela fornece classes e funções para trabalhar com calendários,
+gerando representações em texto e HTML, e oferecendo utilitários para consultar
+informações sobre dias, semanas e meses.
+
+Principais componentes do módulo calendar:
+- TextCalendar: Classe para gerar calendários formatados em texto
+- HTMLCalendar: Classe para gerar calendários formatados em HTML
+- Funções utilitárias: monthrange, isleap, weekday, monthcalendar, etc.
+- Constantes: MONDAY, TUESDAY, ..., SUNDAY e listas de nomes de dias/meses
+
+Exemplo básico:
+# Importando o módulo
+import calendar
+
+# Imprimir calendário de um mês
+calendar.prmonth(2026, 2)
+#    February 2026
+# Mo Tu We Th Fr Sa Su
+#                    1
+#  2  3  4  5  6  7  8
+#  9 10 11 12 13 14 15
+# 16 17 18 19 20 21 22
+# 23 24 25 26 27 28
+# Verificar se é ano bissexto
+print(calendar.isleap(2024))  # True
+print(calendar.isleap(2026))  # False
+
+# Primeiro dia e quantidade de dias do mês
+primeiro_dia, total_dias = calendar.monthrange(2026, 2)
+print(primeiro_dia)  # 6 (domingo)
+print(total_dias)    # 28
+
+1.2 POR QUE USAR CALENDAR?
+--------------------------------------------------------------------------------
+Benefícios da biblioteca calendar:
+- Geração fácil de calendários em texto e HTML
+- Consulta rápida de informações sobre meses e anos
+- Verificação de anos bissextos
+- Iteração estruturada sobre dias e semanas
+- Formatação pronta para uso em interfaces
+- Parte da biblioteca padrão (não precisa instalar)
+- Complementa o módulo datetime para funcionalidades de calendário
+
+Casos de uso apropriados:
+✅ Gerar calendários para exibição em texto ou web
+✅ Verificar se um ano é bissexto
+✅ Consultar quantos dias um mês possui
+✅ Determinar o dia da semana de uma data
+✅ Criar agendas e planners
+✅ Calcular dias úteis em um mês
+✅ Gerar relatórios mensais com calendário
+✅ Criar sistemas de reserva com visualização
+
+Limitações:
+⚠️  Não manipula datas diretamente (use datetime)
+⚠️  Não faz aritmética com datas (use timedelta)
+⚠️  Nomes de dias/meses dependem do locale do sistema
+⚠️  Não suporta fusos horários
+⚠️  Formatação HTML básica (sem estilização avançada)
+
+1.3 IMPORTANDO O MÓDULO CALENDAR
+--------------------------------------------------------------------------------
+O módulo calendar faz parte da biblioteca padrão do Python.
+
+Importação completa (recomendado):
+import calendar
+
+# Acessando funções e classes diretamente
+calendar.prmonth(2026, 2)
+calendar.isleap(2024)
+
+Importação específica:
+from calendar import TextCalendar, HTMLCalendar
+from calendar import isleap, monthrange, weekday
+
+# Uso direto
+cal = TextCalendar()
+print(isleap(2024))  # True
+
+Importação de constantes:
+from calendar import MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+from calendar import month_name, month_abbr, day_name, day_abbr
+
+# Uso direto
+print(MONDAY)      # 0
+print(month_name[2])  # February
+
+Importação com alias:
+import calendar as cal
+
+cal.prmonth(2026, 2)
+print(cal.isleap(2024))  # True
+
+Verificando disponibilidade:
+import sys
+import calendar
+
+print(f"Python {sys.version}")
+print(f"calendar disponível: {'calendar' in dir()}")
+print(f"TextCalendar: {hasattr(calendar, 'TextCalendar')}")
+print(f"HTMLCalendar: {hasattr(calendar, 'HTMLCalendar')}")
+
+
+================================================================================
+2. TRABALHANDO COM A CLASSE TextCalendar
+================================================================================
+
+2.1 CRIANDO OBJETOS TextCalendar
+--------------------------------------------------------------------------------
+A classe TextCalendar gera representações de calendários formatados em texto
+plano. Recebe como parâmetro opcional o primeiro dia da semana.
+
+TextCalendar(firstweekday=0)
+# Cria um objeto TextCalendar
+# firstweekday: 0=Segunda, 1=Terça, ..., 6=Domingo
+
+Criação básica:
+import calendar
+
+# Calendário padrão (começa na segunda-feira)
+cal = calendar.TextCalendar()
+print(cal.firstweekday)  # 0
+
+# Calendário começando no domingo
+cal_domingo = calendar.TextCalendar(firstweekday=6)
+print(cal_domingo.firstweekday)  # 6
+
+# Usando constantes (mais legível)
+cal_sexta = calendar.TextCalendar(firstweekday=calendar.FRIDAY)
+print(cal_sexta.firstweekday)  # 4
+
+Alterando o primeiro dia depois da criação:
+cal = calendar.TextCalendar()
+
+# Alterar o primeiro dia
+cal.setfirstweekday(calendar.SUNDAY)  # Agora começa no domingo
+print(cal.getfirstweekday())  # 6
+
+# Verificar dia atual
+print(cal.getfirstweekday())  # 6
+
+2.2 MÉTODOS DE FORMATAÇÃO DE TEXTO
+--------------------------------------------------------------------------------
+TextCalendar possui métodos para formatar meses e anos como strings.
+
+Formatando um mês (formatmonth):
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Gerar string do calendário de um mês
+texto = cal.formatmonth(2026, 2)
+print(texto)
+#    February 2026
+# Mo Tu We Th Fr Sa Su
+#                    1
+#  2  3  4  5  6  7  8
+#  9 10 11 12 13 14 15
+# 16 17 18 19 20 21 22
+# 23 24 25 26 27 28
+
+# Com largura personalizada (w) e número de linhas (l)
+texto = cal.formatmonth(2026, 2, w=4, l=2)
+print(texto)
+#       February 2026
+#  Mo   Tu   We   Th   Fr   Sa   Su
+#                                 1
+#
+#   2    3    4    5    6    7    8
+#
+#   9   10   11   12   13   14   15
+#
+#  16   17   18   19   20   21   22
+#
+#  23   24   25   26   27   28
+
+Imprimindo diretamente (prmonth):
+# prmonth imprime o calendário diretamente no console
+cal.prmonth(2026, 3)
+#     March 2026
+# Mo Tu We Th Fr Sa Su
+#                    1
+#  2  3  4  5  6  7  8
+#  9 10 11 12 13 14 15
+# 16 17 18 19 20 21 22
+# 23 24 25 26 27 28 29
+# 30 31
+
+Formatando um ano (formatyear):
+# Gerar calendário completo do ano
+texto_ano = cal.formatyear(2026)
+print(texto_ano)
+# 2026
+#
+#     January 2026        February 2026         March 2026
+# Mo Tu We Th Fr Sa Su Mo Tu We Th Fr Sa Su Mo Tu We Th Fr Sa Su
+#              1  2  3  4                  1                    1
+#  5  6  7  8  9 10 11  2  3  4  5  6  7  8  2  3  4  5  6  7  8
+# ...
+
+# Com número de meses por linha
+texto_ano = cal.formatyear(2026, m=3)  # 3 meses por linha (padrão)
+texto_ano = cal.formatyear(2026, m=4)  # 4 meses por linha
+
+Imprimindo o ano:
+cal.printyear(2026)        # 3 meses por linha (padrão)
+cal.printyear(2026, m=2)   # 2 meses por linha
+cal.printyear(2026, m=4)   # 4 meses por linha
+
+Formatando semanas:
+# formatweek - formata uma semana como string
+# Retorna lista de tuplas (dia, dia_da_semana) da semana
+
+# Usar iterweekdays para obter a semana
+semana = list(cal.iterweekdays())
+print(semana)  # [0, 1, 2, 3, 4, 5, 6]
+
+# Cabeçalho da semana
+print(cal.formatweekheader(w=3))  # Mo Tu We Th Fr Sa Su
+print(cal.formatweekheader(w=9))  # Monday    Tuesday   Wednesday ...
+
+2.3 CONFIGURANDO O PRIMEIRO DIA DA SEMANA
+--------------------------------------------------------------------------------
+O primeiro dia da semana pode ser configurado globalmente ou por instância.
+
+Configuração global (afeta todas as instâncias):
+import calendar
+
+# Verificar configuração atual
+print(calendar.firstweekday())  # 0 (Segunda-feira)
+
+# Alterar globalmente para domingo
+calendar.setfirstweekday(calendar.SUNDAY)
+print(calendar.firstweekday())  # 6
+
+# Agora todos os calendários começam no domingo
+calendar.prmonth(2026, 2)
+#    February 2026
+# Su Mo Tu We Th Fr Sa
+#  1  2  3  4  5  6  7
+#  8  9 10 11 12 13 14
+# 15 16 17 18 19 20 21
+# 22 23 24 25 26 27 28
+
+# Voltar para segunda-feira
+calendar.setfirstweekday(calendar.MONDAY)
+
+Configuração por instância (não afeta outras instâncias):
+cal1 = calendar.TextCalendar(firstweekday=calendar.MONDAY)
+cal2 = calendar.TextCalendar(firstweekday=calendar.SUNDAY)
+
+# cal1 começa na segunda
+cal1.prmonth(2026, 2)
+
+# cal2 começa no domingo
+cal2.prmonth(2026, 2)
+
+# cal1 não foi afetado pela criação de cal2
+print(cal1.getfirstweekday())  # 0 (Segunda)
+print(cal2.getfirstweekday())  # 6 (Domingo)
+
+Dias da semana como constantes:
+import calendar
+
+# Constantes disponíveis
+print(calendar.MONDAY)     # 0
+print(calendar.TUESDAY)    # 1
+print(calendar.WEDNESDAY)  # 2
+print(calendar.THURSDAY)   # 3
+print(calendar.FRIDAY)     # 4
+print(calendar.SATURDAY)   # 5
+print(calendar.SUNDAY)     # 6
+
+
+================================================================================
+3. TRABALHANDO COM A CLASSE HTMLCalendar
+================================================================================
+
+3.1 CRIANDO OBJETOS HTMLCalendar
+--------------------------------------------------------------------------------
+A classe HTMLCalendar gera calendários formatados em HTML, útil para
+aplicações web. Funciona de forma muito similar ao TextCalendar.
+
+HTMLCalendar(firstweekday=0)
+# Cria um objeto HTMLCalendar
+# firstweekday: 0=Segunda, 1=Terça, ..., 6=Domingo
+
+Criação básica:
+import calendar
+
+# Calendário HTML padrão (começa segunda-feira)
+cal = calendar.HTMLCalendar()
+print(cal.firstweekday)  # 0
+
+# Calendário HTML começando no domingo
+cal_domingo = calendar.HTMLCalendar(firstweekday=calendar.SUNDAY)
+print(cal_domingo.firstweekday)  # 6
+
+3.2 MÉTODOS DE FORMATAÇÃO HTML
+--------------------------------------------------------------------------------
+HTMLCalendar gera strings HTML com tags table para representar calendários.
+
+Formatando um mês (formatmonth):
+import calendar
+
+cal = calendar.HTMLCalendar()
+
+# Gerar HTML de um mês
+html = cal.formatmonth(2026, 2)
+print(html)
+# <table border="0" cellpadding="0" cellspacing="0" class="month">
+# <tr><th colspan="7" class="month">February 2026</th></tr>
+# <tr><th class="mon">Mo</th><th class="tue">Tu</th>...
+# <tr><td class="noday">&nbsp;</td>...<td class="sun">1</td></tr>
+# <tr><td class="mon">2</td><td class="tue">3</td>...
+# ...
+# </table>
+
+# Com largura da tabela definida
+html = cal.formatmonth(2026, 2, withyear=True)   # Com ano no título
+html = cal.formatmonth(2026, 2, withyear=False)  # Sem ano no título
+
+Formatando um ano (formatyear):
+# Gerar HTML do ano completo
+html_ano = cal.formatyear(2026)
+print(html_ano[:200])  # Começa com <table...
+
+# Com número de meses por linha
+html_ano = cal.formatyear(2026, width=3)  # 3 meses por linha (padrão)
+html_ano = cal.formatyear(2026, width=4)  # 4 meses por linha
+
+# Gerar página HTML completa
+html_pagina = cal.formatyearpage(2026)
+# Retorna uma página HTML completa com <html>, <head>, <body>
+
+Formatando semana:
+# Gerar HTML de uma semana específica
+html_semana = cal.formatweek([(2026, 2, 2, 0), (2026, 2, 3, 1)], 7)
+
+Formatando dia:
+# Gerar HTML de um dia
+html_dia = cal.formatday(15, 0)  # dia 15, segunda-feira
+print(html_dia)  # <td class="mon">15</td>
+
+# Dia fora do mês (dia 0 = não pertence ao mês atual)
+html_vazio = cal.formatday(0, 0)
+print(html_vazio)  # <td class="noday">&nbsp;</td>
+
+3.3 PERSONALIZANDO O HTML
+--------------------------------------------------------------------------------
+O HTML gerado usa classes CSS que podem ser estilizadas.
+
+Classes CSS disponíveis:
+# Classes de dias da semana:
+# .mon - Segunda-feira
+# .tue - Terça-feira
+# .wed - Quarta-feira
+# .thu - Quinta-feira
+# .fri - Sexta-feira
+# .sat - Sábado
+# .sun - Domingo
+# .month - Classe do título do mês
+# .year - Classe do título do ano
+# .noday - Célula vazia (dias fora do mês)
+
+Exemplo de estilização CSS:
+css_calendario = """
+<style>
+    table.month {
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        margin: 10px auto;
+    }
+    table.month th.month {
+        background-color: #2196F3;
+        color: white;
+        padding: 10px;
+        font-size: 18px;
+    }
+    table.month th {
+        background-color: #E3F2FD;
+        padding: 8px;
+        border: 1px solid #BBDEFB;
+    }
+    table.month td {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #E0E0E0;
+        width: 40px;
+    }
+    table.month td.sat, table.month td.sun,
+    table.month th.sat, table.month th.sun {
+        color: #F44336;  /* Fim de semana em vermelho */
+    }
+    table.month td.noday {
+        background-color: #FAFAFA;
+    }
+</style>
+"""
+
+# Usando o CSS com o calendário HTML
+import calendar
+
+cal = calendar.HTMLCalendar()
+html_mes = cal.formatmonth(2026, 2)
+html_completo = css_calendario + html_mes
+
+# Salvar em arquivo HTML
+with open('calendario.html', 'w') as f:
+    f.write(html_completo)
+
+Exemplo completo de página HTML:
+import calendar
+
+def gerar_pagina_calendario(ano, mes):
+    """Gera página HTML completa com calendário estilizado."""
+    cal = calendar.HTMLCalendar(firstweekday=calendar.MONDAY)
+    html_mes = cal.formatmonth(ano, mes)
+    
+    pagina = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendário {ano}</title>
+    <style>
+        body {{ font-family: Arial; display: flex; justify-content: center; padding: 50px; }}
+        table.month {{ border-collapse: collapse; }}
+        table.month th.month {{ background: #2196F3; color: #fff; padding: 12px; }}
+        table.month th {{ background: #E3F2FD; padding: 8px; border: 1px solid #ccc; }}
+        table.month td {{ text-align: center; padding: 8px; border: 1px solid #ddd; width: 42px; }}
+        table.month .sat, table.month .sun {{ color: #e53935; }}
+        table.month .noday {{ background: #fafafa; }}
+    </style>
+</head>
+<body>
+    {html_mes}
+</body>
+</html>"""
+    return pagina
+
+# Gerar e salvar
+html = gerar_pagina_calendario(2026, 2)
+with open('calendario_fevereiro.html', 'w') as f:
+    f.write(html)
+
+
+================================================================================
+4. FUNÇÕES UTILITÁRIAS DO MÓDULO
+================================================================================
+
+4.1 FUNÇÕES DE INFORMAÇÃO DE MÊS
+--------------------------------------------------------------------------------
+O módulo calendar oferece funções práticas para consultar informações
+sobre meses e anos sem precisar criar objetos.
+
+monthrange(year, month) - Primeiro dia e número de dias:
+import calendar
+
+# Retorna (primeiro_dia_da_semana, quantidade_de_dias)
+# primeiro_dia: 0=Segunda, 1=Terça, ..., 6=Domingo
+primeiro_dia, total_dias = calendar.monthrange(2026, 2)
+print(primeiro_dia)  # 6 (domingo)
+print(total_dias)    # 28
+
+# Março 2026
+primeiro_dia, total_dias = calendar.monthrange(2026, 3)
+print(primeiro_dia)  # 6 (domingo)
+print(total_dias)    # 31
+
+# Fevereiro em ano bissexto
+primeiro_dia, total_dias = calendar.monthrange(2024, 2)
+print(primeiro_dia)  # 3 (quinta-feira)
+print(total_dias)    # 29
+
+# Uso prático: encontrar último dia do mês
+def ultimo_dia_do_mes(ano, mes):
+    """Retorna o último dia do mês."""
+    return calendar.monthrange(ano, mes)[1]
+
+print(ultimo_dia_do_mes(2026, 2))   # 28
+print(ultimo_dia_do_mes(2026, 1))   # 31
+print(ultimo_dia_do_mes(2024, 2))   # 29
+
+monthcalendar(year, month) - Calendário como lista de semanas:
+import calendar
+
+# Retorna lista de listas (semanas), cada semana com 7 dias
+# Dias fora do mês são representados como 0
+cal_fev = calendar.monthcalendar(2026, 2)
+for semana in cal_fev:
+    print(semana)
+# [0, 0, 0, 0, 0, 0, 1]
+# [2, 3, 4, 5, 6, 7, 8]
+# [9, 10, 11, 12, 13, 14, 15]
+# [16, 17, 18, 19, 20, 21, 22]
+# [23, 24, 25, 26, 27, 28, 0]
+
+# Uso prático: encontrar todas as sextas-feiras do mês
+def sextas_do_mes(ano, mes):
+    """Retorna lista de sextas-feiras do mês."""
+    sextas = []
+    for semana in calendar.monthcalendar(ano, mes):
+        sexta = semana[calendar.FRIDAY]  # Índice 4
+        if sexta != 0:
+            sextas.append(sexta)
+    return sextas
+
+print(sextas_do_mes(2026, 2))  # [6, 13, 20, 27]
+
+# Uso prático: encontrar todos os fins de semana
+def fins_de_semana(ano, mes):
+    """Retorna lista de tuplas (sabado, domingo) do mês."""
+    result = []
+    for semana in calendar.monthcalendar(ano, mes):
+        sabado = semana[calendar.SATURDAY]
+        domingo = semana[calendar.SUNDAY]
+        if sabado != 0 or domingo != 0:
+            result.append((sabado, domingo))
+    return result
+
+print(fins_de_semana(2026, 2))
+# [(0, 1), (7, 8), (14, 15), (21, 22), (28, 0)]
+
+prmonth(year, month) - Imprimir calendário no console:
+import calendar
+
+# Imprimir diretamente (função atalho)
+calendar.prmonth(2026, 2)
+#    February 2026
+# Mo Tu We Th Fr Sa Su
+#                    1
+#  2  3  4  5  6  7  8
+#  9 10 11 12 13 14 15
+# 16 17 18 19 20 21 22
+# 23 24 25 26 27 28
+
+# Com largura e espaçamento personalizados
+calendar.prmonth(2026, 2, w=4, l=1)
+
+month(year, month) - Retornar calendário como string:
+import calendar
+
+# Retorna o calendário como string (não imprime)
+texto = calendar.month(2026, 2)
+print(texto)
+# Mesmo resultado que prmonth, mas como string
+
+# Útil para armazenar ou manipular
+print(f"Calendário de Fevereiro:\n{texto}")
+
+4.2 FUNÇÕES DE DIA DA SEMANA
+--------------------------------------------------------------------------------
+Funções para consultar informações sobre dias da semana.
+
+weekday(year, month, day) - Dia da semana de uma data:
+import calendar
+
+# Retorna: 0=Segunda, 1=Terça, ..., 6=Domingo
+dia_semana = calendar.weekday(2026, 2, 2)
+print(dia_semana)  # 0 (segunda-feira)
+
+dia_semana = calendar.weekday(2026, 2, 1)
+print(dia_semana)  # 6 (domingo)
+
+dia_semana = calendar.weekday(2026, 12, 25)
+print(dia_semana)  # 4 (sexta-feira)
+
+# Uso prático: nome do dia
+def nome_do_dia(ano, mes, dia):
+    """Retorna o nome do dia da semana."""
+    indice = calendar.weekday(ano, mes, dia)
+    return calendar.day_name[indice]
+
+print(nome_do_dia(2026, 2, 2))   # Monday
+print(nome_do_dia(2026, 12, 25)) # Friday
+
+# Verificar se é dia útil
+def eh_dia_util(ano, mes, dia):
+    """Verifica se um dia é útil (segunda a sexta)."""
+    return calendar.weekday(ano, mes, dia) < 5  # 0-4 = Seg-Sex
+
+print(eh_dia_util(2026, 2, 2))   # True (segunda)
+print(eh_dia_util(2026, 2, 7))   # False (sábado)
+
+weekheader(width) - Cabeçalho da semana:
+import calendar
+
+# Cabeçalho com diferentes larguras
+print(calendar.weekheader(2))   # Mo Tu We Th Fr Sa Su
+print(calendar.weekheader(3))   # Mon Tue Wed Thu Fri Sat Sun
+print(calendar.weekheader(9))   # Monday    Tuesday   ...
+
+4.3 FUNÇÕES DE VERIFICAÇÃO (ANOS BISSEXTOS)
+--------------------------------------------------------------------------------
+Funções para verificar informações sobre anos bissextos.
+
+isleap(year) - Verificar se um ano é bissexto:
+import calendar
+
+# Um ano é bissexto se:
+# - É divisível por 4 E
+# - NÃO é divisível por 100, OU é divisível por 400
+
+print(calendar.isleap(2024))  # True  (divisível por 4)
+print(calendar.isleap(2026))  # False (não divisível por 4)
+print(calendar.isleap(1900))  # False (divisível por 100, mas não por 400)
+print(calendar.isleap(2000))  # True  (divisível por 400)
+
+# Uso prático: encontrar próximo ano bissexto
+def proximo_bissexto(ano_atual):
+    """Encontra o próximo ano bissexto."""
+    ano = ano_atual + 1
+    while not calendar.isleap(ano):
+        ano += 1
+    return ano
+
+print(proximo_bissexto(2026))  # 2028
+print(proximo_bissexto(2024))  # 2028
+
+leapdays(y1, y2) - Contar anos bissextos em um intervalo:
+import calendar
+
+# Conta anos bissextos no intervalo [y1, y2)
+# (inclui y1, exclui y2)
+bissextos = calendar.leapdays(2020, 2030)
+print(bissextos)  # 3 (2020, 2024, 2028)
+
+bissextos = calendar.leapdays(2000, 2100)
+print(bissextos)  # 25
+
+# Uso prático: listar todos os anos bissextos em um intervalo
+def anos_bissextos(inicio, fim):
+    """Lista todos os anos bissextos no intervalo [inicio, fim]."""
+    return [ano for ano in range(inicio, fim + 1) if calendar.isleap(ano)]
+
+print(anos_bissextos(2020, 2040))
+# [2020, 2024, 2028, 2032, 2036, 2040]
+
+
+================================================================================
+5. ITERADORES DO MÓDULO
+================================================================================
+
+5.1 itermonthdays, itermonthdays2, itermonthdays3
+--------------------------------------------------------------------------------
+Os iteradores permitem percorrer os dias de um mês de forma flexível,
+retornando diferentes níveis de informação.
+
+itermonthdays(year, month) - Apenas números dos dias:
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Retorna apenas os números dos dias (0 = dia fora do mês)
+dias = list(cal.itermonthdays(2026, 2))
+print(dias)
+# [0, 0, 0, 0, 0, 0, 1,
+#  2, 3, 4, 5, 6, 7, 8,
+#  9, 10, 11, 12, 13, 14, 15,
+#  16, 17, 18, 19, 20, 21, 22,
+#  23, 24, 25, 26, 27, 28, 0]
+
+# Filtrar apenas dias válidos do mês
+dias_validos = [d for d in cal.itermonthdays(2026, 2) if d != 0]
+print(dias_validos)  # [1, 2, 3, ..., 28]
+
+itermonthdays2(year, month) - Dias com dia da semana:
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Retorna tuplas (dia, dia_da_semana)
+# dia = 0 significa que não pertence ao mês
+dias = list(cal.itermonthdays2(2026, 2))
+print(dias)
+# [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (1, 6),
+#  (2, 0), (3, 1), (4, 2), (5, 3), (6, 4), (7, 5), (8, 6),
+#  ...]
+
+# Encontrar todos os dias de uma semana específica
+for dia, semana in cal.itermonthdays2(2026, 2):
+    if dia != 0 and semana == calendar.FRIDAY:
+        print(f"Sexta-feira: {dia}")
+# Sexta-feira: 6
+# Sexta-feira: 13
+# Sexta-feira: 20
+# Sexta-feira: 27
+
+itermonthdays3(year, month) - Dias com data completa:
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Retorna tuplas (ano, mes, dia)
+# Inclui dias do mês anterior e próximo para completar semanas
+dias = list(cal.itermonthdays3(2026, 2))
+print(dias[:10])
+# [(2026, 1, 26), (2026, 1, 27), (2026, 1, 28), (2026, 1, 29),
+#  (2026, 1, 30), (2026, 1, 31), (2026, 2, 1), (2026, 2, 2), ...]
+
+# Filtrar apenas dias de fevereiro
+dias_fev = [(a, m, d) for a, m, d in cal.itermonthdays3(2026, 2) if m == 2]
+print(dias_fev)
+# [(2026, 2, 1), (2026, 2, 2), ..., (2026, 2, 28)]
+
+itermonthdays4(year, month) - Dias com data e dia da semana:
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Retorna tuplas (ano, mes, dia, dia_da_semana)
+dias = list(cal.itermonthdays4(2026, 2))
+print(dias[:5])
+# [(2026, 1, 26, 0), (2026, 1, 27, 1), (2026, 1, 28, 2),
+#  (2026, 1, 29, 3), (2026, 1, 30, 4)]
+
+# Uso prático: criar calendário com informação completa
+for ano, mes, dia, dow in cal.itermonthdays4(2026, 2):
+    if mes == 2:  # Apenas dias de fevereiro
+        nome_dia = calendar.day_abbr[dow]
+        print(f"{nome_dia} {dia:2d}/02/2026")
+# Mo  2/02/2026
+# Tu  3/02/2026
+# ...
+
+5.2 iterweekdays
+--------------------------------------------------------------------------------
+Iterador para os dias da semana na ordem configurada.
+
+iterweekdays() - Iterar sobre os dias da semana:
+import calendar
+
+cal = calendar.TextCalendar()
+
+# Retorna índices dos dias na ordem do calendário
+dias_semana = list(cal.iterweekdays())
+print(dias_semana)  # [0, 1, 2, 3, 4, 5, 6]
+
+# Com primeiro dia como domingo
+cal_dom = calendar.TextCalendar(firstweekday=calendar.SUNDAY)
+dias_semana = list(cal_dom.iterweekdays())
+print(dias_semana)  # [6, 0, 1, 2, 3, 4, 5]
+
+# Uso com nomes dos dias
+for idx in cal.iterweekdays():
+    print(f"{calendar.day_name[idx]}: índice {idx}")
+# Monday: índice 0
+# Tuesday: índice 1
+# Wednesday: índice 2
+# Thursday: índice 3
+# Friday: índice 4
+# Saturday: índice 5
+# Sunday: índice 6
+
+5.3 USO PRÁTICO DOS ITERADORES
+--------------------------------------------------------------------------------
+Combinando iteradores com lógica para uso real.
+
+Gerar calendário com marcações:
+import calendar
+
+def calendário_com_marcações(ano, mes, marcacoes):
+    """
+    Gera calendário com marcações em dias específicos.
+    marcacoes: dicionário {dia: mensagem}
+    Exemplo: {15: "Reunião", 20: "Entrega"}
+    """
+    cal = calendar.TextCalendar()
+    
+    # Cabeçalho
+    nome_mes = calendar.month_name[mes]
+    print(f"\n  {nome_mes} {ano}")
+    print(calendar.weekheader(2))
+    print("-" * 30)
+    
+    # Semanas
+    for semana in cal.itermonthdays2(ano, mes):
+        linha = ""
+        for dia, dow in [semana[i:i+1][0] if i < len(semana) else (0,0) for i in range(7)]:
+            if dia == 0:
+                linha += "   "
+            elif dia in marcacoes:
+                linha += f"[{dia:2d}]"  # Marcado com colchetes
+            else:
+                linha += f" {dia:2d} "
+        print(linha)
+    
+    # Listar marcações
+    print("\nMarcações:")
+    for dia in sorted(marcacoes.keys()):
+        print(f"  {dia:2d}: {marcacoes[dia]}")
+
+# Uso
+marcacoes = {
+    5: "Reunião de equipe",
+    10: "Prazo do projeto",
+    14: "Dia dos Namorados",
+    20: "Entrega de relatório",
+    28: "Fim do mês"
+}
+calendário_com_marcações(2026, 2, marcacoes)
+
+Contar dias úteis com iteradores:
+import calendar
+
+def dias_uteis_no_mes(ano, mes, feriados=None):
+    """
+    Conta dias úteis no mês, excluindo feriados.
+    feriados: lista de dias que são feriados
+    """
+    if feriados is None:
+        feriados = []
+    
+    cal = calendar.TextCalendar()
+    uteis = 0
+    
+    for dia, dow in cal.itermonthdays2(ano, mes):
+        if dia != 0:  # Dia pertence ao mês
+            if dow < 5 and dia not in feriados:  # Seg-Sex e não feriado
+                uteis += 1
+    
+    return uteis
+
+# Fevereiro 2026 sem feriados
+print(dias_uteis_no_mes(2026, 2))  # 20
+
+# Fevereiro 2026 com carnaval (16, 17) e cinzas (18)
+print(dias_uteis_no_mes(2026, 2, feriados=[16, 17, 18]))  # 17
+
+
+================================================================================
+6. CONSTANTES E CONFIGURAÇÕES
+================================================================================
+
+6.1 DIAS DA SEMANA
+--------------------------------------------------------------------------------
+O módulo calendar define constantes para os dias da semana.
+
+Constantes numéricas:
+import calendar
+
+# Constantes de dias (valor inteiro)
+print(calendar.MONDAY)     # 0
+print(calendar.TUESDAY)    # 1
+print(calendar.WEDNESDAY)  # 2
+print(calendar.THURSDAY)   # 3
+print(calendar.FRIDAY)     # 4
+print(calendar.SATURDAY)   # 5
+print(calendar.SUNDAY)     # 6
+
+# Usando em condições
+dia = calendar.weekday(2026, 2, 2)
+if dia == calendar.MONDAY:
+    print("É segunda-feira!")  # É segunda-feira!
+
+day_name e day_abbr:
+import calendar
+
+# day_name - nomes completos dos dias
+for i, nome in enumerate(calendar.day_name):
+    print(f"{i}: {nome}")
+# 0: Monday
+# 1: Tuesday
+# 2: Wednesday
+# 3: Thursday
+# 4: Friday
+# 5: Saturday
+# 6: Sunday
+
+# Acessando por índice
+print(calendar.day_name[0])  # Monday
+print(calendar.day_name[6])  # Sunday
+
+# day_abbr - nomes abreviados dos dias
+for i, abrev in enumerate(calendar.day_abbr):
+    print(f"{i}: {abrev}")
+# 0: Mo
+# 1: Tu
+# 2: We
+# 3: Th
+# 4: Fr
+# 5: Sa
+# 6: Su
+
+print(calendar.day_abbr[4])  # Fr
+
+6.2 MESES DO ANO
+--------------------------------------------------------------------------------
+O módulo fornece listas com os nomes dos meses.
+
+month_name - Nomes completos dos meses:
+import calendar
+
+# month_name[0] é string vazia, meses começa em 1
+for i, nome in enumerate(calendar.month_name):
+    if nome:  # Ignorar índice 0 (vazio)
+        print(f"{i:2d}: {nome}")
+#  1: January
+#  2: February
+#  3: March
+#  4: April
+#  5: May
+#  6: June
+#  7: July
+#  8: August
+#  9: September
+# 10: October
+# 11: November
+# 12: December
+
+# Acessando por índice (1-12)
+print(calendar.month_name[1])   # January
+print(calendar.month_name[2])   # February
+print(calendar.month_name[12])  # December
+
+# Uso prático: nome do mês atual
+from datetime import date
+hoje = date.today()
+print(f"Mês atual: {calendar.month_name[hoje.month]}")  # February
+
+month_abbr - Nomes abreviados dos meses:
+import calendar
+
+# month_abbr[0] é string vazia
+for i, abrev in enumerate(calendar.month_abbr):
+    if abrev:
+        print(f"{i:2d}: {abrev}")
+#  1: Jan
+#  2: Feb
+#  3: Mar
+#  ...
+# 12: Dec
+
+print(calendar.month_abbr[2])   # Feb
+print(calendar.month_abbr[12])  # Dec
+
+6.3 CONFIGURAÇÕES GLOBAIS
+--------------------------------------------------------------------------------
+Configurações que afetam todo o módulo.
+
+Primeiro dia da semana (global):
+import calendar
+
+# Consultar
+print(calendar.firstweekday())  # 0 (Segunda-feira por padrão)
+
+# Alterar
+calendar.setfirstweekday(calendar.SUNDAY)
+print(calendar.firstweekday())  # 6
+
+# Restaurar
+calendar.setfirstweekday(calendar.MONDAY)
+print(calendar.firstweekday())  # 0
+
+Nota sobre locale e nomes:
+# Os nomes em day_name, day_abbr, month_name e month_abbr
+# dependem da configuração do locale do sistema.
+# Para alterar, use o módulo locale:
+
+import locale
+import calendar
+
+# Tentar definir locale para português
+try:
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+except locale.Error:
+    print("Locale pt_BR não disponível no sistema")
+
+# Após alterar o locale, os nomes devem mudar
+# (comportamento depende do sistema operacional)
+print(calendar.month_name[2])  # Pode ser "fevereiro" se locale funcionar
+
+
+================================================================================
+7. PROJETOS PRÁTICOS
+================================================================================
+
+7.1 GERADOR DE CALENDÁRIO PERSONALIZADO
+--------------------------------------------------------------------------------
+Criando um gerador de calendário com funcionalidades extras.
+
+Calendário com números de semana:
+import calendar
+
+def calendário_com_semanas(ano, mes):
+    """Gera calendário com números de semana ISO na margem."""
+    cal = calendar.TextCalendar(firstweekday=calendar.MONDAY)
+    
+    nome_mes = calendar.month_name[mes]
+    print(f"\n    {nome_mes} {ano}")
+    print(" W  Mo Tu We Th Fr Sa Su")
+    print(" " + "-" * 24)
+    
+    # Usar itermonthdays4 para ter todas as infos
+    semana_atual = None
+    linha = ""
+    
+    for ano_d, mes_d, dia, dow in cal.itermonthdays4(ano, mes):
+        if dow == 0:  # Segunda-feira = início da semana
+            if linha:
+                print(linha)
+            # Calcular número da semana ISO
+            from datetime import date
+            d = date(ano_d, mes_d, dia if dia > 0 else 1)
+            num_semana = d.isocalendar()[1]
+            linha = f"{num_semana:2d}  "
+        
+        if mes_d == mes:
+            linha += f"{dia:2d} "
+        else:
+            linha += "   "
+    
+    if linha.strip():
+        print(linha)
+
+# Uso
+calendário_com_semanas(2026, 2)
+#     February 2026
+#  W  Mo Tu We Th Fr Sa Su
+#  -------------------------
+#  5                      1
+#  6   2  3  4  5  6  7  8
+#  7   9 10 11 12 13 14 15
+#  8  16 17 18 19 20 21 22
+#  9  23 24 25 26 27 28
+
+Calendário de um trimestre:
+import calendar
+
+def calendário_trimestre(ano, primeiro_mes):
+    """Gera calendário de 3 meses lado a lado em texto."""
+    cal = calendar.TextCalendar()
+    
+    # Usar formatyear parcialmente (printyear com filtro)
+    # Alternativa: formatar manualmente
+    meses = []
+    for m in range(primeiro_mes, primeiro_mes + 3):
+        if m > 12:
+            break
+        meses.append(cal.formatmonth(ano, m).splitlines())
+    
+    # Alinhar altura (adicionar linhas vazias se necessário)
+    max_linhas = max(len(m) for m in meses)
+    for m in meses:
+        while len(m) < max_linhas:
+            m.append(" " * 20)
+    
+    # Imprimir lado a lado
+    for i in range(max_linhas):
+        linha = "  ".join(m[i].ljust(20) for m in meses)
+        print(linha)
+
+# Uso
+calendário_trimestre(2026, 1)  # Jan, Fev, Mar
+
+Gerador de calendário anual compacto:
+import calendar
+
+def calendário_anual(ano):
+    """Gera calendário anual formatado."""
+    cal = calendar.TextCalendar()
+    
+    print(f"\n{'=' * 60}")
+    print(f"  CALENDÁRIO {ano}".center(60))
+    print(f"{'=' * 60}")
+    
+    # 4 trimestres
+    for trimestre in range(4):
+        print(f"\n  {'─' * 56}")
+        primeiro_mes = trimestre * 3 + 1
+        
+        # Nomes dos meses do trimestre
+        nomes = "  ".join(
+            calendar.month_name[m].center(18)
+            for m in range(primeiro_mes, primeiro_mes + 3)
+        )
+        print(f"  {nomes}")
+        print(f"  {'─' * 56}")
+        
+        # Usar printyear seria mais simples, mas para controle total:
+        cal.printyear(ano, m=3)  # Simplified: use built-in
+        break  # Usar printyear para o ano completo
+    
+    # Versão simplificada usando printyear
+    cal.printyear(ano, m=3, w=2, l=1)
+
+# Uso
+calendário_anual(2026)
+
+7.2 CALCULADORA DE DIAS ÚTEIS
+--------------------------------------------------------------------------------
+Sistema para calcular dias úteis considerando feriados.
+
+Classe calculadora de dias úteis:
+import calendar
+from datetime import date, timedelta
+
+class CalcDiasUteis:
+    """Calculadora de dias úteis com suporte a feriados."""
+    
+    def __init__(self, feriados=None):
+        """
+        Args:
+            feriados: lista de objetos date com os feriados
+        """
+        self.feriados = set(feriados) if feriados else set()
+    
+    def adicionar_feriado(self, data):
+        """Adiciona um feriado."""
+        self.feriados.add(data)
+    
+    def remover_feriado(self, data):
+        """Remove um feriado."""
+        self.feriados.discard(data)
+    
+    def eh_dia_util(self, data):
+        """Verifica se uma data é dia útil."""
+        if data in self.feriados:
+            return False
+        # weekday(): 0=Segunda, ..., 4=Sexta, 5=Sábado, 6=Domingo
+        return data.weekday() < 5
+    
+    def dias_uteis_no_mes(self, ano, mes):
+        """Conta dias úteis em um mês."""
+        _, total_dias = calendar.monthrange(ano, mes)
+        count = 0
+        
+        for dia in range(1, total_dias + 1):
+            if self.eh_dia_util(date(ano, mes, dia)):
+                count += 1
+        
+        return count
+    
+    def dias_uteis_entre(self, data_inicio, data_fim):
+        """Conta dias úteis entre duas datas (inclusive)."""
+        count = 0
+        atual = data_inicio
+        
+        while atual <= data_fim:
+            if self.eh_dia_util(atual):
+                count += 1
+            atual += timedelta(days=1)
+        
+        return count
+    
+    def proximo_dia_util(self, data):
+        """Encontra o próximo dia útil a partir de uma data."""
+        atual = data
+        while not self.eh_dia_util(atual):
+            atual += timedelta(days=1)
+        return atual
+    
+    def adicionar_dias_uteis(self, data_inicio, dias):
+        """Adiciona N dias úteis a uma data."""
+        atual = data_inicio
+        adicionados = 0
+        
+        while adicionados < dias:
+            atual += timedelta(days=1)
+            if self.eh_dia_util(atual):
+                adicionados += 1
+        
+        return atual
+    
+    def listar_dias_uteis(self, ano, mes):
+        """Lista todos os dias úteis do mês."""
+        _, total_dias = calendar.monthrange(ano, mes)
+        uteis = []
+        
+        for dia in range(1, total_dias + 1):
+            d = date(ano, mes, dia)
+            if self.eh_dia_util(d):
+                uteis.append(d)
+        
+        return uteis
+
+# Uso
+# Feriados de Fevereiro 2026 (exemplo)
+feriados = [
+    date(2026, 2, 16),  # Carnaval (Segunda)
+    date(2026, 2, 17),  # Carnaval (Terça)
+]
+
+calc = CalcDiasUteis(feriados)
+
+# Dias úteis no mês
+print(f"Dias úteis em Fev 2026: {calc.dias_uteis_no_mes(2026, 2)}")
+
+# Dias úteis entre duas datas
+inicio = date(2026, 2, 1)
+fim = date(2026, 2, 28)
+print(f"Dias úteis de {inicio} a {fim}: {calc.dias_uteis_entre(inicio, fim)}")
+
+# Próximo dia útil após um sábado
+sabado = date(2026, 2, 7)
+print(f"Próximo dia útil após {sabado}: {calc.proximo_dia_util(sabado)}")
+# 2026-02-09 (segunda)
+
+# Adicionar 10 dias úteis
+data_base = date(2026, 2, 2)
+data_resultado = calc.adicionar_dias_uteis(data_base, 10)
+print(f"10 dias úteis após {data_base}: {data_resultado}")
+
+7.3 SISTEMA DE AGENDA MENSAL
+--------------------------------------------------------------------------------
+Sistema para gerenciar eventos em um calendário visual.
+
+Classe de agenda mensal:
+import calendar
+from datetime import date
+from collections import defaultdict
+
+class AgendaMensal:
+    """Sistema de agenda com visualização de calendário."""
+    
+    def __init__(self):
+        self.eventos = defaultdict(list)  # {date: [eventos]}
+    
+    def adicionar_evento(self, data, titulo, hora=None, descricao=""):
+        """
+        Adiciona um evento na agenda.
+        Args:
+            data: objeto date
+            titulo: título do evento
+            hora: hora do evento (string, ex: "14:30")
+            descricao: descrição opcional
+        """
+        evento = {
+            'titulo': titulo,
+            'hora': hora,
+            'descricao': descricao
+        }
+        self.eventos[data].append(evento)
+        print(f"✓ Evento adicionado: {titulo} em {data.strftime('%d/%m/%Y')}")
+    
+    def remover_evento(self, data, titulo):
+        """Remove um evento específico."""
+        if data in self.eventos:
+            self.eventos[data] = [
+                e for e in self.eventos[data]
+                if e['titulo'] != titulo
+            ]
+            if not self.eventos[data]:
+                del self.eventos[data]
+            print(f"✓ Evento removido: {titulo}")
+        else:
+            print(f"✗ Nenhum evento encontrado em {data}")
+    
+    def listar_eventos_dia(self, data):
+        """Lista eventos de um dia específico."""
+        if data in self.eventos:
+            print(f"\nEventos de {data.strftime('%d/%m/%Y (%A)')}:")
+            for evento in sorted(self.eventos[data], 
+                                key=lambda e: e['hora'] or "00:00"):
+                hora_str = f" {evento['hora']}" if evento['hora'] else ""
+                print(f"  [{hora_str}] {evento['titulo']}")
+                if evento['descricao']:
+                    print(f"         {evento['descricao']}")
+        else:
+            print(f"Sem eventos em {data.strftime('%d/%m/%Y')}")
+    
+    def visualizar_mes(self, ano, mes):
+        """Visualiza o calendário do mês com marcações de eventos."""
+        cal = calendar.TextCalendar(firstweekday=calendar.MONDAY)
+        
+        nome_mes = calendar.month_name[mes]
+        print(f"\n{'=' * 45}")
+        print(f"  AGENDA - {nome_mes.upper()} {ano}")
+        print(f"{'=' * 45}")
+        print(" Mo  Tu  We  Th  Fr  Sa  Su")
+        print("-" * 33)
+        
+        # Gerar calendário
+        for semana in calendar.monthcalendar(ano, mes):
+            linha = ""
+            for dia in semana:
+                if dia == 0:
+                    linha += "    "
+                else:
+                    d = date(ano, mes, dia)
+                    if d in self.eventos:
+                        linha += f"[{dia:2d}]"  # Marcado
+                    else:
+                        linha += f" {dia:2d} "
+            print(linha)
+        
+        # Listar eventos do mês
+        print(f"\n{'─' * 45}")
+        print("  Eventos do mês:")
+        print(f"{'─' * 45}")
+        
+        # Ordenar por data
+        eventos_mes = {
+            d: evts for d, evts in self.eventos.items()
+            if d.year == ano and d.month == mes
+        }
+        
+        for data in sorted(eventos_mes.keys()):
+            print(f"\n  {data.strftime('%d/%m (%A)')}:")
+            for evento in eventos_mes[data]:
+                hora_str = f" {evento['hora']}" if evento['hora'] else ""
+                print(f"    •{hora_str} {evento['titulo']}")
+    
+    def eventos_proximos(self, dias=7):
+        """Lista eventos dos próximos N dias."""
+        from datetime import timedelta
+        
+        hoje = date.today()
+        print(f"\nEventos dos próximos {dias} dias:")
+        print("-" * 35)
+        
+        encontrou = False
+        for i in range(dias + 1):
+            dia = hoje + timedelta(days=i)
+            if dia in self.eventos:
+                encontrou = True
+                rotulo = "Hoje" if i == 0 else f"Em {i} dia(s)"
+                print(f"\n  {dia.strftime('%d/%m (%A)')} - {rotulo}:")
+                for evento in self.eventos[dia]:
+                    hora_str = f" {evento['hora']}" if evento['hora'] else ""
+                    print(f"    •{hora_str} {evento['titulo']}")
+        
+        if not encontrou:
+            print("  Sem eventos nos próximos dias.")
+
+# Uso
+agenda = AgendaMensal()
+
+# Adicionar eventos
+agenda.adicionar_evento(date(2026, 2, 5), "Reunião de equipe", "09:00")
+agenda.adicionar_evento(date(2026, 2, 5), "Almoço com cliente", "12:30")
+agenda.adicionar_evento(date(2026, 2, 10), "Prazo do projeto", "17:00", "Entrega final")
+agenda.adicionar_evento(date(2026, 2, 14), "Dia dos Namorados", descricao="Jantar")
+agenda.adicionar_evento(date(2026, 2, 20), "Entrega de relatório", "16:00")
+agenda.adicionar_evento(date(2026, 2, 28), "Fechamento do mês")
+
+# Visualizar calendário do mês
+agenda.visualizar_mes(2026, 2)
+
+# Listar eventos de um dia
+agenda.listar_eventos_dia(date(2026, 2, 5))
+
+# Listar próximos eventos
+agenda.eventos_proximos(dias=14)
+
+# Remover evento
+agenda.remover_evento(date(2026, 2, 14), "Dia dos Namorados")
+
+
+================================================================================
+8. PADRÕES E BOAS PRÁTICAS
+================================================================================
+
+8.1 COMBINANDO CALENDAR COM DATETIME
+--------------------------------------------------------------------------------
+A combinação de calendar e datetime é muito comum na prática.
+
+Verificar última dia do mês com datetime:
+import calendar
+from datetime import date
+
+def ultima_data_do_mes(ano, mes):
+    """Retorna a última data do mês como objeto date."""
+    ultimo_dia = calendar.monthrange(ano, mes)[1]
+    return date(ano, mes, ultimo_dia)
+
+# Uso
+ultima = ultima_data_do_mes(2026, 2)
+print(ultima)                    # 2026-02-28
+print(ultima.strftime('%d/%m/%Y'))  # 28/02/2026
+
+ultima = ultima_data_do_mes(2026, 3)
+print(ultima)  # 2026-03-31
+
+Navegar entre meses:
+import calendar
+from datetime import date
+
+def proximo_mes(ano, mes):
+    """Retorna (ano, mes) do próximo mês."""
+    if mes == 12:
+        return ano + 1, 1
+    return ano, mes + 1
+
+def mes_anterior(ano, mes):
+    """Retorna (ano, mes) do mês anterior."""
+    if mes == 1:
+        return ano - 1, 12
+    return ano, mes - 1
+
+# Uso
+print(proximo_mes(2026, 2))   # (2026, 3)
+print(proximo_mes(2026, 12))  # (2027, 1)
+print(mes_anterior(2026, 2))  # (2026, 1)
+print(mes_anterior(2026, 1))  # (2025, 12)
+
+Primeira e última semana do mês:
+import calendar
+from datetime import date, timedelta
+
+def primeira_semana(ano, mes):
+    """Retorna as datas da primeira semana do mês."""
+    primeiro_dia_semana, _ = calendar.monthrange(ano, mes)
+    # primeiro_dia_semana: 0=Seg, ..., 6=Dom
+    
+    inicio = date(ano, mes, 1)
+    # Voltar ao início da semana (segunda-feira)
+    inicio_semana = inicio - timedelta(days=primeiro_dia_semana)
+    
+    return [inicio_semana + timedelta(days=i) for i in range(7)]
+
+semana = primeira_semana(2026, 2)
+for d in semana:
+    marcador = " *" if d.month == 2 else "  "
+    print(f"  {d.strftime('%a %d/%m/%Y')}{marcador}")
+# (* marca dias de fevereiro)
+
+Dias úteis restantes no mês:
+import calendar
+from datetime import date
+
+def dias_uteis_restantes(ano=None, mes=None):
+    """Calcula dias úteis restantes no mês (a partir de hoje)."""
+    hoje = date.today()
+    
+    if ano is None:
+        ano = hoje.year
+    if mes is None:
+        mes = hoje.month
+    
+    _, total_dias = calendar.monthrange(ano, mes)
+    inicio = max(hoje.day, 1)
+    
+    count = 0
+    for dia in range(inicio, total_dias + 1):
+        d = date(ano, mes, dia)
+        if d.weekday() < 5:  # Seg-Sex
+            count += 1
+    
+    return count
+
+print(f"Dias úteis restantes no mês: {dias_uteis_restantes()}")
+
+8.2 LOCALIZAÇÃO E IDIOMAS
+--------------------------------------------------------------------------------
+Configurando o calendário para diferentes idiomas.
+
+Usando locale para português:
+import calendar
+import locale
+
+# Tentar configurar para português brasileiro
+try:
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+    print("Locale configurado para pt_BR")
+except locale.Error:
+    print("Locale pt_BR não disponível")
+    # Tentar alternativas
+    try:
+        locale.setlocale(locale.LC_ALL, 'pt_BR')
+    except locale.Error:
+        print("Nenhum locale português disponível")
+
+# Verificar nomes após configuração
+print(calendar.month_name[2])  # Pode ser "fevereiro" se locale funcionar
+print(calendar.day_name[0])    # Pode ser "segunda-feira"
+
+# Gerar calendário com locale
+calendar.prmonth(2026, 2)
+
+Função para nome de mês em português (sem locale):
+# Solução que não depende do locale do sistema
+MESES_PT = {
+    1: "Janeiro",    2: "Fevereiro",  3: "Março",
+    4: "Abril",      5: "Maio",       6: "Junho",
+    7: "Julho",      8: "Agosto",     9: "Setembro",
+    10: "Outubro",   11: "Novembro",  12: "Dezembro"
+}
+
+DIAS_PT = {
+    0: "Segunda-feira",  1: "Terça-feira",   2: "Quarta-feira",
+    3: "Quinta-feira",   4: "Sexta-feira",   5: "Sábado",
+    6: "Domingo"
+}
+
+DIAS_ABREV_PT = {
+    0: "Seg", 1: "Ter", 2: "Qua", 3: "Qui",
+    4: "Sex", 5: "Sáb", 6: "Dom"
+}
+
+def nome_mes_pt(mes):
+    """Retorna nome do mês em português."""
+    return MESES_PT.get(mes, "")
+
+def nome_dia_pt(dia_semana):
+    """Retorna nome do dia em português."""
+    return DIAS_PT.get(dia_semana, "")
+
+# Uso
+import calendar
+
+print(nome_mes_pt(2))  # Fevereiro
+print(nome_dia_pt(calendar.weekday(2026, 2, 2)))  # Segunda-feira
+
+8.3 VALIDAÇÃO E TRATAMENTO DE ERROS
+--------------------------------------------------------------------------------
+Validando entradas antes de usar funções do calendar.
+
+Validação de mês e ano:
+import calendar
+
+def validar_mes(ano, mes):
+    """Valida ano e mês."""
+    if not isinstance(ano, int) or not isinstance(mes, int):
+        return False, "Ano e mês devem ser inteiros"
+    
+    if mes < 1 or mes > 12:
+        return False, f"Mês deve ser entre 1 e 12 (recebeu {mes})"
+    
+    if ano < 1 or ano > 9999:
+        return False, f"Ano deve ser entre 1 e 9999 (recebeu {ano})"
+    
+    return True, "Válido"
+
+# Testes
+print(validar_mes(2026, 2))   # (True, 'Válido')
+print(validar_mes(2026, 13))  # (False, 'Mês deve ser entre 1 e 12 (recebeu 13)')
+print(validar_mes(2026, 0))   # (False, 'Mês deve ser entre 1 e 12 (recebeu 0)')
+
+Validação de dia no mês:
+import calendar
+
+def validar_dia(ano, mes, dia):
+    """Valida se um dia existe no mês/ano dado."""
+    valido, mensagem = validar_mes(ano, mes)
+    if not valido:
+        return False, mensagem
+    
+    if not isinstance(dia, int):
+        return False, "Dia deve ser inteiro"
+    
+    _, total_dias = calendar.monthrange(ano, mes)
+    
+    if dia < 1 or dia > total_dias:
+        return False, f"Dia deve ser entre 1 e {total_dias} para {calendar.month_name[mes]} {ano}"
+    
+    return True, "Válido"
+
+# Testes
+print(validar_dia(2026, 2, 28))  # (True, 'Válido')
+print(validar_dia(2026, 2, 29))  # (False, 'Dia deve ser entre 1 e 28 para February 2026')
+print(validar_dia(2024, 2, 29))  # (True, 'Válido') - 2024 é bissexto
+print(validar_dia(2026, 2, 0))   # (False, 'Dia deve ser entre 1 e 28...')
+
+Função segura para consultas:
+import calendar
+
+def consulta_segura_monthrange(ano, mes):
+    """Versão segura de monthrange com tratamento de erro."""
+    try:
+        if not (1 <= mes <= 12):
+            raise ValueError(f"Mês inválido: {mes}")
+        if not (1 <= ano <= 9999):
+            raise ValueError(f"Ano inválido: {ano}")
+        
+        return calendar.monthrange(ano, mes)
+    
+    except (ValueError, TypeError) as e:
+        print(f"Erro: {e}")
+        return None, None
+
+# Uso
+primeiro_dia, total = consulta_segura_monthrange(2026, 2)
+print(primeiro_dia, total)  # 0, 28
+
+primeiro_dia, total = consulta_segura_monthrange(2026, 13)
+# Erro: Mês inválido: 13
+print(primeiro_dia, total)  # None, None
+
+
+================================================================================
+9. DICAS E RECURSOS
+================================================================================
+
+9.1 DICAS PARA INICIANTES
+--------------------------------------------------------------------------------
+Conselhos úteis para começar com a biblioteca calendar.
+
+Dica 1: Use monthrange para tudo que precisa sobre um mês
+import calendar
+
+# É a função mais útil do módulo
+# Retorna (primeiro_dia_semana, total_dias)
+print(calendar.monthrange(2026, 2))  # (0, 28)
+
+# Último dia do mês:
+ultimo_dia = calendar.monthrange(2026, 2)[1]  # 28
+
+# Primeiro dia da semana:
+primeiro = calendar.monthrange(2026, 2)[0]  # 0 (Segunda)
+
+Dica 2: Use constantes ao invés de números mágicos
+import calendar
+
+# ❌ Números mágicos são confusos
+if dia_semana == 5:
+    print("Sábado")
+
+# ✅ Constantes são claras
+if dia_semana == calendar.SATURDAY:
+    print("Sábado")
+
+# ❌
+for i in range(0, 5):  # O que significa 5?
+    pass
+
+# ✅
+dias_uteis = range(calendar.MONDAY, calendar.FRIDAY + 1)
+
+Dica 3: monthcalendar é melhor que monthrange para iterar dias
+import calendar
+
+# ✅ monthcalendar já organiza por semanas
+for semana in calendar.monthcalendar(2026, 2):
+    dias_uteis = semana[0:5]  # Segunda a Sexta
+    fim_semana = semana[5:7]  # Sábado e Domingo
+    print(f"Úteis: {dias_uteis}, FdS: {fim_semana}")
+
+Dica 4: Combine calendar com datetime para funcionalidade completa
+import calendar
+from datetime import date
+
+# calendar para estrutura do calendário
+_, total_dias = calendar.monthrange(2026, 2)
+
+# datetime para criar objetos de data
+datas = [date(2026, 2, d) for d in range(1, total_dias + 1)]
+
+# Filtrar dias úteis
+dias_uteis = [d for d in datas if d.weekday() < 5]
+print(f"Dias úteis: {len(dias_uteis)}")
+
+Dica 5: Dias fora do mês são representados como 0
+import calendar
+
+# Em monthcalendar e iteradores, 0 significa "não pertence ao mês"
+cal_mes = calendar.monthcalendar(2026, 2)
+
+for semana in cal_mes:
+    for dia in semana:
+        if dia == 0:
+            continue  # Pular dias fora do mês
+        print(dia, end=" ")
+# 1 2 3 4 5 6 7 8 9 10 ... 28
+
+Dica 6: TextCalendar vs funções do módulo
+import calendar
+
+# Funções do módulo (mais simples, uso rápido)
+calendar.prmonth(2026, 2)        # Imprimir
+texto = calendar.month(2026, 2)  # Retornar string
+
+# TextCalendar (mais controle, primeiro dia configurável)
+cal = calendar.TextCalendar(firstweekday=calendar.SUNDAY)
+cal.prmonth(2026, 2)  # Começa no domingo
+
+9.2 RECURSOS ADICIONAIS
+--------------------------------------------------------------------------------
+Módulos e bibliotecas úteis para trabalhar com calendários.
+
+Combinando com datetime:
+# calendar + datetime = funcionalidade completa de calendários
+import calendar
+from datetime import date, timedelta
+
+# Usar calendar para estrutura
+# Usar datetime para manipulação de datas
+# Usar timedelta para aritmética
+
+Combinando com collections:
+# Útil para agrupar eventos por dia
+from collections import defaultdict
+import calendar
+
+eventos_por_dia = defaultdict(list)
+eventos_por_dia[date(2026, 2, 5)].append("Reunião")
+eventos_por_dia[date(2026, 2, 5)].append("Almoço")
+
+Gerar PDF de calendários:
+# Para calendários em PDF, considere:
+# - reportlab: criação de PDF em Python
+# - fpdf2: biblioteca simples para PDF
+# Combine com HTMLCalendar para layout
+
+# pip install fpdf2
+# from fpdf import FPDF
+# Gere o calendário e adicione ao PDF
+
+Calendários web com Flask/Django:
+# Para aplicações web, HTMLCalendar é ideal
+import calendar
+
+cal = calendar.HTMLCalendar()
+html = cal.formatyear(2026)
+
+# Em Flask:
+# return render_template('calendario.html', calendario=html)
+
+# Em Django:
+# context = {'calendario': html}
+# return render(request, 'calendario.html', context)
+
+
+================================================================================
+RESUMO RÁPIDO
+================================================================================
+
+CLASSES PRINCIPAIS:
+
+# TextCalendar - calendário em texto
+import calendar
+cal = calendar.TextCalendar()              # Padrão (Segunda primeiro)
+cal = calendar.TextCalendar(calendar.SUNDAY)  # Começa no domingo
+
+# HTMLCalendar - calendário em HTML
+cal_html = calendar.HTMLCalendar()         # Padrão
+cal_html = calendar.HTMLCalendar(calendar.SUNDAY)
+
+FUNÇÕES MAIS USADAS:
+
+# Informações do mês
+calendar.monthrange(ano, mes)     # (primeiro_dia, total_dias)
+calendar.monthcalendar(ano, mes)  # Lista de semanas
+calendar.month(ano, mes)          # Calendário como string
+calendar.prmonth(ano, mes)        # Imprimir calendário
+
+# Dia da semana
+calendar.weekday(ano, mes, dia)   # 0=Seg, ..., 6=Dom
+calendar.weekheader(largura)      # Cabeçalho da semana
+
+# Anos bissextos
+calendar.isleap(ano)              # True/False
+calendar.leapdays(ano1, ano2)     # Quantidade de bissextos
+
+# Imprimir calendários
+calendar.prmonth(ano, mes)        # Um mês
+calendar.printyear(ano)           # Ano completo
+
+MÉTODOS DE TextCalendar:
+
+cal = calendar.TextCalendar()
+
+# Formatar
+cal.formatmonth(ano, mes)         # Mês como string
+cal.formatyear(ano)               # Ano como string
+cal.formatweekheader(largura)     # Cabeçalho
+
+# Imprimir
+cal.prmonth(ano, mes)             # Imprimir mês
+cal.printyear(ano)                # Imprimir ano
+
+# Iterar
+cal.itermonthdays(ano, mes)       # Apenas dias
+cal.itermonthdays2(ano, mes)      # (dia, dia_semana)
+cal.itermonthdays3(ano, mes)      # (ano, mes, dia)
+cal.itermonthdays4(ano, mes)      # (ano, mes, dia, dia_semana)
+cal.iterweekdays()                # Dias da semana
+
+MÉTODOS DE HTMLCalendar:
+
+cal = calendar.HTMLCalendar()
+
+# Formatar HTML
+cal.formatmonth(ano, mes)         # Mês como HTML
+cal.formatyear(ano)               # Ano como HTML
+cal.formatyearpage(ano)           # Página HTML completa
+cal.formatday(dia, dow)           # Um dia como HTML
+
+CONSTANTES:
+
+# Dias da semana
+calendar.MONDAY     # 0
+calendar.TUESDAY    # 1
+calendar.WEDNESDAY  # 2
+calendar.THURSDAY   # 3
+calendar.FRIDAY     # 4
+calendar.SATURDAY   # 5
+calendar.SUNDAY     # 6
+
+# Nomes
+calendar.day_name   # ['Monday', 'Tuesday', ...]
+calendar.day_abbr   # ['Mo', 'Tu', ...]
+calendar.month_name # ['', 'January', 'February', ...]
+calendar.month_abbr # ['', 'Jan', 'Feb', ...]
+
+CONFIGURAÇÃO GLOBAL:
+
+calendar.setfirstweekday(calendar.SUNDAY)  # Alterar primeiro dia
+calendar.firstweekday()                    # Consultar primeiro dia
+
+COMBINAÇÃO COM DATETIME:
+
+import calendar
+from datetime import date, timedelta
+
+# Último dia do mês
+ultimo_dia = calendar.monthrange(2026, 2)[1]  # 28
+ultima_data = date(2026, 2, ultimo_dia)       # 2026-02-28
+
+# Verificar tipo de dia
+eh_util = calendar.weekday(2026, 2, 2) < 5    # True (Segunda)
+
+# Todos os dias do mês como dates
+_, total = calendar.monthrange(2026, 2)
+datas = [date(2026, 2, d) for d in range(1, total + 1)]
+
+BOAS PRÁTICAS:
+
+✅ Use monthrange para consultar informações do mês
+✅ Use constantes (MONDAY, FRIDAY) ao invés de números
+✅ Use monthcalendar para iterar por semanas
+✅ Combine com datetime para manipulação de datas
+✅ Verifique dias == 0 em iteradores (dia fora do mês)
+✅ Use TextCalendar quando precisa configurar primeiro dia
+✅ Use HTMLCalendar para aplicações web
+✅ Valide entradas antes de chamar funções
+✅ Use isleap para verificar anos bissextos
+
+❌ Não use números mágicos (use constantes)
+❌ Não confunda monthcalendar com monthrange
+❌ Não esqueça que month_name[0] é string vazia
+❌ Não assuma que o locale está configurado
+❌ Não use calendar sozinho para manipular datas (use datetime)
+❌ Não esqueça de tratar dias == 0 nos iteradores
+❌ Não confunda firstweekday global com o da instância
+
+CASOS DE USO COMUNS:
+
+1. Último dia do mês:
+   _, ultimo = calendar.monthrange(ano, mes)
+
+2. Primeiro dia da semana do mês:
+   primeiro_dia, _ = calendar.monthrange(ano, mes)
+
+3. Sextas-feiras do mês:
+   [s[calendar.FRIDAY] for s in calendar.monthcalendar(ano, mes) if s[calendar.FRIDAY]]
+
+4. Ano bissexto:
+   if calendar.isleap(ano): ...
+
+5. Dias úteis no mês:
+   sum(1 for s in calendar.monthcalendar(ano, mes)
+       for d in s[:5] if d != 0)
+
+6. Calendário HTML para web:
+   html = calendar.HTMLCalendar().formatmonth(ano, mes)
+
+7. Nome do mês:
+   calendar.month_name[mes]  # "February"
+
+8. Dia da semana:
+   calendar.weekday(ano, mes, dia)  # 0=Seg, 6=Dom
+
+
+================================================================================
+DOCUMENTAÇÃO OFICIAL DO PYTHON - CALENDAR
+================================================================================
+
+================================================================================
+PRINCIPAL - MÓDULO CALENDAR
+================================================================================
+https://docs.python.org/3/library/calendar.html
+Documentação oficial completa do módulo calendar
+
+================================================================================
+CLASSES DO CALENDAR
+================================================================================
+https://docs.python.org/3/library/calendar.html#calendar.TextCalendar
+TextCalendar - Geração de calendários em texto
+
+https://docs.python.org/3/library/calendar.html#calendar.HTMLCalendar
+HTMLCalendar - Geração de calendários em HTML
+
+================================================================================
+FUNÇÕES UTILITÁRIAS
+================================================================================
+https://docs.python.org/3/library/calendar.html#calendar.monthrange
+monthrange - Primeiro dia e total de dias do mês
+
+https://docs.python.org/3/library/calendar.html#calendar.isleap
+isleap - Verificar ano bissexto
+
+https://docs.python.org/3/library/calendar.html#calendar.weekday
+weekday - Dia da semana de uma data
+
+https://docs.python.org/3/library/calendar.html#calendar.monthcalendar
+monthcalendar - Calendário como lista de semanas
+
+================================================================================
+MÓDULOS RELACIONADOS
+================================================================================
+https://docs.python.org/3/library/datetime.html
+datetime - Manipulação de datas e horas
+
+https://docs.python.org/3/library/time.html
+time - Funções de tempo
+
+https://docs.python.org/3/library/locale.html
+locale - Configuração de localização
+
+================================================================================
+BIBLIOTECAS EXTERNAS ÚTEIS
+================================================================================
+https://dateutil.readthedocs.io/
+python-dateutil - Extensões poderosas para datetime
+
+https://pypi.org/project/fpdf2/
+fpdf2 - Geração de PDFs (para calendários em PDF)
+
+https://pypi.org/project/reportlab/
+reportlab - Criação avançada de PDFs
+
+================================================================================
+PADRÕES E REFERÊNCIAS
+================================================================================
+https://docs.python.org/3/library/calendar.html#calendar.setfirstweekday
+Configuração do primeiro dia da semana
+
+https://docs.python.org/3/library/locale.html#locale.setlocale
+Configuração de locale para localização
+
+https://en.wikipedia.org/wiki/ISO_8601
+ISO 8601 - Padrão internacional de data/hora
+
+================================================================================
+						AGRIPPA
+================================================================================

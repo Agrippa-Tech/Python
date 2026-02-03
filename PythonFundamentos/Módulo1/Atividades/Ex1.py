@@ -3,6 +3,7 @@ import string
 import time
 import os 
 from datetime import date
+import calendar
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -622,25 +623,180 @@ except Exception as e:
    
 print("\n", "=" * 15, "EXERCÍCIO 20", "=" * 15)
 
-dia_nascimento = int(input("\nDigite o dia de seu nascimento: "))
-mes_nascimento = int(input("Digite o mês do seu nascimento: "))
-ano_nascimento = int(input("Digite o ano do seu nascimento: "))
+while True:
+    tentativas_corretas = False
+    tentativas_nascimento = 4
+    while tentativas_nascimento > 0:
+        try:
+            print("\n", "=" * 15, "CALCULADORA DE IDADE", "=" * 15)
 
-data_nascimento = date(ano_nascimento, mes_nascimento, dia_nascimento)
-data_atual = date.today()
+                #entrada
+            dia_nascimento = int(input("\nDigite o dia de seu nascimento: "))
+            if not (1 <= dia_nascimento <= 31):
+                print("\nInsira um dia válido.")
+                raise ValueError
+            mes_nascimento = int(input("Digite o mês do seu nascimento: "))
+            if not (1 <= mes_nascimento <= 12):
+                print("\nInsira um mês válido.")
+                raise ValueError
+            ano_nascimento = int(input("Digite o ano do seu nascimento: "))
+            
+            print()
+            tentativas_corretas = True
+            break
+        except ValueError as erro:
+            tentativas_nascimento -= 1
+            if tentativas_nascimento == 1:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("\nA última tentativa será possível em 30 segundos.")
+                time.sleep(5)
+                for i in range(2, 0, -1):
+                    print(f"\r {i} segundos.", end = " ", flush = True)
+                    time.sleep(1)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    continue
+            if tentativas_nascimento > 0:
+                time.sleep(2)
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("\nERRO: Digite apenas números válidos.")
+                print(f"Você tem somente {tentativas_nascimento} tentativas.")
+                continue
+            else:
+                print("\n⁴⁰⁴ Error ⁴⁰⁴: TENTATIVAS ESGOTADAS.")
+                print()
+            break 
 
-anos_user = data_atual.year - data_nascimento.year
-meses_user = anos_user * 12 + (data_atual.month - data_nascimento.month)
-dias_user = (data_atual - data_nascimento).days
+    if tentativas_corretas: 
+        time.sleep(3)
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-if (data_atual.month, data_atual.day) < (data_nascimento.month, data_nascimento.day):
-    anos_user -= 1
-    meses_user -= 1
-   
+            #definindo as datas
+        data_nascimento = date(ano_nascimento, mes_nascimento, dia_nascimento)
 
+        data_atual = date.today()
 
-print(f"\nVocê viveu o total de {anos_user} anos, {meses_user} meses e {dias_user} dias.")
-   
-   
+            #calculos idade total
+        anos_user = data_atual.year - data_nascimento.year
+        meses_user = anos_user * 12 + (data_atual.month - data_nascimento.month)
+        dias_user = (data_atual - data_nascimento).days
+        semanas_user = dias_user // 7
+        horas_user =  dias_user * 24
+        minutos_user = horas_user * 60
+        segundos_user = minutos_user * 60
+
+        if (data_atual.month, data_atual.day) < (data_nascimento.month, data_nascimento.day):
+            anos_user -= 1
+            meses_user -= 1
+
+            #calculos idade exata
+        meses_user_rest = data_atual.month - data_nascimento.month
+        if data_atual.day < data_nascimento.day:
+            meses_user_rest -= 1
+        if meses_user_rest < 0:
+            meses_user_rest += 12
+
+        mes_atual = data_atual.month
+        ano_atual = data_atual.year 
+                
+        if data_atual.day < data_nascimento.day:
+            mes_atual -= 1
+            if mes_atual == 0:
+                mes_atual = 12
+                ano_atual -= 1
+
+        dia_limite_mes = calendar.monthrange(ano_atual, mes_atual)[1]
+        dia_atual = min(data_nascimento.day, dia_limite_mes)       
+        ultimo_aniversario_mes = date(ano_atual, mes_atual, dia_atual)
+        dias_user_restante = (data_atual - ultimo_aniversario_mes).days    
+
+        #animacao 
+        terminal_calculando = "Calculando"
+        for i in range(1, len(terminal_calculando) + 1):
+            print(f"\r{terminal_calculando[:i]}", end = " ", flush = True)
+            time.sleep(0.4)
+
+        for i in range(1, 4):
+            print(f"\r{terminal_calculando}{'.' * i}", end = " ", flush = True)
+            time.sleep(0.3)
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+            #print
+        anos_user = str(anos_user).zfill(3)  
+        meses_user_rest = str(meses_user_rest).zfill(3)
+        dias_user_restante = str(dias_user_restante).zfill(2)
+        meses_user = str(meses_user).zfill(5)  
+        semanas_user = str(semanas_user).zfill(5)
+        dias_user = str(dias_user).zfill(6)
+        horas_user = str(horas_user).zfill(7)
+        minutos_user = str(minutos_user).zfill(8)
+        segundos_user = str(segundos_user).zfill(9)
+        
+        res = f"""{' '}
+                {'╭'}{'────' * 25:>12}{'╮'}
+                {'│':<10} {'│':>91}
+                {'│':<10}{'𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃 CALCULADORA DE IDADE 𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃':>60} {'│':>31}
+                {'│':<10} {'│':>91}
+                {'│'}{'────' * 25}{'│'}
+                {'│':<5}{'Data de nascimento: '}{data_nascimento.strftime('%d/%m/%Y')}{'│':>67}
+                {'│':<5}{'Data atual: '}{data_atual.strftime('%d/%m/%Y')}{'│':>75}
+                {'│':<5}{'Idade: '}{anos_user}{' anos, '}{meses_user_rest}{' meses e '}{dias_user_restante}{' dias':<15}{'│':>51}
+                {'│':<10} {'│':>91}
+                {'│':<10}{'• ':>5} {anos_user}{' anos'} {meses_user:>15}{' meses'} {semanas_user:>15}{' semanas'} {dias_user:>15}{' dias'} {'│':>10}
+                {'│':<10}{'• ':>5} {horas_user}{' horas'} {minutos_user:>15}{' minutos'} {segundos_user:>13}{' segundos'} {'│':>25}
+                {'╰'}{'────' * 25}{'╯'}"""
+                
+        print(res)
+
+            #menu saida
+        tentativas_saida = 4
+        while tentativas_saida > 0:
+            try: 
+                print()
+                print(" " * 5, "Para sair do programa aperte:")
+                print(" " * 10,  "[1] Para encerrar")
+                print(" " * 10, "[2] Para continuar")
+                print()
+                
+                escolha = int(input())
+                
+                if escolha == 1:
+                    terminal_saindo = "Saindo"
+                    for i in range(1, len(terminal_saindo) + 1):
+                        print(f"\r{terminal_saindo[:i]}", end = " ", flush = True)
+                        time.sleep(0.3)
+                    for i in range(1, 4):
+                        print(f"\r{terminal_saindo}{'.' * i}", end = " ", flush = True)
+                        time.sleep(0.3)
+                    time.sleep(2)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    exit()
+                elif escolha == 2:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    break
+                else:
+                    raise ValueError
+            except ValueError as e:
+                tentativas_saida -= 1
+                if tentativas_saida == 1:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\nA última tentativa será possível em 30 segundos.") 
+                    time.sleep(5)
+                    for i in range(30, 0, -1):
+                        print(f"\r{i} segundos.", end = " ", flush = True)
+                        time.sleep(1)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    continue
+                if tentativas_saida > 0:
+                    time.sleep(2)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\nERRO: Digite apenas [1] ou [2].")
+                    print(f"\nVocê tem somente {tentativas_saida} tentativas restantes.")
+                    continue
+                else:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\nERRO: Digite apenas [1] ou [2].")
+                    print()
+                    exit()
    
    
