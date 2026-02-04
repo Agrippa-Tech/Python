@@ -1,0 +1,451 @@
+================================================================================
+                         LISTA DE EXERCÍCIOS PYTHON
+                              NÍVEL INICIANTE
+================================================================================
+
+
+EXERCÍCIO 1
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule a média aritmética de quatro números 
+inteiros fornecidos pelo usuário.
+
+EXERCÍCIO 2
+--------------------------------------------------------------------------------
+Crie um programa que calcule o consumo médio de combustível de um veículo. 
+O usuário deve informar a distância percorrida (em km) e o volume de 
+combustível gasto (em litros).
+
+EXERCÍCIO 3
+--------------------------------------------------------------------------------
+Faça um programa que converta uma temperatura em Celsius para Fahrenheit e 
+Kelvin, exibindo os resultados com duas casas decimais.
+
+EXERCÍCIO 4
+--------------------------------------------------------------------------------
+Elabore um programa que calcule o valor total de uma compra com desconto. 
+O usuário deve informar o preço original e a porcentagem de desconto. O 
+programa deve exibir o valor do desconto e o preço final.
+
+EXERCÍCIO 5
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o tempo total em horas, minutos e segundos 
+a partir de um valor dado apenas em segundos.
+
+EXERCÍCIO 6
+--------------------------------------------------------------------------------
+Crie um programa que leia três notas de um aluno, calcule a média e informe 
+se ele foi aprovado (média ≥ 7), em recuperação (5 ≤ média < 7) ou reprovado 
+(média < 5).
+
+EXERCÍCIO 7
+--------------------------------------------------------------------------------
+Elabore um programa que converta uma quantia em reais (R$) para dólares (US$), 
+considerando uma taxa de câmbio fornecida pelo usuário.
+
+EXERCÍCIO 8
+--------------------------------------------------------------------------------
+Faça um programa que calcule a área de um círculo. O usuário deve informar o 
+raio, e o programa deve exibir a área com duas casas decimais (use π = 3.14159).
+
+EXERCÍCIO 9
+--------------------------------------------------------------------------------
+Crie um programa que inverta a ordem de dois números fornecidos pelo usuário 
+e, em seguida, calcule a diferença absoluta entre eles.
+
+EXERCÍCIO 10
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o valor do IMC (Índice de Massa Corporal). 
+O usuário deve informar peso (kg) e altura (m). O programa deve exibir o IMC 
+com duas casas decimais.
+
+EXERCÍCIO 11
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o valor do juros simples de uma aplicação 
+financeira. O usuário deve informar o capital inicial, a taxa de juros mensal 
+e o tempo em meses.
+
+EXERCÍCIO 12
+--------------------------------------------------------------------------------
+Crie um programa que converta uma velocidade de km/h para m/s e vice-versa. 
+O usuário deve escolher qual conversão deseja fazer e informar o valor.
+
+EXERCÍCIO 13
+--------------------------------------------------------------------------------
+Faça um programa que calcule a quantidade de tinta necessária para pintar uma 
+parede. O usuário deve informar a altura e largura da parede (em metros) e o 
+programa deve calcular a área e a quantidade de tinta (cada litro pinta 3m²).
+
+EXERCÍCIO 14
+--------------------------------------------------------------------------------
+Desenvolva um programa que leia três números diferentes e exiba-os em ordem 
+crescente.
+
+EXERCÍCIO 15
+--------------------------------------------------------------------------------
+Crie um programa que calcule o valor da conta de energia elétrica. O usuário 
+deve informar o consumo em kWh e o programa deve calcular o valor considerando 
+R$ 0,75 por kWh mais uma taxa fixa de R$ 25,00.
+
+EXERCÍCIO 16
+--------------------------------------------------------------------------------
+Elabore um programa que converta uma quantidade de horas em semanas, dias e 
+horas. Exemplo: 500 horas = 2 semanas, 6 dias e 20 horas.
+
+EXERCÍCIO 17
+--------------------------------------------------------------------------------
+Faça um programa que calcule o peso ideal de uma pessoa. Para homens: 
+(72.7 * altura) - 58. Para mulheres: (62.1 * altura) - 44.7. O usuário deve 
+informar altura e sexo.
+
+EXERCÍCIO 18
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o troco mínimo em cédulas e moedas para 
+uma compra. O usuário informa o valor da compra e o valor pago.
+
+EXERCÍCIO 19
+--------------------------------------------------------------------------------
+Crie um programa que leia dois números e mostre qual é o maior e qual é o 
+menor, ou se são iguais.
+
+EXERCÍCIO 20
+--------------------------------------------------------------------------------
+Faça um programa que calcule a idade de uma pessoa em dias. O usuário deve 
+informar anos, meses e dias vividos, e o programa converte para o total de dias.
+
+EXERCÍCIO 21
+--------------------------------------------------------------------------------
+Desenvolva um programa que leia números inteiros até que o usuário digite 0. 
+Ao final, mostre:
+- A soma de todos os números positivos
+- A média dos números pares
+- O maior e o menor número digitado
+- Quantos números negativos foram digitados
+
+EXERCÍCIO 22
+--------------------------------------------------------------------------------
+Crie um programa de adivinhação de número. O programa deve gerar um número 
+aleatório entre 1 e 100, e o usuário tem 10 tentativas para acertar. A cada 
+tentativa, o programa deve informar se o palpite é maior ou menor que o número 
+secreto. Se acertar, mostrar quantas tentativas foram usadas. Se esgotar as 
+tentativas, revelar o número.
+
+EXERCÍCIO 23
+--------------------------------------------------------------------------------
+Faça um programa que simule um caixa eletrônico. O usuário deve informar o 
+valor que deseja sacar (múltiplo de 10). O programa deve calcular e mostrar 
+quantas cédulas de 100, 50, 20 e 10 reais serão fornecidas, priorizando 
+cédulas de maior valor. Validar se o valor é múltiplo de 10.
+
+EXERCÍCIO 24
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o fatorial de números fornecidos pelo 
+usuário. O programa deve continuar pedindo números até que o usuário digite 
+um valor negativo. Para cada número, calcular e mostrar o fatorial. Use 
+estruturas de repetição para o cálculo.
+
+EXERCÍCIO 25
+--------------------------------------------------------------------------------
+Crie um programa que gere a tabuada completa (1 a 10) de vários números. O 
+usuário deve informar números até digitar 0. Para cada número, mostrar a 
+tabuada formatada. No final, mostrar qual número teve o maior resultado na 
+multiplicação por 10.
+
+EXERCÍCIO 26
+--------------------------------------------------------------------------------
+Elabore um programa que analise uma senha digitada pelo usuário. A senha 
+deve ter:
+- Pelo menos 8 caracteres
+- Pelo menos uma letra maiúscula
+- Pelo menos uma letra minúscula
+- Pelo menos um número
+- Pelo menos um caractere especial (@, #, $, %, &)
+
+O programa deve continuar pedindo a senha até que atenda todos os critérios 
+e confirmar a senha digitando novamente.
+
+EXERCÍCIO 27
+--------------------------------------------------------------------------------
+Faça um programa que leia nomes de alunos e suas 3 notas. Calcular a média 
+de cada aluno e classificar como:
+- Aprovado (média ≥ 7)
+- Recuperação (5 ≤ média < 7)
+- Reprovado (média < 5)
+
+O programa deve continuar até que o nome digitado seja "FIM". No final, mostrar:
+- Quantos alunos em cada situação
+- A maior média da turma
+- A menor média da turma
+- A média geral da turma
+
+EXERCÍCIO 28
+--------------------------------------------------------------------------------
+Desenvolva um programa que simule um sistema de login. O programa deve ter:
+- Cadastro de novos usuários (nome, senha)
+- Login com 3 tentativas
+- Opção de recuperar senha (pergunta secreta)
+- Menu com opções: cadastrar, login, sair
+- Armazenar os dados em dicionários ou listas.
+
+EXERCÍCIO 29
+--------------------------------------------------------------------------------
+Crie um programa que jogue pedra, papel e tesoura contra o computador. O 
+programa deve:
+- Gerar jogada aleatória para o computador
+- Pedir a jogada do usuário
+- Verificar quem venceu
+- Continuar até que o usuário digite "sair"
+- Contar vitórias, derrotas e empates
+
+EXERCÍCIO 30
+--------------------------------------------------------------------------------
+Faça um programa que calcule estatísticas de um campeonato. Para cada time, 
+ler:
+- Nome do time
+- Número de vitórias
+- Número de empates
+- Número de derrotas
+
+Calcular pontos (3 por vitória, 1 por empate). O programa deve continuar até 
+digitar "FIM" no nome. No final, mostrar:
+- Classificação ordenada por pontos
+- O campeão e o lanterna
+- Média de pontos por time
+- Quantidade de times com mais de 50% de aproveitamento
+
+EXERCÍCIO 31
+--------------------------------------------------------------------------------
+Desenvolva um programa que leia a idade de várias pessoas (até que seja 
+digitada uma idade negativa) e calcule:
+- A média de idade do grupo
+- A porcentagem de pessoas com menos de 18 anos
+- A porcentagem de pessoas com mais de 65 anos
+- A maior e a menor idade informada
+
+EXERCÍCIO 32
+--------------------------------------------------------------------------------
+Crie um programa que simule um jogo de adivinhação de palavras. O programa 
+deve ter uma lista pré-definida de palavras. A cada rodada, escolher uma 
+palavra aleatória e mostrar ao usuário apenas as letras que ele acertou 
+(inicialmente, mostrar apenas underscores). O usuário tem um número limitado 
+de tentativas para adivinhar letras. Se ele acertar a letra, ela é revelada 
+na posição correta. Se errar, perde uma tentativa. O jogo continua até que o 
+usuário adivinhe a palavra ou esgote as tentativas.
+
+EXERCÍCIO 33
+--------------------------------------------------------------------------------
+Faça um programa que calcule o valor de uma série de pagamentos (financiamento). 
+O usuário deve informar o valor do empréstimo, a taxa de juros mensal e o 
+número de parcelas. O programa deve mostrar uma tabela com:
+- Número da parcela
+- Valor da parcela (considerando juros compostos)
+- Valor dos juros pagos naquela parcela
+- Saldo devedor após o pagamento
+
+EXERCÍCIO 34
+--------------------------------------------------------------------------------
+Elabore um programa que gerencie o estoque de uma loja. O programa deve 
+permitir:
+- Cadastrar novos produtos (código, nome, quantidade, preço)
+- Realizar vendas (diminuir a quantidade do estoque)
+- Repor estoque (aumentar a quantidade)
+- Consultar produto por código
+- Relatório de produtos com estoque abaixo de um limite (definido pelo usuário)
+- Sair do programa
+
+Use um menu com as opções e estruturas de dados para armazenar as informações.
+
+EXERCÍCIO 35
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule a sequência de Fibonacci até um termo 
+fornecido pelo usuário. Além de exibir a sequência, o programa deve calcular:
+- A razão entre um termo e seu antecessor (aproximação do número áureo)
+- A soma de todos os termos da sequência até aquele ponto
+- Quantos termos são pares e quantos são ímpares
+
+EXERCÍCIO 36
+--------------------------------------------------------------------------------
+Crie um programa que ordene uma lista de números sem usar funções de ordenação 
+prontas (como sort()). O usuário deve digitar uma sequência de números (até 
+digitar 0) e o programa deve ordená-los em ordem crescente e decrescente, 
+mostrando as duas versões. Implemente um algoritmo de ordenação (como bubble 
+sort, selection sort, etc.).
+
+EXERCÍCIO 37
+--------------------------------------------------------------------------------
+Faça um programa que leia vários números inteiros e, para cada número, 
+verifique se ele é primo. O programa deve continuar até que o usuário digite 0. 
+Para cada número, informar se é primo ou não. No final, mostrar a porcentagem 
+de números primos digitados em relação ao total de números (exceto o 0).
+
+EXERCÍCIO 38
+--------------------------------------------------------------------------------
+Elabore um programa que simule uma corrida entre 2 carros. Cada carro tem uma 
+velocidade aleatória (entre 1 e 10) a cada iteração (representando um intervalo 
+de tempo). A corrida termina quando um dos carros atinge 100 unidades de 
+distância. O programa deve mostrar a cada iteração a posição dos carros e, ao 
+final, o vencedor. Permita que o usuário aposte em qual carro vencerá e informe 
+se acertou.
+
+EXERCÍCIO 39
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o valor de uma conta de telefone. O plano 
+básico tem uma franquia de 100 minutos. Cada minuto excedente custa R$ 2,00. 
+Além disso, o usuário pode fazer chamadas para celular (cada minuto para 
+celular custa R$ 0,50 a mais). O programa deve ler:
+- Minutos utilizados
+- Minutos para celular (que estão incluídos nos minutos utilizados)
+
+Calcular o valor da conta e informar se houve excedente. Se o usuário 
+ultrapassar 200 minutos no total, aplicar uma multa de 10% sobre o valor.
+
+EXERCÍCIO 40
+--------------------------------------------------------------------------------
+Crie um programa que gere uma senha aleatória com base em critérios definidos 
+pelo usuário. O usuário deve informar:
+- Quantidade de letras maiúsculas
+- Quantidade de letras minúsculas
+- Quantidade de números
+- Quantidade de símbolos
+
+O programa deve gerar uma senha que atenda esses critérios e mostrar a senha. 
+Em seguida, perguntar se o usuário quer gerar outra senha ou se está satisfeito. 
+Armazenar as senhas geradas em uma lista e, ao final, mostrar todas as senhas 
+geradas.
+
+EXERCÍCIO 41
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule o IMC (Índice de Massa Corporal) de várias 
+pessoas e classifique-as. O programa deve continuar lendo dados até que o 
+usuário digite "sair". Para cada pessoa, armazenar nome, peso, altura, calcular 
+IMC e classificar:
+- Abaixo do peso: IMC < 18.5
+- Peso normal: 18.5 ≤ IMC < 25
+- Sobrepeso: 25 ≤ IMC < 30
+- Obesidade grau I: 30 ≤ IMC < 35
+- Obesidade grau II: 35 ≤ IMC < 40
+- Obesidade grau III: IMC ≥ 40
+
+Ao final, mostrar:
+- Quantidade de pessoas em cada categoria
+- A pessoa com maior IMC
+- A pessoa com menor IMC
+- Média de IMC do grupo
+
+EXERCÍCIO 42
+--------------------------------------------------------------------------------
+Crie um programa que simule um sistema de votação eletrônica para 5 candidatos 
+(1 a 5) com as seguintes opções:
+- Votar em um candidato
+- Voto nulo
+- Voto em branco
+- Apurar resultados
+- Sair
+
+O programa deve:
+- Contar votos de cada candidato, nulos e brancos
+- Calcular percentuais
+- Identificar o vencedor (maioria simples)
+- Validar se há segundo turno (nenhum candidato atinge 50%+1 dos votos válidos)
+- Permitir múltiplos eleitores até que a opção "Sair" seja escolhida
+
+EXERCÍCIO 43
+--------------------------------------------------------------------------------
+Faça um programa que gere a sequência de Fibonacci até um limite informado 
+pelo usuário, mas com as seguintes regras:
+- Gerar números da sequência até ultrapassar o limite
+- Separar números pares e ímpares
+- Calcular a soma dos pares e a soma dos ímpares
+- Identificar quais números da sequência são primos
+- Oferecer opção de reiniciar com novo limite
+
+EXERCÍCIO 44
+--------------------------------------------------------------------------------
+Desenvolva um programa que calcule as raízes de equações do segundo grau 
+(ax² + bx + c = 0). O programa deve:
+- Ler os coeficientes a, b, c
+- Calcular o discriminante (Δ)
+- Mostrar as raízes reais ou complexas conforme o caso
+- Validar se é realmente uma equação do segundo grau (a ≠ 0)
+- Continuar resolvendo equações até que o usuário digite 0 para 'a'
+- Armazenar histórico das equações resolvidas
+
+EXERCÍCIO 45
+--------------------------------------------------------------------------------
+Elabore um programa que simule um caixa de supermercado. O programa deve:
+- Cadastrar produtos (código, nome, preço)
+- Iniciar nova compra
+- Registrar itens da compra (código e quantidade)
+- Calcular total com possibilidade de descontos:
+  • 5% para compras acima de R$ 100
+  • 10% para compras acima de R$ 200
+- Processar pagamento (dinheiro, cartão, pix)
+- Calcular troco se for pagamento em dinheiro
+- Gerar nota fiscal formatada
+- Manecer registro das vendas do dia
+
+EXERCÍCIO 46
+--------------------------------------------------------------------------------
+Crie um programa que analise uma lista de números fornecida pelo usuário 
+(separados por vírgula ou espaço) e execute as seguintes operações:
+- Ordenar em ordem crescente e decrescente (sem usar sort())
+- Remover duplicatas
+- Calcular média, mediana e moda
+- Identificar números primos na lista
+- Separar em listas de pares e ímpares
+- Mostrar histograma de frequência dos números
+
+EXERCÍCIO 47
+--------------------------------------------------------------------------------
+Faça um programa que converta números entre diferentes bases (binário, decimal, 
+octal, hexadecimal). O programa deve:
+- Ler o número e sua base atual
+- Perguntar para qual base converter
+- Validar se o número é válido na base informada
+- Oferecer opções:
+  • Converter único número
+  • Converter vários números consecutivamente
+  • Mostrar tabela de conversão de 1 a 100 em todas as bases
+  • Sair
+
+EXERCÍCIO 48
+--------------------------------------------------------------------------------
+Desenvolva um programa que simule um sistema bancário simples com as seguintes 
+funcionalidades:
+- Criar conta (número da conta, nome do titular, saldo inicial)
+- Consultar saldo
+- Depositar
+- Sacar (com limite de saques diários e valor máximo por saque)
+- Transferência entre contas
+- Extrato (últimas 10 transações)
+- Encerrar conta
+- Menu com as opções acima, acessível após login com número da conta
+
+EXERCÍCIO 49
+--------------------------------------------------------------------------------
+Elabore um programa que gerencie uma biblioteca de livros. O sistema deve 
+permitir:
+- Cadastrar livros (ISBN, título, autor, ano, gênero, disponível)
+- Buscar livro por: título, autor ou ISBN
+- Empréstimo de livro (verificar disponibilidade)
+- Devolução de livro
+- Listar livros emprestados
+- Estatísticas: livros mais emprestados, gênero mais popular, etc.
+- Persistir os dados em arquivo (salvar/carregar)
+
+EXERCÍCIO 50
+--------------------------------------------------------------------------------
+Crie um programa que implemente o jogo da forca com as seguintes características:
+- Banco de palavras por categoria (animais, países, frutas, etc.)
+- Seleção aleatória de palavra
+- Interface gráfica ASCII da forca
+- Controle de tentativas (6 erros permitidos)
+- Letras já tentadas
+- Dicas após 3 erros
+- Pontuação baseada em: tamanho da palavra, tentativas restantes, uso de dicas
+- Histórico de jogos com estatísticas
+- Opção de multiplayer (dois jogadores alternando)
+
+
+================================================================================
+                               AGRIPPA
+================================================================================
