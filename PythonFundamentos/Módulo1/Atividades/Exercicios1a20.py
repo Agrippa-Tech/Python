@@ -530,7 +530,8 @@ if valor_compra is not None and valor_pago is not None:
 print("\n", "=" * 15, "EXERCÍCIO 19", "=" * 15)
 
 try:
-    while True:
+    sair = False
+    while not sair:
         tentativa_num = 4
         while tentativa_num > 0:
             try:
@@ -585,7 +586,8 @@ try:
                             print(f"\rO programa será encerrado em {i} segundos.", end = " ", flush = True)
                             time.sleep(1)
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        exit()
+                        sair = True
+                        break
                     elif saida == 2:
                         os.system('cls' if os.name == 'nt' else 'clear')
                         break
@@ -610,11 +612,8 @@ try:
                         continue
                     else:
                         raise ValueError 
-                        
-                
-            
-                    
-
+            if sair == True:
+                break         
 except Exception as e:
         print("\nERRO: Tentativas esgotadas.")
   
@@ -641,6 +640,8 @@ while True:
                 raise ValueError
             ano_nascimento = int(input("Digite o ano do seu nascimento: "))
             
+            date(ano_nascimento, mes_nascimento, dia_nascimento)
+            
             print()
             tentativas_corretas = True
             break
@@ -650,7 +651,7 @@ while True:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("\nA última tentativa será possível em 30 segundos.")
                 time.sleep(5)
-                for i in range(2, 0, -1):
+                for i in range(30, 0, -1):
                     print(f"\r {i} segundos.", end = " ", flush = True)
                     time.sleep(1)
                     os.system('cls' if os.name == 'nt' else 'clear')
@@ -664,6 +665,7 @@ while True:
             else:
                 print("\n⁴⁰⁴ Error ⁴⁰⁴: TENTATIVAS ESGOTADAS.")
                 print()
+                exit()
             break 
 
     if tentativas_corretas: 
@@ -672,8 +674,8 @@ while True:
 
             #definindo as datas
         data_nascimento = date(ano_nascimento, mes_nascimento, dia_nascimento)
-
         data_atual = date.today()
+        
 
             #calculos idade total
         anos_user = data_atual.year - data_nascimento.year
@@ -710,10 +712,10 @@ while True:
         dias_user_restante = (data_atual - ultimo_aniversario_mes).days    
 
         #animacao 
-        terminal_calculando = "Calculando"
+        terminal_calculando = "C a l c u l a n d o"
         for i in range(1, len(terminal_calculando) + 1):
             print(f"\r{terminal_calculando[:i]}", end = " ", flush = True)
-            time.sleep(0.4)
+            time.sleep(0.2)
 
         for i in range(1, 4):
             print(f"\r{terminal_calculando}{'.' * i}", end = " ", flush = True)
@@ -746,7 +748,28 @@ while True:
                 {'│':<10}{'• ':>5} {horas_user}{' horas'} {minutos_user:>15}{' minutos'} {segundos_user:>13}{' segundos'} {'│':>25}
                 {'╰'}{'────' * 25}{'╯'}"""
                 
-        print(res)
+        res_aniversario = f"""{' '}
+                {'╭'}{'────' * 25:>12}{'╮'}
+                {'│':<10} {'│':>91}
+                {'│':<10}{'𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃 CALCULADORA DE IDADE 𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃':>60} {'│':>31}
+                {'│':<10} {'│':>91}
+                {'│'}{'────' * 25}{'│'}
+                {'│':<5}{'Data de nascimento: '}{data_nascimento.strftime('%d/%m/%Y')}{'│':>67}
+                {'│':<5}{'Data atual: '}{data_atual.strftime('%d/%m/%Y')}{'│':>75}
+                {'│':<5}{'Idade: '}{anos_user}{' anos, '}{meses_user_rest}{' meses e '}{dias_user_restante}{' dias':<15}{'│':>51}
+                {'│':<10} {'│':>91}
+                {'│':<5}{'⋆✴︎˚｡⋆  FELIZ ANIVERSÁRIO! ⋆✴︎˚｡⋆':>60}{'│':>39}
+                {'│':<10} {'│':>91}
+                {'│':<10}{'• ':>5} {anos_user}{' anos'} {meses_user:>15}{' meses'} {semanas_user:>15}{' semanas'} {dias_user:>15}{' dias'} {'│':>10}
+                {'│':<10}{'• ':>5} {horas_user}{' horas'} {minutos_user:>15}{' minutos'} {segundos_user:>13}{' segundos'} {'│':>25}
+                {'╰'}{'────' * 25}{'╯'}
+                {' '}
+                """       
+                  
+        if data_nascimento.month == data_atual.month and data_nascimento.day == data_atual.day:
+            print(res_aniversario)
+        else:
+            print(res)
 
             #menu saida
         tentativas_saida = 4
@@ -761,6 +784,7 @@ while True:
                 escolha = int(input())
                 
                 if escolha == 1:
+                    os.system('cls' if os.name == 'nt' else 'clear')
                     terminal_saindo = "Saindo"
                     for i in range(1, len(terminal_saindo) + 1):
                         print(f"\r{terminal_saindo[:i]}", end = " ", flush = True)
@@ -768,7 +792,6 @@ while True:
                     for i in range(1, 4):
                         print(f"\r{terminal_saindo}{'.' * i}", end = " ", flush = True)
                         time.sleep(0.3)
-                    time.sleep(2)
                     os.system('cls' if os.name == 'nt' else 'clear')
                     exit()
                 elif escolha == 2:
