@@ -8,6 +8,7 @@ import time
     - O maior e o menor número digitado
     - Quantos números negativos foram digitados
 '''
+print("\n", "=" * 15, "EXERCÍCIO 21", "=" * 15)
 
 try:
     numeros = []
@@ -16,9 +17,13 @@ try:
 
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
+        print("\n", "= " * 15, "LEITOR DE NÚMEROS INTEIROS", "= " * 15)
+        print()
+        numero = None
         tentativas_user = 5
         while tentativas_user > 0:
             try:
+                
                 print("\rDigite um número inteiro ou pressione [0] para sair: ", end= "", flush =True)
                 numero = int(input())
                 break
@@ -39,6 +44,9 @@ try:
                         print(f"\r{erro}", end = " ", flush = True)
                         time.sleep(0.5)
                 break
+        
+        if numero is None:
+            break 
             
         if numero != 0:
             numeros.append(numero)
@@ -54,21 +62,27 @@ try:
                 for num in pares:
                     somar_pares += num
                     media_pares = (somar_pares) / len(pares) 
-            else:
-                somar_pares = f"""Não há nenhum número par"""
-                media_pares = f"""Não há nenhum número par"""
+        
                 
             if numero < 0:
                 numeros_negativos.append(numero)
                 len(numeros_negativos)
             
         else:
-            print(somar)
-            print(somar_pares)
-            print(media_pares)
-            print(max(numeros))
-            print(min(numeros))
-            print(len(numeros_negativos))
+            print()
+            print(" " * 3, f"→ A soma total de todos os números é: {somar}")
+            if pares:
+                print(" " * 3, f"→ A soma de todos os números pares é: {somar_pares}")
+                print(" " * 3,f"→ A média aritmética simples dos números pares é: {media_pares}")
+            else:
+                print(" " * 3, "→ Não há números pares.")
+            print(" " * 3, f"→ O maior número do conjunto é: {max(numeros)}")
+            print(" " * 3, f"→ O menor número do conjunto é: {min(numeros)}")
+            if numeros_negativos:
+                print(" " * 3, f"→ A quantidade de números negativos no conjunto é: {len(numeros_negativos)}")
+            else:
+                print(" " * 3, "→ Não há números negativos.")
+            print()
             break
             
 except NameError:
