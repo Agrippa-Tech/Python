@@ -5,3 +5,6 @@
     - O maior e o menor número digitado
     - Quantos números negativos foram digitados
 '''
+
+numeros = []
+
