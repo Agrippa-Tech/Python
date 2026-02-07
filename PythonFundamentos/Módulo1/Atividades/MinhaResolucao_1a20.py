@@ -28,7 +28,7 @@ print (f"\nA média aritmética simples dos valores é: {float(media)}")
 print ("\n", "=" * 15, "EXERCÍCIO 2", "=" * 15)
 
 km = float(input("\nDigite quantos quilomêtros você percorreu: "))
-litro = float(input("Digite o volume de combustível gasto em litros de combustível: "))
+litro = float(input("Digite o volume de combustível gasto em litros: "))
 valor = float(input("Digite quantos reais você pagou por cada litro? "))
 
 consumo_medio = km / litro
