@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="Exercicio3"/>
+        <attribute name="authors" value="lucas"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-02-08 08:31:11 "/>
+        <attribute name="created" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0wNzsiMTA6Mzc6MTIgIjsyMTAw"/>
+        <attribute name="edited" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0wODsiMDg6MzE6MTEgIjsxOzIyMDk="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="celsius, fahren, kelvin" type="Real" array="False" size=""/>
+            <output expression="&quot;Digite o valor da temperatura em Celsius (C&#176;): &quot;" newline="True"/>
+            <input variable="celsius"/>
+            <assign variable="fahren" expression="(celsius * 9/5) + 32"/>
+            <assign variable="kelvin" expression="celsius + 273.15"/>
+            <output expression="&quot;O valor de &quot; &amp; celsius &amp; &quot; graus Celsius &#233; de &quot; &amp; fahren &amp; &quot;Fahrenheit e &quot; &amp; kelvin &amp; &quot; Kelvin.&quot;" newline="True"/>
+        </body>
+    </function>
+</flowgorithm>

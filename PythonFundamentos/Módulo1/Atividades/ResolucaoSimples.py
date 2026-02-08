@@ -33,5 +33,18 @@ valor_combustivel = float(input())
 consumo_medio = km / litro
 custokm = valor_combustivel / consumo_medio
 
-print("\nO consumo médio por quilomêtro é de: " + str(litro))
-print("O custo por quilomêtro rodado é de: " + str(custokm))   
+print(f"\nO consumo médio por quilomêtro é de: {litro:2.2f}")
+print(f"O custo por quilomêtro rodado é de: {custokm:2.2f}")   
+
+'''3) Faça um programa que converta uma temperatura em Celsius para Fahrenheit e Kelvin,
+   exibindo os resultados com duas casas decimais'''
+   
+print ("\n", "=" * 15, "EXERCÍCIO 3", "=" * 15)
+
+print("Digite o valor da temperatura em Celsius (C°): ")
+celsius = float(input())
+
+fahren = (celsius * 9/5) + 32
+kelvin = celsius + 273.15
+
+print(f"O valor de {celsius:2.2f} graus Celsius é de {fahren} Fahrenheit e {kelvin:2.2f} kelvin.")
