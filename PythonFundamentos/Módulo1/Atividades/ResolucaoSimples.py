@@ -23,7 +23,7 @@ print(media)
   
 print ("\n", "=" * 15, "EXERCÍCIO 2", "=" * 15)
  
-print("Digite quantos quilomêtros você percorreu: ")
+print("\nDigite quantos quilomêtros você percorreu: ")
 km = float(input())
 print("Digite o volume de combustível gasto por litro: ")
 litro = float(input())
@@ -41,10 +41,25 @@ print(f"O custo por quilomêtro rodado é de: {custokm:2.2f}")
    
 print ("\n", "=" * 15, "EXERCÍCIO 3", "=" * 15)
 
-print("Digite o valor da temperatura em Celsius (C°): ")
+print("\nDigite o valor da temperatura em Celsius (C°): ")
 celsius = float(input())
 
 fahren = (celsius * 9/5) + 32
 kelvin = celsius + 273.15
 
 print(f"O valor de {celsius:2.2f} graus Celsius é de {fahren} Fahrenheit e {kelvin:2.2f} kelvin.")
+
+'''4) Elabore um programa que calcule o valor final de uma compra com desconto. 
+   O usuário deve informar o preço original e a porcentagem de desconto. O programa deve
+   exibir o valor do desconto e o preço final.'''
+   
+print ("\n", "=" * 15, "EXERCÍCIO 4", "=" * 15)
+
+print("\nDigite o valor original do produto: ")
+valor_original = float(input())
+print("Digite a porcentagem de desconto: ")
+valor_desconto = float(input())
+
+valor_final = valor_original * (1 - valor_desconto / 100)
+
+print(f"\nO valor final da sua compra é de R${valor_final:2.2f}.")

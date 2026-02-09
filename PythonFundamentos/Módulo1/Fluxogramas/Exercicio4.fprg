@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="Exercicio4"/>
+        <attribute name="authors" value="lucas"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-02-08 08:39:54 "/>
+        <attribute name="created" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0wODsiMDg6MzM6MzIgIjsyMTA2"/>
+        <attribute name="edited" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0wODsiMDg6Mzk6NTQgIjsxOzIyMjQ="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="valororiginal, valordesconto, valorfinal" type="Real" array="False" size=""/>
+            <output expression="&quot;Digite o valor orginal do produto: &quot;" newline="True"/>
+            <input variable="valororiginal"/>
+            <output expression="&quot;Digite a porcentagem de desconto: &quot;" newline="True"/>
+            <input variable="valordesconto"/>
+            <assign variable="valorfinal" expression="valororiginal * (1 - valordesconto / 100)"/>
+            <output expression="&quot;O valor final da sua compra &#233; de R$&quot; &amp; valorfinal &amp; &quot;.&quot;" newline="True"/>
+        </body>
+    </function>
+</flowgorithm>
