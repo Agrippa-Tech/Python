@@ -90,3 +90,20 @@ print(resposta)
       
 print("\n", "=" * 15, "EXERCÍCIO 6", "=" * 15)
 
+print("\nDigite a primeira nota: ")
+nota1 = float(input())
+print("Digite a segunda nota: ")
+nota2 = float(input())
+print("Digite a terceira nota: ")
+nota3 = float(input())
+
+media = (nota1 + nota2 + nota3) / 3
+
+if media >= 7:
+   print(f"\nAprovado - A média do aluno foi de: {media:2.2f}")
+else:
+   if media <= 7 and media >= 5:
+      print(f"\nRecuperação - A média foi de: {media:2.2f}")
+   else:
+      if media <= 5:
+         print(f"\nReprovado - A média do aluno foi de: {media:2.2f}")
