@@ -68,16 +68,16 @@ print(f"O valor final da sua compra é de: {valor_final:2.2f} reais.")
   
 print("\n", "=" * 15, "EXERCÍCIO 5", "=" * 15)
 
-seg_input = float(input("\nInsira a quantidade em segundos para a conversão: "))
+segundos_input = float(input("\nInsira a quantidade em segundos para a conversão: "))
 
-hrs = seg_input / 3600
-mts = seg_input % 3600 / 60
-seg_output = seg_input % 60
+horas_conversao = segundos_input / 3600
+minutos_conversao = segundos_input % 3600 / 60
+segundos_output = segundos_input % 60
 
-rst = f"""\nA quantidade de {seg_input:.1f} convertida para:
-        {'Horas é de:':<30} {hrs:>10.2f}
-        {'Minutos é de:':<30} {mts:>10.2f}
-        {'Segundos é de:':<30} {seg_output:>10.2f}
+rst = f"""\nA quantidade de {segundos_input:.1f} convertida para:
+        {'Horas é de:':<30} {horas_conversao:>10.2f}
+        {'Minutos é de:':<30} {minutos_conversao:>10.2f}
+        {'Segundos é de:':<30} {segundos_output:>10.2f}
         """
         
 print(rst)

@@ -236,5 +236,5 @@ while True:
         opcao_saindo = "Saindo..."
         for i in range(1, len(opcao_saindo) + 1):
             print(f"\r{opcao_saindo[:i]}", end = " ", flush = True)
-            time.sleep(0.3)
+            time.sleep(0.3) 
         break

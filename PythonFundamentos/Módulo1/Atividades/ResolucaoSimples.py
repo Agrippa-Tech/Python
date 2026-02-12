@@ -63,3 +63,30 @@ valor_desconto = float(input())
 valor_final = valor_original * (1 - valor_desconto / 100)
 
 print(f"\nO valor final da sua compra é de R${valor_final:2.2f}.")
+
+'''5) Desenvolva um programa que calcule o tempo total em horas, minutos e segundos
+   a partir de um valor dado apenas em segundos.'''
+
+print("\n", "=" * 15, "EXERCÍCIO 5", "=" * 15)
+
+print("\nInsira a quantidade em segundos para a conversão: ")
+segundosUsuario = float(input())
+
+horas = segundosUsuario / 3600
+minutos = float(segundosUsuario % 3600) / 60
+segundos_saida = segundosUsuario % 60
+
+resposta = f"""{f'A quantidade de {segundosUsuario} segundos, convertida para:'}
+{''}
+{f'Horas é de: {horas:2.2f}'}
+{f'Minutos é de: {minutos:2.2f}'}
+{f'Segundos é de: {segundos_saida:2.2f}'}"""
+
+print(resposta)
+
+'''6) Crie um programa que leia três notas de um aluno, calcule a média e
+    informe se ele foi aprovado (média ≥ 7), em recuperação (5 ≤ média < 7)
+    ou reprovado (média < 5).'''
+      
+print("\n", "=" * 15, "EXERCÍCIO 6", "=" * 15)
+

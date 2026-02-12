@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="Exercicio6"/>
+        <attribute name="authors" value="lucas"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-02-12 10:44:47 "/>
+        <attribute name="created" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0xMjsiMTA6MTg6NTggIjsyMTA1"/>
+        <attribute name="edited" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0xMjsiMTA6NDQ6NDcgIjsxOzIyMTA="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="segundosUsuario, horas, minutos, segundosSaida" type="Real" array="False" size=""/>
+            <declare name="Resposta" type="String" array="False" size=""/>
+            <output expression="&quot;Insira a quantidade em segundos para a convers&#227;o: &quot;" newline="True"/>
+            <input variable="segundosUsuario"/>
+            <assign variable="horas" expression="segundosUsuario / 3600"/>
+            <assign variable="minutos" expression="segundosUsuario % 3600 / 60"/>
+            <assign variable="segundosSaida" expression="segundosUsuario % 60"/>
+            <assign variable="Resposta" expression="&quot;A quantidade de &quot; &amp; segundosUsuario &amp; &quot;segundos convertida para:&quot; &amp; &#13;&#10;&#13;&#10;&quot;Horas &#233; de: &quot; &amp; horas &amp; &#13;&#10;&quot;Minutos &#233; de: &quot; &amp; minutos &amp;&#13;&#10;&quot;Segundos &#233; de :&quot; &amp; segundosSaida"/>
+            <output expression="Resposta" newline="True"/>
+        </body>
+    </function>
+</flowgorithm>
