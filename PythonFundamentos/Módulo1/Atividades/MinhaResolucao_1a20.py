@@ -92,14 +92,14 @@ n1 = float(input("\nInsira a primeira nota do aluno: "))
 n2 = float(input("Insira a segunda nota do aluno: "))
 n3 = float(input("Insira a terceira nota do aluno: "))
 
-ma = (n1 + n2 + n3) /3
+media = (n1 + n2 + n3) /3
 
-if ma >= 7:
-    print(f"\n{'Média: ':>15} {ma:2.2f} - Aprovado.")
-elif ma >= 5:
-    print(f"\n{'Média: ':>15} {ma:2.2f} - Recuperação.")
+if media >= 7:
+    print(f"\n{'Média: ':>15} {media:2.2f} - Aprovado.")
+elif media >= 5:
+    print(f"\n{'Média: ':>15} {media:2.2f} - Recuperação.")
 else:
-    print(f"\n{'Média: ':>15} {ma:2.2f} - Reprovado.")
+    print(f"\n{'Média: ':>15} {media:2.2f} - Reprovado.")
   
 '''7) Elabore um programa que converta uma quantia em reais (R$) para dólares (US$),
     considerando uma taxa de câmbio fornecida pelo usuário.'''
