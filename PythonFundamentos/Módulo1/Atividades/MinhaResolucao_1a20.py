@@ -107,23 +107,23 @@ else:
 print("\n", "=" * 15, "EXERCÍCIO 7", "=" * 15)
 
 real = float(input("\nInsira o valor em reais: "))
-txc = float(input("Insira o valor da taxa de câmbio atual: "))
+taxa_de_cambio = float(input("Insira o valor da taxa de câmbio atual: "))
 
-usd = real / txc
+dolares = real / taxa_de_cambio
 
-print(f"\n{'Com':>10} {real:2.2f} reais, você comprará {usd:2.2f} dólares.")
+print(f"\n{'Com':>10} {real:2.2f} reais, você comprará {dolares:2.2f} dólares.")
 
 '''8) Faça um programa que calcule a área de um círculo. O usuário deve informar o raio,
    e o programa deve exibir a área com duas casas decimais (use π = 3.14159).'''
    
 print("\n", "=" * 15, "EXERCÍCIO 8", "=" * 15)
 
-r = float(input("\nDigite o raio da área calculada: "))
+raio = float(input("\nDigite o raio da área calculada: "))
 
 π = 3.14159
-A = π * (r**2)
+area_pi = π * (raio**2)
 
-print(f"\nA área do círculo é de: {A:2.2f} cm²")
+print(f"\nA área do círculo é de: {area_pi:2.2f} cm²")
 
 '''9) Crie um programa que inverta a ordem de dois números fornecidos pelo usuário e,
    em seguida, calcule a diferença absoluta entre eles.'''
@@ -134,9 +134,9 @@ num1 = int(input("\nDigite o primeiro número: "))
 num2 = int(input("Digite o segundo número: "))
 
 nums = [num1, num2]
-nums.reverse() #inverte os valores da lista
+nums.reverse() 
 
-dif = abs(nums[0] - nums[1]) #transforma os números para int indepedente do resultado
+dif = abs(nums[0] - nums[1]) 
 
 print(f"\nA ordem dos números invertida é: \n{nums[0]:>15} - {nums[1]}")
 print(f"\nA diferença absoluta entre eles é: \n{dif:>15}")

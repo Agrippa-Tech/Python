@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="Exercicio7"/>
+        <attribute name="authors" value="lucas"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-02-13 12:01:15 "/>
+        <attribute name="created" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0xMzsiMTE6NTM6MTAgIjsyMDk0"/>
+        <attribute name="edited" value="bHVjYXM7TFVDQVM7MjAyNi0wMi0xMzsiMTI6MDE6MTUgIjsxOzIyMDE="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="reais, taxacambio, precodolar" type="Real" array="False" size=""/>
+            <output expression="&quot;Digite o valor em reais:&quot;" newline="True"/>
+            <input variable="reais"/>
+            <output expression="&quot;Digite o valor da taxa de c&#226;mbio atual: &quot;" newline="True"/>
+            <input variable="taxacambio"/>
+            <assign variable="precodolar" expression="reais / taxacambio"/>
+            <output expression="&quot;Com &quot; &amp; reais &amp; &quot; reais, voc&#234; comprar&#225; &quot; &amp; precodolar &amp; &quot; d&#243;lares&quot;" newline="True"/>
+        </body>
+    </function>
+</flowgorithm>
