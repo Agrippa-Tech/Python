@@ -238,3 +238,34 @@ while True:
             print(f"\r{opcao_saindo[:i]}", end = " ", flush = True)
             time.sleep(0.3) 
         break
+    
+'''23) Crie um programa que gere uma senha numérica de 6 dígitos com o módulo secrets.
+   Implemente um ataque de força bruta que tente todas as possibilidades de 000000 a 999999 até
+   acertar. Ao final, mostre a senha descoberta e o tempo total gasto na busca.'''
+
+import secrets
+import string
+import time
+import os
+
+formato_senha = string.digits
+tamanho_senha = 6
+senha = ''.join(secrets.choice(formato_senha) for _ in range(tamanho_senha))
+
+print(f"\nSenha gerada: {senha}")
+
+time.sleep(1)
+tempo_inicio_tentativa = time.time()
+
+
+for tentativa in range(0, 10**6):
+    tentativa_str = f"{tentativa:06d}"
+    print(f"Testando a senha: {tentativa_str}")    
+
+    if tentativa_str == senha:
+        tempo_fim_tentativa = time.time()
+        tempo_total = tempo_fim_tentativa - tempo_inicio_tentativa
+
+        print(f"\nA senha é: {tentativa_str}")
+        print(f"Tempo necessário para descobrir a senha: {tempo_total:2.2f} segundos")
+        break
