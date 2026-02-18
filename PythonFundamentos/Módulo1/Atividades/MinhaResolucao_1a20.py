@@ -17,7 +17,7 @@ n2 = int(input("Digite o segundo número: "))
 n3 = int(input("Digite o terceiro número: "))
 n4 = int(input("Digite o quarto número: "))
 
-media = (n1 + n2 + n3 + n4) / 4
+media = (n1 + n2 + n3 + n4) / 4 * 0
 
 print (f"\nA média aritmética simples dos valores é: {float(media)}")
 
