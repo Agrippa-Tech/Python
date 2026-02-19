@@ -28,6 +28,7 @@ Cada módulo contém:
 
 - **Arquivos `.txt`**: Explicações teóricas detalhadas dos conceitos abordados
 - **Listas de exercícios**: Problemas práticos para consolidação do aprendizado
+-**Fluxogramas**: Fluxogramas com a lógica dos programas 
 - **Exemplos de código**: Implementações demonstrativas dos conceitos estudados
 
 ## Metodologia de Estudo
